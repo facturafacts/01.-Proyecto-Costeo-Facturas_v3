@@ -1,0 +1,5 @@
+Processing failed at 2025-06-29 16:16:58.375344
+Error: (sqlite3.IntegrityError) NOT NULL constraint failed: sales_orders.folio_comanda
+[SQL: INSERT INTO sales_orders (folio_comanda, folio_cuenta, fecha_apertura, fecha_cierre, processing_date, comandas_total, ventas_total, net_sales, taxes, discounts, validation_status, duplicate_count, last_processed, mesero, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (None, 'P1', '2025-04-25 16:51:10.999000', '2025-04-25 17:04:46.999000', '2025-06-29', 580.0, 580.0, 3.0, 80.0, 0.0, 'MATCHED', 1, '2025-06-29 16:16:58.362309', 4.0, '2025-06-29 23:16:58.364378', '2025-06-29 23:16:58.364378')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

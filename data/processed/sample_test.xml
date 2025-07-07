@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
+    Version="4.0"
+    Serie="A"
+    Folio="TEST123"
+    Fecha="2024-01-15T10:30:00"
+    Sello="sample_seal"
+    NoCertificado="00001000000123456789"
+    Certificado="sample_certificate"
+    SubTotal="1000.00"
+    Descuento="0.00"
+    Moneda="MXN"
+    TipoCambio="1"
+    Total="1160.00"
+    TipoDeComprobante="I"
+    Exportacion="01"
+    MetodoPago="PUE"
+    LugarExpedicion="06000">
+    
+    <cfdi:Emisor 
+        Rfc="AAA010101AAA" 
+        Nombre="Empresa de Prueba SA de CV"
+        RegimenFiscal="601"/>
+    
+    <cfdi:Receptor 
+        Rfc="BBB020202BBB" 
+        Nombre="Cliente de Prueba SA de CV"
+        DomicilioFiscalReceptor="06000"
+        RegimenFiscalReceptor="601"
+        UsoCFDI="G03"/>
+    
+    <cfdi:Conceptos>
+        <cfdi:Concepto 
+            ClaveProdServ="01010101"
+            NoIdentificacion="CERV001"
+            Cantidad="3"
+            ClaveUnidad="H87"
+            Unidad="Caja"
+            Descripcion="Caja cerveza tecate 24 piezas"
+            ValorUnitario="200.00"
+            Importe="600.00"
+            Descuento="0.00"
+            ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="600.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="96.00"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+        
+        <cfdi:Concepto 
+            ClaveProdServ="01010102"
+            NoIdentificacion="VEG001"
+            Cantidad="5"
+            ClaveUnidad="KGM"
+            Unidad="Kilogramo"
+            Descripcion="Cebolla blanca"
+            ValorUnitario="25.00"
+            Importe="125.00"
+            Descuento="0.00"
+            ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="125.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="20.00"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+        
+        <cfdi:Concepto 
+            ClaveProdServ="01010103"
+            NoIdentificacion="HUEV001"
+            Cantidad="2"
+            ClaveUnidad="PZA"
+            Unidad="Pieza"
+            Descripcion="Huevos blancos paquete 12 piezas"
+            ValorUnitario="45.00"
+            Importe="90.00"
+            Descuento="0.00"
+            ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="90.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="14.40"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+        
+        <cfdi:Concepto 
+            ClaveProdServ="01010104"
+            NoIdentificacion="ACEIT001"
+            Cantidad="4"
+            ClaveUnidad="PZA"
+            Unidad="Pieza"
+            Descripcion="Aceite vegetal 1 litro"
+            ValorUnitario="35.00"
+            Importe="140.00"
+            Descuento="0.00"
+            ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="140.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="22.40"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+        
+        <cfdi:Concepto 
+            ClaveProdServ="80161500"
+            NoIdentificacion="SERV001"
+            Cantidad="1"
+            ClaveUnidad="E48"
+            Unidad="Servicio"
+            Descripcion="Servicio de entrega"
+            ValorUnitario="45.00"
+            Importe="45.00"
+            Descuento="0.00"
+            ObjetoImp="02">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="45.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="7.20"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+    </cfdi:Conceptos>
+    
+    <cfdi:Impuestos TotalImpuestosTrasladados="160.00">
+        <cfdi:Traslados>
+            <cfdi:Traslado Base="1000.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="160.00"/>
+        </cfdi:Traslados>
+    </cfdi:Impuestos>
+    
+    <cfdi:Complemento>
+        <tfd:TimbreFiscalDigital 
+            xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital"
+            Version="1.1"
+            UUID="12345678-1234-1234-1234-123456789012"
+            FechaTimbrado="2024-01-15T10:35:00"
+            RfcProvCertif="SAT970701NN3"
+            SelloCFD="sample_seal_cfd"
+            NoCertificadoSAT="00001000000987654321"/>
+    </cfdi:Complemento>
+    
+</cfdi:Comprobante>

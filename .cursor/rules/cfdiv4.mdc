@@ -1,0 +1,219 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# CFDI Processing System v4 - Enhanced Cursor Rules
+
+## Core Development Principles (v4 Enhanced)
+- ALWAYS PREFER SIMPLE SOLUTIONS over complex architectural patterns
+- AVOID DUPLICATE CODE - exhaustively check existing modules first
+- WRITE CODE FOR MULTIPLE ENVIRONMENTS: dev, test, prod with clear separation
+- ONLY MAKE REQUESTED CHANGES or clearly related improvements  
+- EXHAUST EXISTING PATTERNS before introducing new technologies
+- KEEP CODEBASE CLEAN AND ORGANIZED with consistent naming
+- STRICT 300-LINE LIMIT per file - refactor immediately when approaching
+- NO UTILITY SCRIPTS in source files - use proper module structure
+- MOCKING ONLY FOR TESTS, never for dev/prod environments
+- NEVER OVERWRITE .ENV without explicit user confirmation
+
+## CFDI System v4 Specific Rules
+
+### Enhanced Database Operations
+- Use SQLAlchemy sessions properly - always close connections
+- Database operations must be atomic and safe
+- No raw SQL unless absolutely necessary for performance
+- All database models must match the exact 5-table schema specification
+- Use the enhanced schema: invoices, invoice_items, approved_skus, processing_logs, invoice_metadata
+- Currency logic: MXN = 1.0 exchange rate, calculate mxn_total for all invoices
+- Payment terms: PUE vs PPD logic with boolean flags (is_installments, is_immediate)
+
+### AI Classification Rules (Enhanced)
+- Use existing Gemini API patterns - don't reinvent integration
+- Maintain P62 taxonomy structure exactly as specified
+- Always validate Gemini responses against expected schema
+- Cache approved SKUs for performance - check lookup first
+- Classification confidence scores must be between 0-1
+- Unit standardization: ONLY Litros, Kilogramos, or Piezas
+- Track units_per_package for proper conversion logic
+- Store conversion_factor and standardized_quantity
+
+### Comprehensive Data Extraction
+- Extract ALL CFDI fields for compliance and analysis
+- Store digital stamps, certificates, and SAT seals
+- Capture issuer and receiver complete information
+- Extract detailed tax information (traslados, retenciones)
+- Store all dates with proper timezone handling
+- Preserve original XML metadata (filename, size, processing time)
+
+### File Processing Pipeline (Enhanced)
+- Process files in order: Parse → Extract All → SKU Lookup → AI Classify → Store → Metadata
+- Always preserve original XML files
+- Move processed files to appropriate directories (processed/failed)
+- Log all operations with appropriate levels (INFO, WARNING, ERROR, DEBUG)
+- Handle errors gracefully - never lose invoice data
+- Validate XML structure before processing
+- Create invoice_metadata record with business logic
+
+### Module Organization Rules (v4.1)
+- `/src/processing/` - Core processing logic only
+- `/src/data/` - Database models and operations only
+- `/src/utils/` - Utility functions and helpers
+- `/config/` - Configuration and settings only  
+- `/notebooks/` - Data analysis and Google Sheets export preparation ONLY
+- `/scripts/` - Setup and maintenance scripts
+- `/tests/` - Comprehensive test suite
+- Keep modules focused and single-purpose
+- Each module should have one clear responsibility
+- **NOTEBOOKS ARE READ-ONLY** - never modify production data
+
+### Notebooks Module Rules (v4.2 - JUPYTER NOTEBOOKS)
+- **JUPYTER NOTEBOOKS ONLY** - All files must be .ipynb for interactive visualization
+- **INTERACTIVE EXPLORATION** - Each notebook supports step-by-step analysis
+- **VISUAL FEEDBACK** - Charts, graphs, and visual indicators throughout
+- **SINGLE PURPOSE NOTEBOOKS** - Each notebook focuses on one analysis area
+- **MARKDOWN DOCUMENTATION** - Clear explanations between code sections
+- **DATA VISUALIZATION FIRST** - Every analysis includes appropriate charts
+- **EXPORT PREVIEW** - Show exactly what will be exported to Google Sheets
+- **BUSINESS VALUE ONLY** - Every notebook answers real business questions
+
+### Notebooks Structure (Mandatory v4.2)
+- `01_data_validator.ipynb` - Interactive data validation with visual health checks
+- `02_business_insights.ipynb` - Business metrics with charts and visualizations
+- `03_export_ready.ipynb` - Google Sheets export preparation with previews
+- `04_pattern_monitor.ipynb` - Data pattern analysis with interactive graphs
+- `README.md` - Jupyter notebook usage instructions
+
+### Notebooks Execution Rules (v4.2)
+- **JUPYTER ENVIRONMENT** - Must run in Jupyter Lab or Notebook
+- **CELL-BY-CELL EXECUTION** - Support independent cell execution
+- **CLEAR ALL OUTPUTS** - Before committing, clear all cell outputs
+- **VISUAL OUTPUTS** - Every analysis produces charts, tables, or visual indicators
+- **INTERACTIVE ELEMENTS** - Use widgets and interactive plots where beneficial
+- **ERROR HANDLING** - Graceful failure with clear visual error indicators
+- **PROGRESS INDICATORS** - Visual progress bars for long-running operations
+
+### Notebooks Visualization Rules (v4.2 - NEW)
+- **CONSISTENT STYLING** - Use unified color schemes and chart styles
+- **PROFESSIONAL CHARTS** - Publication-ready visualizations for business use
+- **INTERACTIVE PLOTS** - Use plotly or similar for interactive exploration
+- **DATA TABLES** - Format tables for easy reading and export
+- **VISUAL INDICATORS** - ✅ ❌ ⚠️ 📊 📈 📤 status indicators
+- **EXPORT PREVIEWS** - Show formatted data as it will appear in Google Sheets
+- **BUSINESS DASHBOARDS** - Executive-level summary visualizations
+
+### Notebooks Data Rules (v4.2)
+- **VALIDATION FIRST** - Always start with data validation notebook
+- **GOOGLE SHEETS READY** - All exports formatted for Google Sheets compatibility
+- **CLEAN DATA VISUALIZATION** - Show data cleaning steps with before/after
+- **BUSINESS READY** - Professional formatting for executive presentation
+- **NO RAW DUMPS** - Always process and visualize data meaningfully
+- **READ-ONLY ACCESS** - Never modify production data from notebooks
+- **EXPORT CONFIDENCE** - Visual confirmation of data quality before export
+
+### Notebooks Performance Rules (v4.2)
+- **OPTIMIZED QUERIES** - Use invoice_metadata table for fast aggregations
+- **CHUNKED PROCESSING** - Handle large datasets in manageable chunks
+- **CACHING ALLOWED** - Cache results between notebook runs
+- **VISUAL PROGRESS** - Show progress bars for operations over 5 seconds
+- **RESOURCE CLEANUP** - Always close database connections
+- **MEMORY EFFICIENT** - Monitor and optimize memory usage for large datasets
+
+### Notebooks Output Standards (v4.2)
+- **CONSISTENT FORMATTING** - Same number/date formats across all notebooks
+- **VISUAL STATUS** - Charts and indicators for clear feedback
+- **ACTIONABLE INSIGHTS** - Tell user what actions to take next
+- **EXPORT METADATA** - Include timestamps, record counts, quality scores
+- **EXECUTIVE SUMMARIES** - Lead with high-level visual dashboards
+- **BUSINESS LANGUAGE** - Use business terms in all visualizations and text
+- **IPYNB** - All notebooks must be in interactive Jupyter notebooks
+
+### Performance Guidelines (Enhanced)
+- SKU lookup must be fast - use database indexes
+- Cache approved classifications to avoid repeated API calls
+- Process files in batches when possible
+- Monitor memory usage for large XML files
+- Gemini API calls should timeout after 30 seconds
+- Database operations should complete under 100ms
+- Use invoice_metadata table for fast business queries
+- Optimize currency conversion calculations
+- **Notebooks execution under 30 seconds** - optimize for daily use
+- **Google Sheets export under 5MB** - respect platform limits
+
+### Error Handling Standards (Enhanced)
+- Log all errors with context (filename, line number, operation, component)
+- Retry Gemini API calls up to 3 times before failing
+- Move failed files to /data/failed/ with detailed error logs
+- Never let one failed file stop batch processing
+- Provide actionable error messages for debugging
+- Track error counts in invoice_metadata table
+- Create processing_logs entries for all significant events
+- **Notebooks never crash** - graceful degradation always
+- **Clear user guidance** - tell user exactly what went wrong
+- **Partial results OK** - show what worked even if some parts failed
+
+### Business Logic Rules (Enhanced)
+- Currency conversion: MXN = 1.0, others use provided exchange rate
+- Payment terms: PUE = immediate payment, PPD = installments
+- Unit conversion: Always calculate standardized_quantity
+- Package tracking: Store units_per_package when available
+- Export handling: Set is_export flag based on export_operation field
+- Digital certification: Validate and store all stamp information
+- **NO CURRENCY EXPOSURE ANALYSIS** - Focus on operational metrics only
+- **SIMPLIFIED RISK MANAGEMENT** - Data patterns and coverage only
+
+### Code Quality Standards (v4)
+- All functions must have type hints
+- Docstrings required for all public methods
+- Use descriptive variable names (no single letters except loops)
+- Consistent naming: snake_case for variables, PascalCase for classes
+- Group imports: standard library, third-party, local modules
+- Maximum function complexity: 10 cyclomatic complexity
+- Use dataclasses for data structures when appropriate
+- Follow PEP 8 style guidelines strictly
+
+## Testing Requirements (Enhanced)
+- Test all major functionality with realistic CFDI data
+- Use sample CFDI XML files for integration tests
+- Mock external API calls (Gemini) in unit tests
+- Test error conditions and edge cases
+- Maintain 80%+ test coverage
+- Test database operations with temporary in-memory SQLite
+- Test currency conversion logic thoroughly
+- Test payment terms logic (PUE/PPD)
+- Test unit conversion and package handling
+
+## Security and Data Rules (Enhanced)
+- Never hardcode API keys or secrets in source code
+- Use environment variables for all sensitive configuration
+- Validate all user inputs and XML content
+- Log security events (API key usage, file access)
+- Sanitize file paths to prevent directory traversal
+- Handle PII data according to Mexican data protection laws
+- Encrypt sensitive data in logs when necessary
+- Use secure connection for Gemini API calls
+- **NO SENSITIVE EXPORT** - Exclude digital stamps, certificates from exports
+- **AUDIT LOGGING** - Log all export operations from notebooks
+
+## Performance Monitoring (Enhanced)
+- Track processing time for each invoice
+- Monitor memory usage during batch processing
+- Log API response times and success rates
+- Track database query performance
+- Monitor file system operations
+- Create performance dashboards in notebooks
+- Set up alerts for performance degradation
+- **Monitor notebook execution times** - ensure under 30-second rule
+- **Track export file sizes** - ensure Google Sheets compatibility
+
+## Data Quality Rules (Enhanced)
+- Validate all extracted CFDI fields against SAT catalogs
+- Check data consistency between tables
+- Monitor classification accuracy trends
+- Track confidence score distributions
+- Validate currency and exchange rate data
+- Ensure unit conversion accuracy
+- Monitor SKU approval rates and usage
+- **DATA COVERAGE TRACKING** - Monitor what percentage of data is classified
+- **PATTERN ANALYSIS** - Identify data quality trends over time
+- **EXPORT READINESS VALIDATION** - Ensure data is clean before Google Sheets export 

@@ -1,0 +1,648 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+CFDI Business Data Integrity Validator v4.2
+
+Purpose: Validate that export data matches what's actually in the database
+Ensures numbers add up correctly between tables for confident reporting.
+
+Usage: python scripts/validate_data_integrity.py
+"""
+
+import sys
+import os
+from pathlib import Path
+from datetime import datetime
+from decimal import Decimal
+import warnings
+warnings.filterwarnings('ignore')
+
+# Add project root to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+# Data analysis libraries
+import pandas as pd
+import numpy as np
+
+# Database libraries
+from sqlalchemy import func, text
+
+# Project imports
+from config.settings import get_settings
+from src.data.models import (
+    Invoice, InvoiceItem, InvoiceMetadata, 
+    ApprovedSku, ProcessingLog
+)
+from src.data.database import DatabaseManager
+
+class DataIntegrityValidator:
+    """Business data integrity validator for CFDI system."""
+    
+    def __init__(self):
+        """Initialize validator with database connection."""
+        self.settings = get_settings()
+        self.db_manager = DatabaseManager()
+        self.validation_results = []
+        
+    def print_header(self):
+        """Print validation header."""
+        print("💰 CFDI Business Data Integrity Validator v4.2")
+        print("=" * 60)
+        print("Purpose: Ensure numbers add up correctly between tables")
+        print(f"⏰ Validation started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"📊 Environment: {self.settings.ENVIRONMENT}")
+        print()
+        
+    def test_database_connection(self):
+        """Test database connectivity."""
+        try:
+            with self.db_manager.get_session() as session:
+                result = session.execute(text("SELECT 1")).scalar()
+                print("🔗 Database connection: ✅ HEALTHY")
+                return True
+        except Exception as e:
+            print(f"❌ Database connection failed: {e}")
+            return False
+    
+    def validate_financial_reconciliation(self):
+        """Check that sum of invoice items equals invoice total."""
+        print("💰 1. FINANCIAL RECONCILIATION CHECK")
+        print("-" * 50)
+        
+        with self.db_manager.get_session() as session:
+            # Get invoice totals vs sum of items
+            financial_check = session.query(
+                Invoice.id,
+                Invoice.uuid,
+                Invoice.folio,
+                Invoice.total_amount.label('invoice_total'),
+                func.sum(InvoiceItem.total_amount).label('items_sum'),
+                func.count(InvoiceItem.id).label('item_count')
+            ).outerjoin(
+                InvoiceItem, Invoice.id == InvoiceItem.invoice_id
+            ).group_by(
+                Invoice.id, Invoice.uuid, Invoice.folio, Invoice.total_amount
+            ).all()
+            
+            # Analyze discrepancies
+            discrepancies = []
+            perfect_matches = 0
+            
+            for record in financial_check:
+                invoice_total = float(record.invoice_total or 0)
+                items_sum = float(record.items_sum or 0)
+                difference = abs(invoice_total - items_sum)
+                
+                if difference > 0.01:  # Allow for small rounding differences
+                    discrepancies.append({
+                        'uuid': record.uuid,
+                        'folio': record.folio,
+                        'invoice_total': invoice_total,
+                        'items_sum': items_sum,
+                        'difference': difference,
+                        'item_count': record.item_count
+                    })
+                else:
+                    perfect_matches += 1
+            
+            total_invoices = len(financial_check)
+            discrepancy_count = len(discrepancies)
+            
+            # Determine status
+            if discrepancy_count == 0:
+                status = "✅ EXCELLENT"
+            elif discrepancy_count < 5:
+                status = "⚠️ ISSUES FOUND"
+            else:
+                status = "❌ CRITICAL"
+            
+            print(f"📊 Total Invoices: {total_invoices:,}")
+            print(f"✅ Perfect Matches: {perfect_matches:,} ({perfect_matches/total_invoices*100:.1f}%)")
+            print(f"❌ Discrepancies: {discrepancy_count:,} ({discrepancy_count/total_invoices*100:.1f}%)")
+            print(f"🎯 Status: {status}")
+            
+            # Show worst discrepancies
+            if discrepancies:
+                print("\n⚠️ TOP DISCREPANCIES:")
+                sorted_discrepancies = sorted(discrepancies, key=lambda x: x['difference'], reverse=True)
+                for i, disc in enumerate(sorted_discrepancies[:5], 1):
+                    print(f"   {i}. UUID: {disc['uuid'][:8]}... | "
+                          f"Invoice: ${disc['invoice_total']:,.2f} | "
+                          f"Items: ${disc['items_sum']:,.2f} | "
+                          f"Diff: ${disc['difference']:,.2f}")
+            
+            print()
+            return {
+                'check': 'Financial Reconciliation',
+                'status': status,
+                'issues': discrepancy_count,
+                'total': total_invoices
+            }
+    
+    def validate_supplier_spending(self):
+        """Verify spending totals by supplier are accurate."""
+        print("🏢 2. SUPPLIER SPENDING ACCURACY CHECK")
+        print("-" * 50)
+        
+        with self.db_manager.get_session() as session:
+            # Get spending by supplier from invoices table
+            invoice_spending = session.query(
+                Invoice.issuer_rfc,
+                Invoice.issuer_name,
+                func.sum(Invoice.total_amount).label('total_spending'),
+                func.count(Invoice.id).label('invoice_count')
+            ).group_by(
+                Invoice.issuer_rfc, Invoice.issuer_name
+            ).all()
+            
+            # Get spending by supplier from metadata table
+            metadata_spending = session.query(
+                InvoiceMetadata.issuer_rfc,
+                InvoiceMetadata.issuer_name,
+                func.sum(InvoiceMetadata.mxn_total).label('total_spending'),
+                func.count(InvoiceMetadata.id).label('invoice_count')
+            ).group_by(
+                InvoiceMetadata.issuer_rfc, InvoiceMetadata.issuer_name
+            ).all()
+            
+            # Convert to dictionaries for comparison
+            invoice_dict = {
+                r.issuer_rfc: {
+                    'name': r.issuer_name,
+                    'total': float(r.total_spending or 0),
+                    'count': r.invoice_count
+                }
+                for r in invoice_spending
+            }
+            
+            metadata_dict = {
+                r.issuer_rfc: {
+                    'name': r.issuer_name,
+                    'total': float(r.total_spending or 0),
+                    'count': r.invoice_count
+                }
+                for r in metadata_spending
+            }
+            
+            # Find discrepancies
+            all_rfcs = set(invoice_dict.keys()) | set(metadata_dict.keys())
+            discrepancies = []
+            perfect_suppliers = 0
+            
+            for rfc in all_rfcs:
+                inv_data = invoice_dict.get(rfc, {'total': 0, 'count': 0, 'name': 'Unknown'})
+                meta_data = metadata_dict.get(rfc, {'total': 0, 'count': 0, 'name': 'Unknown'})
+                
+                total_diff = abs(inv_data['total'] - meta_data['total'])
+                count_diff = abs(inv_data['count'] - meta_data['count'])
+                
+                if total_diff > 0.01 or count_diff > 0:
+                    discrepancies.append({
+                        'rfc': rfc,
+                        'name': inv_data['name'] or meta_data['name'],
+                        'invoice_total': inv_data['total'],
+                        'metadata_total': meta_data['total'],
+                        'total_diff': total_diff,
+                        'count_diff': count_diff
+                    })
+                else:
+                    perfect_suppliers += 1
+            
+            total_suppliers = len(all_rfcs)
+            
+            # Determine status
+            if len(discrepancies) == 0:
+                status = "✅ EXCELLENT"
+            elif len(discrepancies) < 3:
+                status = "⚠️ ISSUES FOUND"
+            else:
+                status = "❌ CRITICAL"
+            
+            print(f"📊 Total Suppliers: {total_suppliers:,}")
+            print(f"✅ Perfect Matches: {perfect_suppliers:,} ({perfect_suppliers/total_suppliers*100:.1f}%)")
+            print(f"❌ With Discrepancies: {len(discrepancies):,} ({len(discrepancies)/total_suppliers*100:.1f}%)")
+            print(f"🎯 Status: {status}")
+            
+            # Show top suppliers for verification
+            print("\n📈 TOP 5 SUPPLIERS BY SPENDING:")
+            top_suppliers = sorted(invoice_dict.items(), key=lambda x: x[1]['total'], reverse=True)[:5]
+            for i, (rfc, data) in enumerate(top_suppliers, 1):
+                print(f"   {i}. {rfc} | {data['name'][:30]}... | ${data['total']:,.2f} | {data['count']} invoices")
+            
+            print()
+            return {
+                'check': 'Supplier Spending Accuracy',
+                'status': status,
+                'issues': len(discrepancies),
+                'total': total_suppliers
+            }
+    
+    def validate_cross_table_consistency(self):
+        """Check same invoice data across invoices and metadata tables."""
+        print("📊 3. CROSS-TABLE CONSISTENCY CHECK")
+        print("-" * 50)
+        
+        with self.db_manager.get_session() as session:
+            # Compare key fields between invoices and metadata
+            cross_check = session.query(
+                Invoice.id,
+                Invoice.uuid,
+                Invoice.folio,
+                Invoice.total_amount.label('inv_total'),
+                Invoice.currency.label('inv_currency'),
+                Invoice.issuer_rfc.label('inv_issuer'),
+                InvoiceMetadata.uuid.label('meta_uuid'),
+                InvoiceMetadata.folio.label('meta_folio'),
+                InvoiceMetadata.original_total.label('meta_total'),
+                InvoiceMetadata.original_currency.label('meta_currency'),
+                InvoiceMetadata.issuer_rfc.label('meta_issuer')
+            ).outerjoin(
+                InvoiceMetadata, Invoice.id == InvoiceMetadata.invoice_id
+            ).all()
+            
+            # Analyze consistency
+            inconsistencies = []
+            missing_metadata = 0
+            
+            for record in cross_check:
+                issues = []
+                
+                # Check if metadata exists
+                if not record.meta_uuid:
+                    missing_metadata += 1
+                    issues.append("Missing metadata")
+                else:
+                    # Check consistency
+                    if record.uuid != record.meta_uuid:
+                        issues.append("UUID mismatch")
+                    
+                    if record.folio != record.meta_folio:
+                        issues.append("Folio mismatch")
+                    
+                    # Check total consistency (allow small rounding differences)
+                    inv_total = float(record.inv_total or 0)
+                    meta_total = float(record.meta_total or 0)
+                    if abs(inv_total - meta_total) > 0.01:
+                        issues.append(f"Total mismatch")
+                    
+                    if record.inv_currency != record.meta_currency:
+                        issues.append("Currency mismatch")
+                    
+                    if record.inv_issuer != record.meta_issuer:
+                        issues.append("Issuer RFC mismatch")
+                
+                if issues:
+                    inconsistencies.append({
+                        'id': record.id,
+                        'uuid': record.uuid,
+                        'issues': issues
+                    })
+            
+            total_invoices = len(cross_check)
+            consistent_records = total_invoices - len(inconsistencies)
+            
+            # Determine status
+            if len(inconsistencies) == 0:
+                status = "✅ EXCELLENT"
+            elif len(inconsistencies) < 5:
+                status = "⚠️ ISSUES FOUND"
+            else:
+                status = "❌ CRITICAL"
+            
+            print(f"📊 Total Invoices: {total_invoices:,}")
+            print(f"✅ Consistent Records: {consistent_records:,} ({consistent_records/total_invoices*100:.1f}%)")
+            print(f"❌ Inconsistencies: {len(inconsistencies):,} ({len(inconsistencies)/total_invoices*100:.1f}%)")
+            print(f"⚠️ Missing Metadata: {missing_metadata:,}")
+            print(f"🎯 Status: {status}")
+            
+            print()
+            return {
+                'check': 'Cross-Table Consistency',
+                'status': status,
+                'issues': len(inconsistencies),
+                'total': total_invoices
+            }
+    
+    def validate_record_counts(self):
+        """Check item counts per invoice are accurate."""
+        print("📋 4. RECORD COUNT VALIDATION")
+        print("-" * 50)
+        
+        with self.db_manager.get_session() as session:
+            # Get actual item counts vs metadata recorded counts
+            count_check = session.query(
+                Invoice.id,
+                Invoice.uuid,
+                Invoice.folio,
+                func.count(InvoiceItem.id).label('actual_items'),
+                InvoiceMetadata.total_items.label('recorded_items')
+            ).outerjoin(
+                InvoiceItem, Invoice.id == InvoiceItem.invoice_id
+            ).outerjoin(
+                InvoiceMetadata, Invoice.id == InvoiceMetadata.invoice_id
+            ).group_by(
+                Invoice.id, Invoice.uuid, Invoice.folio, InvoiceMetadata.total_items
+            ).all()
+            
+            # Find count mismatches
+            count_mismatches = []
+            perfect_counts = 0
+            actual_counts = []
+            
+            for record in count_check:
+                actual = record.actual_items or 0
+                recorded = record.recorded_items or 0
+                actual_counts.append(actual)
+                
+                if actual != recorded:
+                    count_mismatches.append({
+                        'uuid': record.uuid,
+                        'actual': actual,
+                        'recorded': recorded,
+                        'difference': actual - recorded
+                    })
+                else:
+                    perfect_counts += 1
+            
+            total_invoices = len(count_check)
+            
+            # Determine status
+            if len(count_mismatches) == 0:
+                status = "✅ EXCELLENT"
+            elif len(count_mismatches) < 5:
+                status = "⚠️ MINOR ISSUES"
+            else:
+                status = "❌ SIGNIFICANT ISSUES"
+            
+            print(f"📊 Total Invoices: {total_invoices:,}")
+            print(f"✅ Perfect Counts: {perfect_counts:,} ({perfect_counts/total_invoices*100:.1f}%)")
+            print(f"❌ Count Mismatches: {len(count_mismatches):,} ({len(count_mismatches)/total_invoices*100:.1f}%)")
+            print(f"🎯 Status: {status}")
+            
+            # Item count statistics
+            if actual_counts:
+                print(f"\n📊 ITEM COUNT STATISTICS:")
+                print(f"   Average items per invoice: {np.mean(actual_counts):.1f}")
+                print(f"   Median items per invoice: {np.median(actual_counts):.1f}")
+                print(f"   Max items in single invoice: {max(actual_counts)}")
+                print(f"   Invoices with 0 items: {actual_counts.count(0)}")
+            
+            print()
+            return {
+                'check': 'Record Count Validation',
+                'status': status,
+                'issues': len(count_mismatches),
+                'total': total_invoices
+            }
+    
+    def validate_relationship_integrity(self):
+        """Check for orphaned records and missing relationships."""
+        print("🔗 5. RELATIONSHIP INTEGRITY CHECK")
+        print("-" * 50)
+        
+        with self.db_manager.get_session() as session:
+            # Check for orphaned invoice items
+            orphaned_items = session.query(
+                InvoiceItem.id,
+                InvoiceItem.invoice_id,
+                InvoiceItem.description
+            ).outerjoin(
+                Invoice, InvoiceItem.invoice_id == Invoice.id
+            ).filter(
+                Invoice.id.is_(None)
+            ).all()
+            
+            # Check for invoices without metadata
+            invoices_without_metadata = session.query(
+                Invoice.id,
+                Invoice.uuid,
+                Invoice.folio
+            ).outerjoin(
+                InvoiceMetadata, Invoice.id == InvoiceMetadata.invoice_id
+            ).filter(
+                InvoiceMetadata.id.is_(None)
+            ).all()
+            
+            # Check for metadata without parent invoice
+            orphaned_metadata = session.query(
+                InvoiceMetadata.id,
+                InvoiceMetadata.invoice_id,
+                InvoiceMetadata.uuid
+            ).outerjoin(
+                Invoice, InvoiceMetadata.invoice_id == Invoice.id
+            ).filter(
+                Invoice.id.is_(None)
+            ).all()
+            
+            # Get total counts for context
+            total_invoices = session.query(Invoice).count()
+            total_items = session.query(InvoiceItem).count()
+            total_metadata = session.query(InvoiceMetadata).count()
+            
+            # Calculate integrity score
+            total_issues = len(orphaned_items) + len(invoices_without_metadata) + len(orphaned_metadata)
+            
+            # Determine status
+            if total_issues == 0:
+                status = "✅ EXCELLENT"
+            elif total_issues < 3:
+                status = "⚠️ MINOR ISSUES"
+            else:
+                status = "❌ INTEGRITY PROBLEMS"
+            
+            print(f"📊 RELATIONSHIP OVERVIEW:")
+            print(f"   Total Invoices: {total_invoices:,}")
+            print(f"   Total Items: {total_items:,}")
+            print(f"   Total Metadata: {total_metadata:,}")
+            print()
+            print(f"🔍 INTEGRITY ISSUES:")
+            print(f"   ❌ Orphaned Items: {len(orphaned_items):,}")
+            print(f"   ❌ Invoices Missing Metadata: {len(invoices_without_metadata):,}")
+            print(f"   ❌ Orphaned Metadata: {len(orphaned_metadata):,}")
+            print(f"   🎯 Total Issues: {total_issues:,}")
+            print(f"   🎯 Status: {status}")
+            
+            print()
+            return {
+                'check': 'Relationship Integrity',
+                'status': status,
+                'issues': total_issues,
+                'total': total_invoices
+            }
+    
+    def validate_export_data_integrity(self):
+        """Ensure export data matches source tables."""
+        print("📤 6. EXPORT DATA INTEGRITY CHECK")
+        print("-" * 50)
+        
+        with self.db_manager.get_session() as session:
+            # Get export-ready data (same as API endpoint)
+            export_data = session.query(InvoiceMetadata).all()
+            
+            # Validate export data quality
+            export_issues = []
+            currency_breakdown = {}
+            total_mxn_value = 0
+            
+            for record in export_data:
+                issues = []
+                
+                # Check required fields
+                if not record.uuid:
+                    issues.append("Missing UUID")
+                if not record.issuer_rfc:
+                    issues.append("Missing Issuer RFC")
+                if not record.receiver_rfc:
+                    issues.append("Missing Receiver RFC")
+                if not record.issue_date:
+                    issues.append("Missing Issue Date")
+                if not record.original_total or record.original_total <= 0:
+                    issues.append("Invalid Total Amount")
+                
+                # Check currency logic
+                if record.original_currency == 'MXN' and record.exchange_rate != 1.0:
+                    issues.append(f"MXN should have exchange rate 1.0")
+                
+                # Track currency breakdown
+                currency = record.original_currency or 'Unknown'
+                if currency not in currency_breakdown:
+                    currency_breakdown[currency] = {'count': 0, 'total': 0}
+                currency_breakdown[currency]['count'] += 1
+                currency_breakdown[currency]['total'] += float(record.mxn_total or 0)
+                
+                total_mxn_value += float(record.mxn_total or 0)
+                
+                if issues:
+                    export_issues.append({
+                        'uuid': record.uuid,
+                        'issues': issues
+                    })
+            
+            total_records = len(export_data)
+            clean_records = total_records - len(export_issues)
+            
+            # Determine status
+            if len(export_issues) == 0:
+                status = "✅ EXPORT READY"
+            elif len(export_issues) < 5:
+                status = "⚠️ NEEDS CLEANUP"
+            else:
+                status = "❌ NOT READY"
+            
+            print(f"📊 EXPORT SUMMARY:")
+            print(f"   Total Records: {total_records:,}")
+            print(f"   ✅ Clean Records: {clean_records:,} ({clean_records/total_records*100:.1f}%)")
+            print(f"   ❌ Records with Issues: {len(export_issues):,} ({len(export_issues)/total_records*100:.1f}%)")
+            print(f"   💰 Total MXN Value: ${total_mxn_value:,.2f}")
+            print(f"   🎯 Status: {status}")
+            
+            # Currency breakdown
+            print(f"\n💱 CURRENCY BREAKDOWN:")
+            for currency, data in sorted(currency_breakdown.items(), key=lambda x: x[1]['total'], reverse=True):
+                print(f"   {currency}: {data['count']:,} invoices, ${data['total']:,.2f} MXN")
+            
+            print()
+            return {
+                'check': 'Export Data Integrity',
+                'status': status,
+                'issues': len(export_issues),
+                'total': total_records
+            }
+    
+    def print_final_summary(self):
+        """Print final validation summary and recommendations."""
+        print("✅ FINAL VALIDATION SUMMARY")
+        print("=" * 60)
+        
+        # Display results table
+        print(f"{'Check':<30} {'Status':<20} {'Issues':<10}")
+        print("-" * 60)
+        for result in self.validation_results:
+            print(f"{result['check']:<30} {result['status']:<20} {result['issues']:<10}")
+        
+        # Calculate overall status
+        total_issues = sum(r['issues'] for r in self.validation_results)
+        excellent_checks = sum(1 for r in self.validation_results if "✅" in r['status'])
+        warning_checks = sum(1 for r in self.validation_results if "⚠️" in r['status'])
+        critical_checks = sum(1 for r in self.validation_results if "❌" in r['status'])
+        
+        if critical_checks > 0:
+            overall_status = "❌ CRITICAL ISSUES - DO NOT EXPORT"
+            recommendation = "Fix critical issues before posting data to Google Sheets"
+        elif warning_checks > 2:
+            overall_status = "⚠️ MULTIPLE WARNINGS - REVIEW BEFORE EXPORT"
+            recommendation = "Review and fix warnings for better data quality"
+        elif total_issues == 0:
+            overall_status = "✅ PERFECT - READY FOR EXPORT"
+            recommendation = "Data is ready for Google Sheets posting"
+        else:
+            overall_status = "✅ GOOD - MINOR ISSUES OK"
+            recommendation = "Data is acceptable for export with minor issues"
+        
+        print(f"\n🎯 OVERALL DATA INTEGRITY STATUS: {overall_status}")
+        print(f"📊 Summary: {excellent_checks} excellent, {warning_checks} warnings, {critical_checks} critical")
+        print(f"❌ Total Issues Found: {total_issues:,}")
+        print(f"\n💡 RECOMMENDATION: {recommendation}")
+        
+        # Export readiness checklist
+        print(f"\n📋 EXPORT READINESS CHECKLIST:")
+        for result in self.validation_results:
+            status_icon = "✅" if result['issues'] == 0 else "❌"
+            check_name = result['check'].replace('_', ' ').title()
+            print(f"   {status_icon} {check_name}")
+        
+        print(f"\n⏰ Validation completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"🎉 Your CFDI data integrity has been validated!")
+        
+        return overall_status, total_issues
+    
+    def run_all_validations(self):
+        """Run all validation checks and return summary."""
+        self.print_header()
+        
+        # Test database connection first
+        if not self.test_database_connection():
+            return False, "Database connection failed"
+        
+        print()
+        
+        # Run all validation checks
+        self.validation_results.append(self.validate_financial_reconciliation())
+        self.validation_results.append(self.validate_supplier_spending())
+        self.validation_results.append(self.validate_cross_table_consistency())
+        self.validation_results.append(self.validate_record_counts())
+        self.validation_results.append(self.validate_relationship_integrity())
+        self.validation_results.append(self.validate_export_data_integrity())
+        
+        # Print final summary
+        overall_status, total_issues = self.print_final_summary()
+        
+        return True, overall_status
+
+
+def main():
+    """Main function to run data integrity validation."""
+    try:
+        validator = DataIntegrityValidator()
+        success, result = validator.run_all_validations()
+        
+        if success:
+            # Return appropriate exit code
+            if "CRITICAL" in result or "NOT READY" in result:
+                sys.exit(1)  # Critical issues found
+            elif "WARNING" in result:
+                sys.exit(2)  # Warnings found
+            else:
+                sys.exit(0)  # All good
+        else:
+            print(f"❌ Validation failed: {result}")
+            sys.exit(3)  # Validation failed
+            
+    except Exception as e:
+        print(f"❌ Unexpected error during validation: {e}")
+        sys.exit(4)  # Unexpected error
+
+
+if __name__ == "__main__":
+    main() 

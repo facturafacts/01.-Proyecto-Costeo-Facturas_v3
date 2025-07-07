@@ -1,0 +1,90 @@
+# CFDI Processing System v4 - Dependencies
+
+# Core Processing
+sqlalchemy>=2.0.0
+pydantic>=2.0.0
+pandas>=2.0.0
+python-dateutil>=2.8.0
+
+# XML Processing
+lxml>=4.9.0
+xmltodict>=0.13.0
+
+# AI/ML
+google-generativeai>=0.3.0
+openai>=1.0.0  # Alternative AI provider
+
+# Database
+sqlite3  # Built-in
+alembic>=1.12.0  # Database migrations
+
+# Data Analysis (for notebooks)
+jupyter>=1.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+ipywidgets>=8.0.0
+numpy>=1.24.0
+jupyterlab>=4.0.0
+ipython>=8.0.0
+nbformat>=5.7.0
+kaleido>=0.2.1
+xlsxwriter>=3.1.0
+
+# Excel Processing
+openpyxl>=3.1.0  # Excel file handling
+
+# API Framework
+fastapi>=0.104.0
+uvicorn>=0.24.0
+pyngrok>=6.0.0  # Python ngrok integration
+
+# Configuration & Environment
+python-dotenv>=1.0.0
+pyyaml>=6.0
+click>=8.1.0  # CLI framework
+
+# Utilities
+tqdm>=4.65.0  # Progress bars
+rich>=13.0.0  # Rich console output
+tabulate>=0.9.0  # Table formatting
+
+# File Handling
+pathlib2>=2.3.0
+shutil  # Built-in
+hashlib  # Built-in
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+factory-boy>=3.3.0  # Test data factories
+
+# Code Quality
+black>=23.0.0  # Code formatting
+flake8>=6.0.0  # Linting
+mypy>=1.5.0  # Type checking
+isort>=5.12.0  # Import sorting
+
+# Logging & Monitoring
+structlog>=23.1.0
+sentry-sdk>=1.32.0  # Error tracking (optional)
+
+# Performance
+memory-profiler>=0.61.0
+line-profiler>=4.1.0
+
+# Security
+cryptography>=41.0.0  # For encryption if needed
+requests>=2.31.0  # HTTP requests
+
+# Mexican Tax/CFDI Specific
+# Note: Add any Mexico-specific libraries here
+
+# Development
+pre-commit>=3.3.0  # Git hooks
+pip-tools>=7.0.0  # Dependency management
+
+# Documentation
+sphinx>=7.1.0  # Documentation generation
+sphinx-rtd-theme>=1.3.0 

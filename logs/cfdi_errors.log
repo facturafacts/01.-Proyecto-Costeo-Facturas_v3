@@ -1,0 +1,684 @@
+2025-06-09 16:23:20,922 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_da640d6c_01010101_caja_cerveza_tecate_24_piezas: '_GeneratorContextManager' object has no attribute 'query'
+2025-06-09 16:23:20,925 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process sample_test.xml: '_GeneratorContextManager' object has no attribute 'close'
+2025-06-09 16:23:20,955 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed to log processing result: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:23:20,957 - __main__ - ERROR - File: main.py - File: main.py - File: main.py - File: main.py - File: main.py - Single file processing failed
+2025-06-09 16:30:26,068 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_141a86f5_10161506_naranja: '_GeneratorContextManager' object has no attribute 'query'
+2025-06-09 16:30:26,070 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml: '_GeneratorContextManager' object has no attribute 'close'
+2025-06-09 16:30:26,100 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed to log processing result: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:30:26,102 - __main__ - ERROR - File: main.py - File: main.py - File: main.py - File: main.py - File: main.py - Single file processing failed
+2025-06-09 16:38:05,395 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:05,397 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_141a86f5_10161506_naranja: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:08,409 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:08,411 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:08,412 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:08,415 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_9a57e1c2_50304100_limon_sin_semilla: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:11,464 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:11,472 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9a57e1c2_50304100_limon_sin_semilla: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:11,479 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:11,488 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:14,506 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:14,509 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:14,514 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:14,520 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:17,536 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:17,538 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:17,541 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:17,549 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_3823c19d_50405300_cebolla_blanca: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:20,565 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:20,568 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_3823c19d_50405300_cebolla_blanca: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:20,574 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:20,582 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_65d00f8a_50404101_albahaca: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:23,596 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:23,600 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_65d00f8a_50404101_albahaca: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:23,605 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:23,610 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_44f0bbec_50403900_calabaza_negra: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:26,623 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:26,626 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_44f0bbec_50403900_calabaza_negra: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:26,628 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:26,631 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_9694c503_50403500_berenjena: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:29,646 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:29,647 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9694c503_50403500_berenjena: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:29,655 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:29,657 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_09573e71_50417006_arugula: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:32,668 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:32,670 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_09573e71_50417006_arugula: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:32,672 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:32,676 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_6a416cf3_50131800_queso_fresco: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:35,687 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:35,688 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a416cf3_50131800_queso_fresco: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:35,691 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:35,697 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_2df84722_50221001_arroz_verde_valle_500gr: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:38,710 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:38,713 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_2df84722_50221001_arroz_verde_valle_500gr: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:38,717 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:38,719 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_c0496069_50406500_tomate_salades: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:41,731 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:41,733 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_c0496069_50406500_tomate_salades: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:41,735 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:41,739 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_11cd495e_50401700_aguacate: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:44,752 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:44,756 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_11cd495e_50401700_aguacate: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:44,763 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:44,769 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_ac43b4be_27112003_rastrillo: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:47,794 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:47,796 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_ac43b4be_27112003_rastrillo: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:47,806 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:47,814 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:50,833 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:50,835 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:50,839 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:50,840 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_d71b9f5d_52152200_fibra: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:53,850 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:53,852 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_d71b9f5d_52152200_fibra: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:53,855 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: [<class 'decimal.ConversionSyntax'>]
+2025-06-09 16:38:53,856 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Database save failed: [<class 'decimal.ConversionSyntax'>]
+2025-06-09 16:38:53,857 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml: Failed to save invoice to database
+2025-06-09 16:38:53,859 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:53,862 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed to log processing result: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:53,884 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:53,886 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_da640d6c_01010101_caja_cerveza_tecate_24_piezas: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:56,920 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:56,922 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_da640d6c_01010101_caja_cerveza_tecate_24_piezas: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:56,926 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:56,931 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_c7a4b12e_01010102_cebolla_blanca: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:59,939 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:59,942 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_c7a4b12e_01010102_cebolla_blanca: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:38:59,947 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:38:59,949 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_da1ad129_01010103_huevos_blancos_paquete_12_piezas: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:02,958 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:39:02,959 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_da1ad129_01010103_huevos_blancos_paquete_12_piezas: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:39:02,961 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:02,963 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_804563e4_01010104_aceite_vegetal_1_litro: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:05,993 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:39:05,993 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_804563e4_01010104_aceite_vegetal_1_litro: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:39:05,995 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:05,996 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Error checking approved SKU sku_530c4adf_80161500_servicio_de_entrega: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:09,006 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:39:09,007 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_530c4adf_80161500_servicio_de_entrega: Gemini API failed after 3 attempts: Unknown field for GenerateContentRequest: request_options
+2025-06-09 16:39:09,011 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:09,012 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Database save failed: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:09,015 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process sample_test.xml: Failed to save invoice to database
+2025-06-09 16:39:09,019 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:39:09,022 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed to log processing result: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[InvoiceMetadata(invoice_metadata)]'. Original exception was: Mapper 'Mapper[Invoice(invoices)]' has no property 'metadata'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-06-09 16:41:01,657 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: [<class 'decimal.ConversionSyntax'>]
+2025-06-09 16:41:01,659 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Database save failed: [<class 'decimal.ConversionSyntax'>]
+2025-06-09 16:41:01,660 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml: Failed to save invoice to database
+2025-06-09 16:42:49,696 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: [<class 'decimal.ConversionSyntax'>]
+2025-06-09 16:42:49,699 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Database save failed: [<class 'decimal.ConversionSyntax'>]
+2025-06-09 16:42:49,701 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml: Failed to save invoice to database
+2025-06-09 16:48:22,698 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 16:48:22,700 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 16:48:26,923 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 16:48:26,931 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9a57e1c2_50304100_limon_sin_semilla: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 16:48:30,568 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 16:48:30,575 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:26,514 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:26,519 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:30,034 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:30,040 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9a57e1c2_50304100_limon_sin_semilla: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:33,548 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:33,561 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:37,090 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:03:37,093 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:23,095 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:23,100 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:26,606 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:26,609 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9a57e1c2_50304100_limon_sin_semilla: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:30,090 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:30,091 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:33,573 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:09:33,578 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:11:28,610 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:11:28,617 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:34:36,839 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:34:36,840 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:09,764 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:09,765 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_141a86f5_10161506_naranja: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:13,235 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:13,240 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9a57e1c2_50304100_limon_sin_semilla: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:16,716 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:16,720 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:20,193 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:20,197 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:23,690 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:23,692 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_3823c19d_50405300_cebolla_blanca: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:27,214 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:27,217 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_65d00f8a_50404101_albahaca: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:30,701 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:30,704 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_44f0bbec_50403900_calabaza_negra: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:34,181 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:34,186 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_9694c503_50403500_berenjena: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:37,644 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:37,646 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_09573e71_50417006_arugula: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:41,119 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:41,121 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a416cf3_50131800_queso_fresco: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:44,617 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:44,620 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_2df84722_50221001_arroz_verde_valle_500gr: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:48,134 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:48,186 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_c0496069_50406500_tomate_salades: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:51,833 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:51,835 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_11cd495e_50401700_aguacate: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:55,350 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:55,354 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_ac43b4be_27112003_rastrillo: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:58,878 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:40:58,878 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_6a2cfbaf_50131612_huevo_cartera_con_30pz: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:41:02,408 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:41:02,410 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_d71b9f5d_52152200_fibra: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-09 17:41:02,455 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: (sqlite3.IntegrityError) UNIQUE constraint failed: invoices.uuid
+[SQL: INSERT INTO invoices (uuid, series, folio, invoice_type, version, issue_date, certification_date, created_at, updated_at, issuer_rfc, issuer_name, issuer_fiscal_regime, issuer_use_cfdi, issuer_residence, issuer_tax_id, receiver_rfc, receiver_name, receiver_fiscal_address, receiver_residence, receiver_tax_id, receiver_use_cfdi, payment_method, payment_method_desc, payment_terms, payment_conditions, currency, exchange_rate, subtotal, total_discount, total_transferred_taxes, total_withheld_taxes, total_amount, digital_stamp, certificate_number, certificate, sat_seal, sat_certificate, fiscal_folio, stamp_datetime, expedition_place, export_operation, confirmation, source_filename, xml_file_size, confidence_score, processing_time, processing_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', None, '50389', 'I', '4.0', '2025-06-10 00:41:02.419626', None, '2025-06-10 00:41:02.438807', '2025-06-10 00:41:02.438807', 'PIVV******RR4', 'VANESSA IVON PIÑUELAS VERDUGO', '612', None, None, None, 'YUGY******FK4', 'YASSER YUSSIF GONZALEZ', '23300', None, None, None, '99', None, 'PPD', None, 'MXN', 1.0, 1109.9, 0.0, 6.9, 0.0, 1116.8, 'aQfQopzRPLxulkiqjktVYxiduTpNrSwDB4dZP7PvCBUrQRR/5XUvRHyKPVX61EQKhLEtbj5g2e14t+RfCi5th3rxKRsSQZatC8ftc9fPXtn6MoSywmSTLDz8MnUjHtvHfEd2AHn3UshIjneQOCBbR ... (46 characters truncated) ... rrDojl3CGXeigZqDuSgBIdy6YMzLYlsUN1AomwMjwQI3a61pF3RBsIfZwnmvRHsUa0EOLHc+F5GQJHpWDynRz3zuGjxjQal24uz2XiSUXLqjGYLo3CrxBe+XbGJ8/wXE5Z5POE3AJ0QuszTCyyw==', '00001000000705018977', None, 'gJTwCIW7z1Ill/xpC6f2EBZYisQKGq7LKRPZyZ7Oq8fC074zWIb8qCpOIKEUNeEWBE1V+7PUvxSA44RrhqKq6+k1RZojgIrm8xqPO4uiItCDVFwlPK0Vyi6wUJNfrgnx2yCLped62LdAxyQrL+Gc4 ... (46 characters truncated) ... yPIGMDuKo3U+wIpQ2QhnK4R1ZFm/foyowBdQ8XzMXH2tw/9L1PSn1rUIZC0RpV7kOfmS5WQXsIOpkA6VQnRH7cNVBjC3XgOU1wyxKYRq9QBpE2aCA1wqm4qvDaofIEgXZRUjWTGBaz/JUfWpjoQ==', None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', '2025-06-10 00:41:02.421845', None, None, None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml', 10794, None, None, 'processed')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-09 17:41:02,460 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Database save failed: (sqlite3.IntegrityError) UNIQUE constraint failed: invoices.uuid
+[SQL: INSERT INTO invoices (uuid, series, folio, invoice_type, version, issue_date, certification_date, created_at, updated_at, issuer_rfc, issuer_name, issuer_fiscal_regime, issuer_use_cfdi, issuer_residence, issuer_tax_id, receiver_rfc, receiver_name, receiver_fiscal_address, receiver_residence, receiver_tax_id, receiver_use_cfdi, payment_method, payment_method_desc, payment_terms, payment_conditions, currency, exchange_rate, subtotal, total_discount, total_transferred_taxes, total_withheld_taxes, total_amount, digital_stamp, certificate_number, certificate, sat_seal, sat_certificate, fiscal_folio, stamp_datetime, expedition_place, export_operation, confirmation, source_filename, xml_file_size, confidence_score, processing_time, processing_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', None, '50389', 'I', '4.0', '2025-06-10 00:41:02.419626', None, '2025-06-10 00:41:02.438807', '2025-06-10 00:41:02.438807', 'PIVV******RR4', 'VANESSA IVON PIÑUELAS VERDUGO', '612', None, None, None, 'YUGY******FK4', 'YASSER YUSSIF GONZALEZ', '23300', None, None, None, '99', None, 'PPD', None, 'MXN', 1.0, 1109.9, 0.0, 6.9, 0.0, 1116.8, 'aQfQopzRPLxulkiqjktVYxiduTpNrSwDB4dZP7PvCBUrQRR/5XUvRHyKPVX61EQKhLEtbj5g2e14t+RfCi5th3rxKRsSQZatC8ftc9fPXtn6MoSywmSTLDz8MnUjHtvHfEd2AHn3UshIjneQOCBbR ... (46 characters truncated) ... rrDojl3CGXeigZqDuSgBIdy6YMzLYlsUN1AomwMjwQI3a61pF3RBsIfZwnmvRHsUa0EOLHc+F5GQJHpWDynRz3zuGjxjQal24uz2XiSUXLqjGYLo3CrxBe+XbGJ8/wXE5Z5POE3AJ0QuszTCyyw==', '00001000000705018977', None, 'gJTwCIW7z1Ill/xpC6f2EBZYisQKGq7LKRPZyZ7Oq8fC074zWIb8qCpOIKEUNeEWBE1V+7PUvxSA44RrhqKq6+k1RZojgIrm8xqPO4uiItCDVFwlPK0Vyi6wUJNfrgnx2yCLped62LdAxyQrL+Gc4 ... (46 characters truncated) ... yPIGMDuKo3U+wIpQ2QhnK4R1ZFm/foyowBdQ8XzMXH2tw/9L1PSn1rUIZC0RpV7kOfmS5WQXsIOpkA6VQnRH7cNVBjC3XgOU1wyxKYRq9QBpE2aCA1wqm4qvDaofIEgXZRUjWTGBaz/JUfWpjoQ==', None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', '2025-06-10 00:41:02.421845', None, None, None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml', 10794, None, None, 'processed')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-09 17:41:02,468 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml: Failed to save invoice to database
+2025-06-09 17:42:09,167 - src.data.database - ERROR - File: database.py - File: database.py - File: database.py - File: database.py - File: database.py - Database session error: (sqlite3.IntegrityError) UNIQUE constraint failed: invoices.uuid
+[SQL: INSERT INTO invoices (uuid, series, folio, invoice_type, version, issue_date, certification_date, created_at, updated_at, issuer_rfc, issuer_name, issuer_fiscal_regime, issuer_use_cfdi, issuer_residence, issuer_tax_id, receiver_rfc, receiver_name, receiver_fiscal_address, receiver_residence, receiver_tax_id, receiver_use_cfdi, payment_method, payment_method_desc, payment_terms, payment_conditions, currency, exchange_rate, subtotal, total_discount, total_transferred_taxes, total_withheld_taxes, total_amount, digital_stamp, certificate_number, certificate, sat_seal, sat_certificate, fiscal_folio, stamp_datetime, expedition_place, export_operation, confirmation, source_filename, xml_file_size, confidence_score, processing_time, processing_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', None, '50389', 'I', '4.0', '2025-06-10 00:42:09.105549', None, '2025-06-10 00:42:09.139907', '2025-06-10 00:42:09.139907', 'PIVV******RR4', 'VANESSA IVON PIÑUELAS VERDUGO', '612', None, None, None, 'YUGY******FK4', 'YASSER YUSSIF GONZALEZ', '23300', None, None, None, '99', None, 'PPD', None, 'MXN', 1.0, 1109.9, 0.0, 6.9, 0.0, 1116.8, 'aQfQopzRPLxulkiqjktVYxiduTpNrSwDB4dZP7PvCBUrQRR/5XUvRHyKPVX61EQKhLEtbj5g2e14t+RfCi5th3rxKRsSQZatC8ftc9fPXtn6MoSywmSTLDz8MnUjHtvHfEd2AHn3UshIjneQOCBbR ... (46 characters truncated) ... rrDojl3CGXeigZqDuSgBIdy6YMzLYlsUN1AomwMjwQI3a61pF3RBsIfZwnmvRHsUa0EOLHc+F5GQJHpWDynRz3zuGjxjQal24uz2XiSUXLqjGYLo3CrxBe+XbGJ8/wXE5Z5POE3AJ0QuszTCyyw==', '00001000000705018977', None, 'gJTwCIW7z1Ill/xpC6f2EBZYisQKGq7LKRPZyZ7Oq8fC074zWIb8qCpOIKEUNeEWBE1V+7PUvxSA44RrhqKq6+k1RZojgIrm8xqPO4uiItCDVFwlPK0Vyi6wUJNfrgnx2yCLped62LdAxyQrL+Gc4 ... (46 characters truncated) ... yPIGMDuKo3U+wIpQ2QhnK4R1ZFm/foyowBdQ8XzMXH2tw/9L1PSn1rUIZC0RpV7kOfmS5WQXsIOpkA6VQnRH7cNVBjC3XgOU1wyxKYRq9QBpE2aCA1wqm4qvDaofIEgXZRUjWTGBaz/JUfWpjoQ==', None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', '2025-06-10 00:42:09.115910', None, None, None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml', 10794, None, None, 'processed')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-09 17:42:09,181 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Database save failed: (sqlite3.IntegrityError) UNIQUE constraint failed: invoices.uuid
+[SQL: INSERT INTO invoices (uuid, series, folio, invoice_type, version, issue_date, certification_date, created_at, updated_at, issuer_rfc, issuer_name, issuer_fiscal_regime, issuer_use_cfdi, issuer_residence, issuer_tax_id, receiver_rfc, receiver_name, receiver_fiscal_address, receiver_residence, receiver_tax_id, receiver_use_cfdi, payment_method, payment_method_desc, payment_terms, payment_conditions, currency, exchange_rate, subtotal, total_discount, total_transferred_taxes, total_withheld_taxes, total_amount, digital_stamp, certificate_number, certificate, sat_seal, sat_certificate, fiscal_folio, stamp_datetime, expedition_place, export_operation, confirmation, source_filename, xml_file_size, confidence_score, processing_time, processing_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', None, '50389', 'I', '4.0', '2025-06-10 00:42:09.105549', None, '2025-06-10 00:42:09.139907', '2025-06-10 00:42:09.139907', 'PIVV******RR4', 'VANESSA IVON PIÑUELAS VERDUGO', '612', None, None, None, 'YUGY******FK4', 'YASSER YUSSIF GONZALEZ', '23300', None, None, None, '99', None, 'PPD', None, 'MXN', 1.0, 1109.9, 0.0, 6.9, 0.0, 1116.8, 'aQfQopzRPLxulkiqjktVYxiduTpNrSwDB4dZP7PvCBUrQRR/5XUvRHyKPVX61EQKhLEtbj5g2e14t+RfCi5th3rxKRsSQZatC8ftc9fPXtn6MoSywmSTLDz8MnUjHtvHfEd2AHn3UshIjneQOCBbR ... (46 characters truncated) ... rrDojl3CGXeigZqDuSgBIdy6YMzLYlsUN1AomwMjwQI3a61pF3RBsIfZwnmvRHsUa0EOLHc+F5GQJHpWDynRz3zuGjxjQal24uz2XiSUXLqjGYLo3CrxBe+XbGJ8/wXE5Z5POE3AJ0QuszTCyyw==', '00001000000705018977', None, 'gJTwCIW7z1Ill/xpC6f2EBZYisQKGq7LKRPZyZ7Oq8fC074zWIb8qCpOIKEUNeEWBE1V+7PUvxSA44RrhqKq6+k1RZojgIrm8xqPO4uiItCDVFwlPK0Vyi6wUJNfrgnx2yCLped62LdAxyQrL+Gc4 ... (46 characters truncated) ... yPIGMDuKo3U+wIpQ2QhnK4R1ZFm/foyowBdQ8XzMXH2tw/9L1PSn1rUIZC0RpV7kOfmS5WQXsIOpkA6VQnRH7cNVBjC3XgOU1wyxKYRq9QBpE2aCA1wqm4qvDaofIEgXZRUjWTGBaz/JUfWpjoQ==', None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8', '2025-06-10 00:42:09.115910', None, None, None, 'AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml', 10794, None, None, 'processed')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-09 17:42:09,202 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process AB31CFD1-C61A-4637-A9C0-71B7C676AAA8.xml: Failed to save invoice to database
+2025-06-12 18:38:43,184 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-12 18:38:43,188 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_7e77527c_30111601_cemento_gris_holcim_25kg: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-12 18:38:46,888 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-06-12 18:38:46,899 - src.processing.gemini_classifier - ERROR - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - File: gemini_classifier.py - Classification failed for sku_14c77eea_50414500_kale: Gemini API failed after 3 attempts: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]

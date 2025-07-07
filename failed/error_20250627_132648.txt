@@ -1,0 +1,2 @@
+Processing failed at 2025-06-27 13:26:48.570266
+Error: Can only use .str accessor with string values!

@@ -1,0 +1,692 @@
+{
+  "categories": {
+    "Abarrotes": {
+      "Aceite": [
+        "Aceite de oliva",
+        "Aceite vegetal"
+      ],
+      "Alga Marina": [
+        "Alga Marina"
+      ],
+      "Café": [
+        "Café instantáneo",
+        "Café molido",
+        "Granos de café"
+      ],
+      "Cereales": [
+        "Arroz",
+        "Avena",
+        "Quinoa"
+      ],
+      "Chiles": [
+        "Chile Chipotle",
+        "Chile Quebrado",
+        "Chile Seco",
+        "Chile con Limon"
+      ],
+      "Concentrados": [
+        "Horchata",
+        "Jamaica"
+      ],
+      "Condimentos": [
+        "Ajo en polvo",
+        "Axiote",
+        "Catsup",
+        "Cebolla en polvo",
+        "Consome de Pollo",
+        "Consome de Vegetales",
+        "Mayonesa",
+        "Mostaza",
+        "Pepper",
+        "Sal"
+      ],
+      "Conservas": [
+        "Alcaparras",
+        "Anchoas",
+        "Frijoles enlatados",
+        "Frutas enlatadas",
+        "Jalapeños enlatados",
+        "Pepinillos encurtidos",
+        "Pure de Tomate",
+        "Tomates enlatados"
+      ],
+      "Crema": [
+        "Crema de Ajonjoli",
+        "Crema de Avellana",
+        "Crema de Cacahuate"
+      ],
+      "Dulces": [
+        "Dulces",
+        "Enjambre de nuez"
+      ],
+      "Endulzantes": [
+        "Azúcar blanca granulada",
+        "Azúcar de coco",
+        "Azúcar morena",
+        "Chamoy",
+        "Extracto de Vainilla",
+        "Jarabe",
+        "Jarabe Chocolate",
+        "Mazapan",
+        "Miel",
+        "Miel de Agave",
+        "Piloncillo"
+      ],
+      "Especias": [
+        "Ajo en bote",
+        "Cayne",
+        "Cebolla",
+        "Chile/s",
+        "Comino",
+        "Oregano",
+        "Paprika",
+        "Pimienta"
+      ],
+      "Harinas": [
+        "Harina de Centeno",
+        "Harina de maíz",
+        "Harina de trigo"
+      ],
+      "Hierbas": [
+        "Hierbas secas"
+      ],
+      "Huevos": [
+        "Huevos"
+      ],
+      "Legumbres": [
+        "Frijol",
+        "Grabanzo",
+        "Lentejas"
+      ],
+      "Nueces y Semillas": [
+        "Ajonjoli",
+        "Cacahuate",
+        "Nueces",
+        "Nueces pecanas",
+        "Pepita"
+      ],
+      "Otros-a": [
+        "Bicarbonato de sodio",
+        "Carbon",
+        "Coco rallado",
+        "Fruta seca",
+        "Jamaica",
+        "Maiz Pozolero",
+        "Otros",
+        "Pan Molido",
+        "Pasta"
+      ],
+      "Pulpa": [
+        "Fresa",
+        "Guayaba",
+        "Mango",
+        "Maracuya",
+        "Pitaya",
+        "Piña",
+        "Tamarindo"
+      ],
+      "Salsas - A": [
+        "Marinadas",
+        "Salsas BBQ",
+        "Salsas condimentadas",
+        "Salsas para untar",
+        "Salsas picantes"
+      ],
+      "Tortilla": [
+        "Tortilla de Harina",
+        "Tortilla de Mariz",
+        "Totopos"
+      ],
+      "Vinagre": [
+        "Vinagre balsamico",
+        "Vinagre blanco",
+        "Vinagre de malta",
+        "Vinagre de manzana",
+        "Vinagre de vino tinto"
+      ]
+    },
+    "Bebidas": {
+      "Cerveza": [
+        "Artesanal",
+        "Importada",
+        "Nacional"
+      ],
+      "Destilados": [
+        "Apperol",
+        "Controy",
+        "Gin",
+        "Licor 43",
+        "Licores",
+        "Mezcal",
+        "Pox",
+        "Ron",
+        "Tequila",
+        "Vodka",
+        "Whiskey"
+      ],
+      "Jugo": [
+        "Jugo de Arándano",
+        "Jugo de Manzana",
+        "Jugo de Naranja",
+        "Jugo de Piña",
+        "Jugo de Tomate",
+        "Jugo de Uva"
+      ],
+      "Otros-b": [
+        "Agua de coco",
+        "Clamato",
+        "Coffee Drinks",
+        "Crema de coco",
+        "Kombucha",
+        "Otros",
+        "Tea",
+        "Water"
+      ],
+      "Refrescos": [
+        "Agua Mineral",
+        "Agua Tonica",
+        "Cola",
+        "Ginger Ale",
+        "Lima-Limon",
+        "Refresco Sin Gas",
+        "Te",
+        "Toronja"
+      ],
+      "Vino": [
+        "Vino Blanco",
+        "Vino Naranja",
+        "Vino Rosado",
+        "Vino Tinto"
+      ]
+    },
+    "Gastos Generales": {
+      "Arrendamiento": [
+        "Arrendamiento"
+      ],
+      "Asimilados a salarios": [
+        "Asimilados a salarios"
+      ],
+      "Atención a clientes": [
+        "Atención a clientes"
+      ],
+      "Capacitación": [
+        "Capacitación"
+      ],
+      "Combustibles y lubricantes": [
+        "Combustibles y lubricantes"
+      ],
+      "Comunicaciones": [
+        "Comunicaciones"
+      ],
+      "Consultoria contable-fiscal y de negocios": [
+        "Consultoria contable-fiscal y de negocios"
+      ],
+      "Correo y Mensajeria": [
+        "Correo y Mensajeria"
+      ],
+      "Cuotas y suscripciones": [
+        "Cuotas y suscripciones"
+      ],
+      "Depreciacion contable": [
+        "Depreciacion contable"
+      ],
+      "Enseres menores": [
+        "Enseres menores"
+      ],
+      "Fletes y acarreos": [
+        "Fletes y acarreos"
+      ],
+      "Gastos No deducibles": [
+        "Gastos No deducibles"
+      ],
+      "Honorarios PF": [
+        "Honorarios PF"
+      ],
+      "Honorarios RESICO": [
+        "Honorarios RESICO"
+      ],
+      "Mantenimiento y conservación Oficina": [
+        "Mantenimiento y conservación Oficina"
+      ],
+      "Otros Gastos de Venta": [
+        "Otros Gastos de Venta"
+      ],
+      "Otros impuestos y derechos": [
+        "Otros impuestos y derechos"
+      ],
+      "Papelería y articulos de oficina": [
+        "Papelería y articulos de oficina"
+      ],
+      "Pensiones y estacionamientos": [
+        "Pensiones y estacionamientos"
+      ],
+      "Prestaciones al Personal": [
+        "Prestaciones al Personal"
+      ],
+      "Previsión Social": [
+        "Previsión Social"
+      ],
+      "Propaganda y Publicidad": [
+        "Propaganda y Publicidad"
+      ],
+      "Seguridad Social": [
+        "Seguridad Social"
+      ],
+      "Seguros y fianzas": [
+        "Seguros y fianzas"
+      ],
+      "Servicios Administrativos": [
+        "Servicios Administrativos"
+      ],
+      "Servicios Aduanales": [
+        "Servicios Aduanales"
+      ],
+      "Servicios Legales": [
+        "Servicios Legales"
+      ],
+      "Servicios contables": [
+        "Servicios contables"
+      ],
+      "Servicios de Facturación": [
+        "Servicios de Facturación"
+      ],
+      "Servicios de Marketing": [
+        "Servicios de Marketing"
+      ],
+      "Software y licencias": [
+        "Software y licencias"
+      ],
+      "Sueldos y salarios": [
+        "Sueldos y salarios"
+      ],
+      "Vigilancia y seguridad": [
+        "Vigilancia y seguridad"
+      ],
+      "Viáticos y gastos de viaje": [
+        "Viáticos y gastos de viaje"
+      ]
+    },
+    "Lacteos": {
+      "Cremas": [
+        "Crema",
+        "Crema agria",
+        "Crema espesa",
+        "Crema para batir",
+        "Jocoque",
+        "Medio y medio"
+      ],
+      "Helado": [
+        "Helado de Chocolate",
+        "Helado de Fresa",
+        "Helado de Vainilla"
+      ],
+      "Leche": [
+        "Leche Lycott",
+        "Leche de almendras",
+        "Leche de avena",
+        "Leche de soja",
+        "Leche descremada",
+        "Leche en Polvo",
+        "Leche entera"
+      ],
+      "Otros-l": [
+        "Mantequilla",
+        "Otros",
+        "Queso crema",
+        "Yogurt"
+      ],
+      "Queso": [
+        "Queso Amarillo",
+        "Queso Americano",
+        "Queso Brie",
+        "Queso Burrata",
+        "Queso Cotija",
+        "Queso Cottage",
+        "Queso Crema",
+        "Queso Feta",
+        "Queso Gorgonzola",
+        "Queso Mozarella",
+        "Queso Padano",
+        "Queso Parmesano",
+        "Queso Ricotta",
+        "Queso cheddar",
+        "Queso de Cabra",
+        "Queso seco",
+        "Queso suizo"
+      ]
+    },
+    "Panaderia": {
+      "Otros-p": [
+        "Empanizador",
+        "Galletas",
+        "Magdalenas",
+        "Pasteles",
+        "Tartas"
+      ],
+      "Pan": [
+        "Baguettes",
+        "Bollos",
+        "Croissants",
+        "Pan blanco",
+        "Pan de masa madre",
+        "Pan integral"
+      ]
+    },
+    "Preparados": {
+      "Aceite": [
+        "Aceite vegetal"
+      ],
+      "Aderezos": [
+        "Aderezo cesar",
+        "Aderezo italiano",
+        "Aderezo ranch",
+        "Vinagreta"
+      ],
+      "Azúcar": [
+        "Miel"
+      ],
+      "Encurtidos": [
+        "Aderezo",
+        "Chucrut",
+        "Pepinillos encurtidos"
+      ],
+      "Harinas": [
+        "Harina de maíz"
+      ],
+      "Masas": [
+        "Masa para galletas",
+        "Masa para pan",
+        "Masa para pizza"
+      ],
+      "Otros-pr": [
+        "Bases para sopa",
+        "Comidas congeladas",
+        "Ensaladas preparadas",
+        "Otros"
+      ],
+      "Salsas - Pr": [
+        "Salsa BBQ",
+        "Salsa de tomate",
+        "Salsa pesto",
+        "Salsa verde",
+        "Salsas BBQ",
+        "Salsas para untar",
+        "Salsas picantes"
+      ]
+    },
+    "Proteinas": {
+      "Carne Otros": [
+        "Carne molida",
+        "Cordero",
+        "Otros"
+      ],
+      "Carne de cerdo": [
+        "Chicharron",
+        "Chorizo",
+        "Chuleta",
+        "Codillo",
+        "Costilla",
+        "Espaldilla",
+        "Jamón",
+        "Lomo",
+        "Pierna",
+        "Pork Belly / Panceta / Pecho",
+        "Solomillo",
+        "Tocino"
+      ],
+      "Carne de res": [
+        "Bistec",
+        "Brisket",
+        "Chuleta",
+        "Costilla",
+        "Diezmillo",
+        "Falda",
+        "Filete",
+        "Lomo",
+        "Paleta",
+        "Picaña",
+        "Ribeye",
+        "Sirloin"
+      ],
+      "Embutidos": [
+        "Pepperoni",
+        "Salami",
+        "Salchichas"
+      ],
+      "Mariscos": [
+        "Almejas",
+        "Camarones",
+        "Cangrejo",
+        "Langosta",
+        "Mejillones",
+        "Ostion",
+        "Otros"
+      ],
+      "Otros-Pro": [
+        "Tempeh",
+        "Tofu"
+      ],
+      "Pavo": [
+        "Alitas",
+        "Contramuslo",
+        "Corazón",
+        "Cuello",
+        "Hígado",
+        "Molleja",
+        "Muslo",
+        "Pata",
+        "Pechuga",
+        "Pierna"
+      ],
+      "Pescado": [
+        "Atún",
+        "Bacalao",
+        "Cabrilla",
+        "Camarones",
+        "Halibut",
+        "Jurel",
+        "Pargo",
+        "Pescado",
+        "Salmón"
+      ],
+      "Pollo": [
+        "Alitas",
+        "Contramuslo",
+        "Corazón",
+        "Cuello",
+        "Hígado",
+        "Molleja",
+        "Muslo",
+        "Pata",
+        "Pechuga",
+        "Pierna"
+      ]
+    },
+    "Servicios": {
+      "Servicios": [
+        "Servicios"
+      ]
+    },
+    "Suministros": {
+      "Bolsas": [
+        "Bolsas de almacenamiento de alimentos",
+        "Bolsas de basura",
+        "Bolsas de compras"
+      ],
+      "Caja": [
+        "Caja para Pizza"
+      ],
+      "Desinfectante": [
+        "Desinfectante de manos",
+        "General",
+        "Toallitas desinfectantes"
+      ],
+      "Detergente": [
+        "Detergente para lavar platos",
+        "Limpiador multiuso"
+      ],
+      "Equipo": [
+        "Equipo De Cocina",
+        "Equipo de Servicio"
+      ],
+      "Jabón": [
+        "Esponjas y Fibras para Lavar",
+        "Jabón de manos",
+        "Jabón en barra",
+        "Jabón para lavar platos"
+      ],
+      "Papel Higienico": [
+        "Papel Higienico"
+      ],
+      "Servilletas": [
+        "Servilletas de papel",
+        "Servilletas de tela"
+      ],
+      "Suministros Cocina": [
+        "Bandejas para hornear",
+        "Boles para mezclar",
+        "Otros",
+        "Papel Encerado",
+        "Papel de aluminio",
+        "Papel film",
+        "Papel pergamino"
+      ],
+      "Toalla": [
+        "Toalla de Papel",
+        "Toalla de Tela"
+      ],
+      "Utensilios": [
+        "Cucharas",
+        "Cucharas Desechables",
+        "Cuchillos",
+        "Cuchillos Desechables",
+        "Otros",
+        "Palillos",
+        "Paquetes de cubiertos Desechables",
+        "Platos",
+        "Platos compostables",
+        "Platos de papel",
+        "Platos de plástico",
+        "Tenedores",
+        "Tenedores Desechables",
+        "Vasos",
+        "Vasos Plastico",
+        "Vasos de espuma de poliestireno",
+        "Vasos de papel"
+      ]
+    },
+    "Uniformes": {
+      "Ropa": [
+        "Mandiles",
+        "Playeras"
+      ]
+    },
+    "Vegetales": {
+      "Frutas": [
+        "Aguacate",
+        "Dátil",
+        "Fresa",
+        "Jitomate",
+        "Jiícama",
+        "Kiwi",
+        "Limon",
+        "Limon Amarillo",
+        "Limon Sin Semilla",
+        "Mango",
+        "Manzana",
+        "Melon",
+        "Moras / Berries",
+        "Naranja",
+        "Papaya",
+        "Piña",
+        "Plátano",
+        "Sandia",
+        "Tomate Cherry",
+        "Tomate Saladette",
+        "Tomatillo",
+        "Tomillo",
+        "Toronja"
+      ],
+      "Hongo": [
+        "Champiñon",
+        "Seta"
+      ],
+      "Verduras": [
+        "Acelga",
+        "Ajo Blanco",
+        "Albahaca",
+        "Apio",
+        "Arugula",
+        "Berenjena",
+        "Betabel",
+        "Calabaza",
+        "Camote",
+        "Cebolla Blanca",
+        "Cebolla Morada",
+        "Cebollin",
+        "Chayote",
+        "Chile Guajillo",
+        "Chile Habanero",
+        "Chile Jalapeño",
+        "Chile Morilla",
+        "Chile Poblano",
+        "Chile Serrano",
+        "Cilantro",
+        "Col",
+        "Ejotes",
+        "Elote Blanco",
+        "Espinaca",
+        "Jengibre",
+        "Lechuga Bola",
+        "Lechuga Icberg",
+        "Lechuga Italiana",
+        "Lechuga Mixta",
+        "Lechuga Romana",
+        "Lechuga Verde",
+        "Menta",
+        "Papa Russet",
+        "Pepino Verde",
+        "Perejil",
+        "Perejil Lacio",
+        "Pimiento",
+        "Repollo",
+        "Romero",
+        "Shallot",
+        "Verdura",
+        "Zanahoria"
+      ]
+    }
+  },
+  "standardized_units": [
+    "Litros",
+    "Kilogramos",
+    "Piezas"
+  ],
+  "unit_mappings": {
+    "liquids": [
+      "LTR",
+      "MLT",
+      "LT",
+      "L"
+    ],
+    "weight": [
+      "KGM",
+      "GRM",
+      "KG",
+      "G",
+      "TNE"
+    ],
+    "pieces": [
+      "H87",
+      "PZA",
+      "PZ",
+      "UNI",
+      "BOX",
+      "BX",
+      "E48"
+    ]
+  },
+  "prompts": {
+    "classification_template": "You are a Mexican invoice item classifier. Classify this item into the EXACT 3-tier P62 category system.\n\nITEM TO CLASSIFY:\nDescription: \"{description}\"\nProduct Code: \"{product_code}\"\nUnit: \"{unit_code}\"\nQuantity: {quantity}\n\nSelect the EXACT category, subcategory, and sub_sub_category from the P62 system.\nAlso standardize the unit to: Litros (liquids), Kilogramos (weight), or Piezas (countable items).\n\nReturn ONLY this JSON format:\n{{\n  \"category\": \"EXACT_TIER_1_NAME\",\n  \"subcategory\": \"EXACT_TIER_2_NAME\", \n  \"sub_sub_category\": \"EXACT_TIER_3_NAME\",\n  \"standardized_unit\": \"Litros|Kilogramos|Piezas\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"Brief explanation\"\n}}"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "categories": {
+    "Abarrotes": [
+      "Aceite",
+      "Alga Marina",
+      "Dulces",
+      "Endulzantes",
+      "Café",
+      "Cereales",
+      "Chiles",
+      "Condimentos",
+      "Concentrados",
+      "Conservas",
+      "Crema",
+      "Especias",
+      "Harinas",
+      "Hierbas",
+      "Huevos",
+      "Legumbres",
+      "Nueces y Semillas",
+      "Otros-a",
+      "Pulpa",
+      "Salsas - A",
+      "Tortilla",
+      "Vinagre"
+    ],
+    "Bebidas": [
+      "Cerveza",
+      "Destilados",
+      "Jugo",
+      "Otros-b",
+      "Refrescos",
+      "Vino"
+    ],
+    "Lacteos": [
+      "Cremas",
+      "Helado",
+      "Leche",
+      "Otros-l",
+      "Queso"
+    ],
+    "Panaderia": [
+      "Otros-p",
+      "Pan"
+    ],
+    "Preparados": [
+      "Aceite",
+      "Aderezos",
+      "Azúcar",
+      "Encurtidos",
+      "Harinas",
+      "Masas",
+      "Otros-pr",
+      "Salsas - Pr"
+    ],
+    "Proteinas": [
+      "Pollo",
+      "Pavo",
+      "Carne de cerdo",
+      "Carne de res",
+      "Carne Otros",
+      "Embutidos",
+      "Mariscos",
+      "Otros-Pro",
+      "Pescado"
+    ],
+    "Servicios": [
+      "Servicios"
+    ],
+    "Suministros": [
+      "Bolsas",
+      "Caja",
+      "Desinfectante",
+      "Detergente",
+      "Equipo",
+      "Jabón",
+      "Servilletas",
+      "Toalla",
+      "Papel Higienico",
+      "Suministros Cocina",
+      "Utensilios"
+    ],
+    "Uniformes": [
+      "Ropa"
+    ],
+    "Vegetales": [
+      "Frutas",
+      "Hongo",
+      "Verduras"
+    ]
+  },
+  "standardized_units": [
+    "Litros",
+    "Kilogramos",
+    "Piezas"
+  ],
+  "unit_mappings": {
+    "liquids": [
+      "LTR",
+      "MLT",
+      "LT",
+      "L"
+    ],
+    "weight": [
+      "KGM",
+      "GRM",
+      "KG",
+      "G",
+      "TNE"
+    ],
+    "pieces": [
+      "H87",
+      "PZA",
+      "PZ",
+      "UNI",
+      "BOX",
+      "BX",
+      "E48"
+    ]
+  },
+  "prompts": {
+    "classification_template": "You are a Mexican invoice item classifier. Classify this item into the EXACT 3-tier P62 category system.\n\nITEM TO CLASSIFY:\nDescription: \"{description}\"\nProduct Code: \"{product_code}\"\nUnit: \"{unit_code}\"\nQuantity: {quantity}\n\nSelect the EXACT category, subcategory, and sub_sub_category from the P62 system.\nAlso standardize the unit to: Litros (liquids), Kilogramos (weight), or Piezas (countable items).\n\nReturn ONLY this JSON format:\n{{\n  \"category\": \"EXACT_TIER_1_NAME\",\n  \"subcategory\": \"EXACT_TIER_2_NAME\",\n  \"sub_sub_category\": \"SPECIFIC_ITEM_NAME\",\n  \"standardized_unit\": \"Litros|Kilogramos|Piezas\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"Brief explanation\"\n}}"
+  }
+}
