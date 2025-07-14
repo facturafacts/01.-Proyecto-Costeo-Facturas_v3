@@ -34,9 +34,13 @@ class Settings:
     # File Paths
     PROJECT_ROOT: Path = Path(__file__).parent.parent
     
-    # Database Configuration - FIXED: Use absolute path to main database
+    # Database Configuration - UPDATED for Production
+    # For production, DATABASE_URL will be provided by the environment (e.g., DigitalOcean).
+    # For local development, it falls back to the SQLite database.
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{PROJECT_ROOT / 'data' / 'database' / 'cfdi_system_v4.db'}")
     DATABASE_ECHO: bool = os.getenv("DATABASE_ECHO", "False").lower() == "true"
+    
+    # Paths remain relative to project root for consistency
     INBOX_PATH: str = os.getenv("INBOX_PATH", str(PROJECT_ROOT / "data" / "inbox"))
     PROCESSED_PATH: str = os.getenv("PROCESSED_PATH", str(PROJECT_ROOT / "data" / "processed"))
     FAILED_PATH: str = os.getenv("FAILED_PATH", str(PROJECT_ROOT / "data" / "failed"))

@@ -47,15 +47,17 @@ class DatabaseManager:
             db_path = Path(self.settings.DATABASE_URL.replace('sqlite:///', ''))
             db_path.parent.mkdir(parents=True, exist_ok=True)
             
-            # Create engine with optimizations
+            # Create engine with optimizations.
+            # The connect_args are specific to SQLite and should not be used for PostgreSQL.
+            connect_args = {}
+            if "sqlite" in self.settings.DATABASE_URL:
+                connect_args = {"check_same_thread": False, "timeout": 30}
+
             self.engine = create_engine(
                 self.settings.DATABASE_URL,
                 echo=self.settings.DATABASE_ECHO,
                 pool_pre_ping=True,
-                connect_args={
-                    "check_same_thread": False,
-                    "timeout": 30
-                } if "sqlite" in self.settings.DATABASE_URL else {}
+                connect_args=connect_args
             )
             
             # Create session factory

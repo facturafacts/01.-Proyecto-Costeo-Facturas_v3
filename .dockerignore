@@ -1,0 +1,35 @@
+# Git and IDE files
+.git
+.gitignore
+.idea
+.vscode
+.cursor
+.cursorrules
+
+# Python virtual environment and cache
+.venv
+venv/
+__pycache__/
+*.pyc
+
+# Local data and logs
+*.log
+*.db
+*.db-journal
+/data/
+/backups/
+/failed/
+/temp/
+p62_processing.log
+
+# Notebooks and documentation (not needed for production API)
+/notebooks/
+/docs/
+
+# Local scripts and test files
+/scripts/
+/tests/
+
+# Other local files
+stop_api.py
+README.md 
