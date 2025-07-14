@@ -202,6 +202,88 @@ class DashboardKPIsResponse(BaseModel):
         }
 
 
+# ========================================
+# PURCHASE DETAILS MODELS (NEW)
+# ========================================
+
+class PurchaseDetailsResponse(BaseModel):
+    """Purchase details response model for Google Sheets export."""
+    
+    # Invoice Information
+    invoice_uuid: str = Field(..., description="Invoice UUID")
+    folio: Optional[str] = Field(None, description="Invoice folio")
+    issue_date: Optional[date] = Field(None, description="Invoice issue date")
+    issuer_rfc: str = Field(..., description="Issuer RFC")
+    issuer_name: Optional[str] = Field(None, description="Issuer name")
+    receiver_rfc: str = Field(..., description="Receiver RFC")
+    receiver_name: Optional[str] = Field(None, description="Receiver name")
+    payment_method: Optional[str] = Field(None, description="Payment method")
+    payment_terms: Optional[str] = Field(None, description="Payment terms")
+    currency: str = Field(..., description="Currency")
+    exchange_rate: float = Field(..., description="Exchange rate")
+    invoice_mxn_total: float = Field(..., description="Invoice total in MXN")
+    is_installments: bool = Field(..., description="Is installments (PPD)")
+    is_immediate: bool = Field(..., description="Is immediate (PUE)")
+    
+    # Item Details
+    line_number: int = Field(..., description="Line number")
+    product_code: Optional[str] = Field(None, description="Product code")
+    description: str = Field(..., description="Item description")
+    quantity: float = Field(..., description="Quantity")
+    unit_code: Optional[str] = Field(None, description="Unit code")
+    unit_price: float = Field(..., description="Unit price")
+    subtotal: float = Field(..., description="Subtotal")
+    discount: float = Field(..., description="Discount")
+    total_amount: float = Field(..., description="Total amount")
+    total_tax_amount: float = Field(..., description="Total tax amount")
+    
+    # Unit Conversion
+    units_per_package: float = Field(..., description="Units per package")
+    standardized_unit: Optional[str] = Field(None, description="Standardized unit")
+    standardized_quantity: Optional[float] = Field(None, description="Standardized quantity")
+    conversion_factor: float = Field(..., description="Conversion factor")
+    
+    # AI Classification
+    category: Optional[str] = Field(None, description="Category")
+    subcategory: Optional[str] = Field(None, description="Subcategory")
+    sub_sub_category: Optional[str] = Field(None, description="Sub-subcategory")
+    category_confidence: Optional[float] = Field(None, description="Classification confidence")
+    classification_source: Optional[str] = Field(None, description="Classification source")
+    approval_status: Optional[str] = Field(None, description="Approval status")
+    sku_key: Optional[str] = Field(None, description="SKU key")
+    
+    # MXN Calculations
+    item_mxn_total: float = Field(..., description="Item total in MXN")
+    standardized_mxn_value: Optional[float] = Field(None, description="Standardized MXN value")
+    unit_mxn_price: float = Field(..., description="Unit price in MXN")
+    
+    # Timestamps
+    created_at: datetime = Field(..., description="Created timestamp")
+    updated_at: datetime = Field(..., description="Updated timestamp")
+    
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            date: lambda v: v.isoformat(),
+            datetime: lambda v: v.isoformat() + 'Z',
+            Decimal: float
+        }
+
+
+class PurchaseDetailsListResponse(BaseModel):
+    """Response model for purchase details list."""
+    
+    success: bool = Field(True, description="Operation success status")
+    data: List[PurchaseDetailsResponse] = Field(..., description="Purchase details list")
+    count: int = Field(..., description="Number of records returned")
+    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Response timestamp")
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() + 'Z'
+        }
+
+
 class ErrorResponse(BaseModel):
     """Error response model."""
     

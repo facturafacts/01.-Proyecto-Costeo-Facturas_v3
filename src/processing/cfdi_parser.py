@@ -333,6 +333,16 @@ class CFDIParser:
         if not date_str:
             return None
         
+        # Handle case where a datetime object is passed instead of string
+        if isinstance(date_str, datetime):
+            logger.debug(f"CFDI Parser: Received datetime object instead of string: {date_str}")
+            return date_str
+        
+        # Ensure we have a string
+        if not isinstance(date_str, str):
+            logger.warning(f"CFDI Parser: Expected string or datetime, got {type(date_str)}: {date_str}")
+            return None
+        
         # Clean the date string first
         clean_date = date_str.strip()
         

@@ -31,12 +31,12 @@ class Settings:
     GEMINI_TIMEOUT: int = int(os.getenv("GEMINI_TIMEOUT", "30"))
     GEMINI_MAX_RETRIES: int = int(os.getenv("GEMINI_MAX_RETRIES", "3"))
     
-    # Database Configuration
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/database/cfdi_system_v4.db")
-    DATABASE_ECHO: bool = os.getenv("DATABASE_ECHO", "False").lower() == "true"
-    
     # File Paths
     PROJECT_ROOT: Path = Path(__file__).parent.parent
+    
+    # Database Configuration - FIXED: Use absolute path to main database
+    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{PROJECT_ROOT / 'data' / 'database' / 'cfdi_system_v4.db'}")
+    DATABASE_ECHO: bool = os.getenv("DATABASE_ECHO", "False").lower() == "true"
     INBOX_PATH: str = os.getenv("INBOX_PATH", str(PROJECT_ROOT / "data" / "inbox"))
     PROCESSED_PATH: str = os.getenv("PROCESSED_PATH", str(PROJECT_ROOT / "data" / "processed"))
     FAILED_PATH: str = os.getenv("FAILED_PATH", str(PROJECT_ROOT / "data" / "failed"))

@@ -18,6 +18,9 @@ from .models import (
     InvoiceMetadataResponse, 
     InvoiceMetadataListResponse, 
     ErrorResponse,
+    # Purchase Details models (NEW)
+    PurchaseDetailsResponse,
+    PurchaseDetailsListResponse,
     # Dashboard models
     DashboardSalesResponse,
     DashboardExpensesResponse, 
@@ -209,6 +212,151 @@ async def get_invoice_metadata_by_uuid(
         )
     except Exception as e:
         logger.error(f"Unexpected error in get_invoice_metadata_by_uuid: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Internal server error: {str(e)}"
+        )
+
+
+@router.get(
+    "/purchase/details",
+    response_model=PurchaseDetailsListResponse,
+    responses={500: {"model": ErrorResponse}},
+    summary="Get Purchase Details",
+    description="Retrieve complete purchase details for Google Sheets export"
+)
+async def get_purchase_details(
+    limit: Optional[int] = Query(None, ge=1, le=10000, description="Maximum number of records"),
+    offset: Optional[int] = Query(0, ge=0, description="Number of records to skip"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    approval_status: Optional[str] = Query(None, description="Filter by approval status"),
+    date_from: Optional[date] = Query(None, description="Filter from date"),
+    date_to: Optional[date] = Query(None, description="Filter to date"),
+    db_manager: DatabaseManager = Depends(get_db_manager)
+):
+    """Get complete purchase details for Google Sheets export."""
+    try:
+        logger.info(f"API request: purchase details, limit={limit}, offset={offset}")
+        
+        import sqlite3
+        
+        # Use direct SQLite connection
+        conn = sqlite3.connect('data/database/cfdi_system_v4.db')
+        cursor = conn.cursor()
+        
+        try:
+            # Build query with filters
+            query = """
+                SELECT invoice_uuid, folio, issue_date, issuer_rfc, issuer_name,
+                       receiver_rfc, receiver_name, payment_method, payment_terms,
+                       currency, exchange_rate, invoice_mxn_total, is_installments, is_immediate,
+                       line_number, product_code, description, quantity, unit_code,
+                       unit_price, subtotal, discount, total_amount, total_tax_amount,
+                       units_per_package, standardized_unit, standardized_quantity, conversion_factor,
+                       category, subcategory, sub_sub_category, category_confidence,
+                       classification_source, approval_status, sku_key,
+                       item_mxn_total, standardized_mxn_value, unit_mxn_price,
+                       created_at, updated_at
+                FROM purchase_details
+                WHERE 1=1
+            """
+            
+            params = []
+            
+            # Apply filters
+            if category:
+                query += " AND category = ?"
+                params.append(category)
+            
+            if approval_status:
+                query += " AND approval_status = ?"
+                params.append(approval_status)
+            
+            if date_from:
+                query += " AND issue_date >= ?"
+                params.append(date_from.isoformat())
+            
+            if date_to:
+                query += " AND issue_date <= ?"
+                params.append(date_to.isoformat())
+            
+            # Order by date and line number
+            query += " ORDER BY issue_date DESC, invoice_uuid, line_number"
+            
+            # Apply pagination
+            if limit:
+                query += " LIMIT ?"
+                params.append(limit)
+            
+            if offset:
+                query += " OFFSET ?"
+                params.append(offset)
+            
+            # Execute query
+            cursor.execute(query, params)
+            results = cursor.fetchall()
+            
+            # Convert to response format
+            purchase_details = []
+            for row in results:
+                from datetime import datetime
+                purchase_detail = PurchaseDetailsResponse(
+                    invoice_uuid=row[0],
+                    folio=row[1],
+                    issue_date=datetime.fromisoformat(row[2]).date() if row[2] else None,
+                    issuer_rfc=row[3],
+                    issuer_name=row[4],
+                    receiver_rfc=row[5],
+                    receiver_name=row[6],
+                    payment_method=row[7],
+                    payment_terms=row[8],
+                    currency=row[9],
+                    exchange_rate=float(row[10]),
+                    invoice_mxn_total=float(row[11]),
+                    is_installments=bool(row[12]),
+                    is_immediate=bool(row[13]),
+                    line_number=row[14],
+                    product_code=row[15],
+                    description=row[16],
+                    quantity=float(row[17]),
+                    unit_code=row[18],
+                    unit_price=float(row[19]),
+                    subtotal=float(row[20]),
+                    discount=float(row[21]),
+                    total_amount=float(row[22]),
+                    total_tax_amount=float(row[23]),
+                    units_per_package=float(row[24]),
+                    standardized_unit=row[25],
+                    standardized_quantity=float(row[26]) if row[26] else None,
+                    conversion_factor=float(row[27]),
+                    category=row[28],
+                    subcategory=row[29],
+                    sub_sub_category=row[30],
+                    category_confidence=float(row[31]) if row[31] else None,
+                    classification_source=row[32],
+                    approval_status=row[33],
+                    sku_key=row[34],
+                    item_mxn_total=float(row[35]),
+                    standardized_mxn_value=float(row[36]) if row[36] else None,
+                    unit_mxn_price=float(row[37]),
+                    created_at=datetime.fromisoformat(row[38]),
+                    updated_at=datetime.fromisoformat(row[39])
+                )
+                purchase_details.append(purchase_detail)
+            
+            logger.info(f"Returning {len(purchase_details)} purchase details")
+            
+            return PurchaseDetailsListResponse(
+                success=True,
+                data=purchase_details,
+                count=len(purchase_details)
+            )
+            
+        finally:
+            conn.close()
+            
+    except Exception as e:
+        logger.error(f"Error in get_purchase_details: {e}")
         raise HTTPException(
             status_code=500,
             detail=f"Internal server error: {str(e)}"

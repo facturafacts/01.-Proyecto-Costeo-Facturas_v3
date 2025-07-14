@@ -22,7 +22,10 @@ current_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(current_dir))
 sys.path.insert(0, str(current_dir / "src"))
 
-from scripts.excel_approval import ExcelSkuApprovalManager
+# Import the excel_approval module from the same directory
+import sys
+sys.path.append(str(Path(__file__).parent))
+from excel_approval import ExcelSkuApprovalManager
 
 class ImportAndCleanupManager:
     """Manages the import process and cleanup of approval files."""
