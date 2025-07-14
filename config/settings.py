@@ -94,8 +94,13 @@ class Settings:
             self.PROCESSED_PATH,
             self.FAILED_PATH,
             self.LOGS_PATH,
-            os.path.dirname(self.DATABASE_URL.replace("sqlite:///", ""))
         ]
+
+        # Only try to create a database directory if it's a local SQLite file
+        if "sqlite" in self.DATABASE_URL:
+            db_dir = os.path.dirname(self.DATABASE_URL.replace("sqlite:///", ""))
+            if db_dir:
+                directories.append(db_dir)
         
         for directory in directories:
             if directory:

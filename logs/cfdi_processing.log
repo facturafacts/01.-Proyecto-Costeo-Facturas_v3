@@ -9343,3 +9343,488 @@ WHERE invoices.uuid = ?
 2025-07-11 16:41:23,462 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 0 XML files in data/inbox
 2025-07-11 16:41:23,464 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [INFO] No XML files found in inbox
 2025-07-11 16:41:23,465 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-07-14 14:22:35,458 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-07-14 14:22:35,461 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: DEBUG
+2025-07-14 14:22:35,461 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-07-14 14:22:35,463 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - 🚀 STARTING DATA MIGRATION PROCESS
+2025-07-14 14:22:35,464 - __main__ - ERROR - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - DATABASE_URL in .env file is not a PostgreSQL URL.
+2025-07-14 14:33:50,740 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-07-14 14:33:50,741 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: DEBUG
+2025-07-14 14:33:50,742 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-07-14 14:33:50,743 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - 🚀 STARTING DATA MIGRATION PROCESS
+2025-07-14 14:33:50,744 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Source (SQLite): sqlite:///C:\Users\Lenovo.DESKTOP-IFK4702\Desktop\02. PROGRAMACION\01. TRAINING EXCERSISES\01. Proyecto Costeo Facturas_v3\data\database\cfdi_system_v4.db
+2025-07-14 14:33:50,746 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Connecting to databases...
+2025-07-14 14:33:51,230 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Source (SQLite) connection successful.
+2025-07-14 14:33:54,088 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - select pg_catalog.version()
+2025-07-14 14:33:54,099 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] {}
+2025-07-14 14:33:54,614 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - select current_schema()
+2025-07-14 14:33:54,615 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] {}
+2025-07-14 14:33:55,124 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - show standard_conforming_strings
+2025-07-14 14:33:55,126 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] {}
+2025-07-14 14:33:55,626 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Destination (Postgres) connection successful.
+2025-07-14 14:33:55,626 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Migrating tables...
+2025-07-14 14:33:55,640 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:55,644 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT COUNT(*) FROM invoices
+2025-07-14 14:33:55,647 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00509s] ()
+2025-07-14 14:33:55,659 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - ROLLBACK
+2025-07-14 14:33:55,660 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Reading 128 rows from SQLite table 'invoices'...
+2025-07-14 14:33:55,661 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:55,663 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_info("invoices")
+2025-07-14 14:33:55,664 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,664 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name
+2025-07-14 14:33:55,667 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,667 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT name FROM sqlite_master WHERE type='view' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name
+2025-07-14 14:33:55,667 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,674 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_xinfo("invoices")
+2025-07-14 14:33:55,677 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,677 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:55,677 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoices',)
+2025-07-14 14:33:55,687 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.foreign_key_list("invoices")
+2025-07-14 14:33:55,687 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,689 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA temp.foreign_key_list("invoices")
+2025-07-14 14:33:55,689 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,691 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:55,692 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoices',)
+2025-07-14 14:33:55,693 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("invoices")
+2025-07-14 14:33:55,700 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,700 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issue_date")
+2025-07-14 14:33:55,703 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,705 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_uuid")
+2025-07-14 14:33:55,706 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,706 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_type_date")
+2025-07-14 14:33:55,707 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,709 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_receiver_date")
+2025-07-14 14:33:55,709 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,712 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_status")
+2025-07-14 14:33:55,712 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,716 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_issuer_date")
+2025-07-14 14:33:55,717 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,717 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_folio")
+2025-07-14 14:33:55,717 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,717 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_receiver_rfc")
+2025-07-14 14:33:55,717 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,717 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_amount_date")
+2025-07-14 14:33:55,724 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,725 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issuer_rfc")
+2025-07-14 14:33:55,725 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,728 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("invoices")
+2025-07-14 14:33:55,729 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,733 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issue_date")
+2025-07-14 14:33:55,733 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,735 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_uuid")
+2025-07-14 14:33:55,736 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,738 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_type_date")
+2025-07-14 14:33:55,738 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,738 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_receiver_date")
+2025-07-14 14:33:55,740 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,742 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_status")
+2025-07-14 14:33:55,742 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,742 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_issuer_date")
+2025-07-14 14:33:55,747 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,748 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_folio")
+2025-07-14 14:33:55,750 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,752 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_receiver_rfc")
+2025-07-14 14:33:55,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_amount_date")
+2025-07-14 14:33:55,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issuer_rfc")
+2025-07-14 14:33:55,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:55,759 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:55,759 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoices',)
+2025-07-14 14:33:55,775 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT invoices.id, invoices.uuid, invoices.series, invoices.folio, invoices.invoice_type, invoices.version, invoices.issue_date, invoices.certification_date, invoices.created_at, invoices.updated_at, invoices.issuer_rfc, invoices.issuer_name, invoices.issuer_fiscal_regime, invoices.issuer_use_cfdi, invoices.issuer_residence, invoices.issuer_tax_id, invoices.receiver_rfc, invoices.receiver_name, invoices.receiver_fiscal_address, invoices.receiver_residence, invoices.receiver_tax_id, invoices.receiver_use_cfdi, invoices.payment_method, invoices.payment_method_desc, invoices.payment_terms, invoices.payment_conditions, invoices.currency, invoices.exchange_rate, invoices.subtotal, invoices.total_discount, invoices.total_transferred_taxes, invoices.total_withheld_taxes, invoices.total_amount, invoices.digital_stamp, invoices.certificate_number, invoices.certificate, invoices.sat_seal, invoices.sat_certificate, invoices.fiscal_folio, invoices.stamp_datetime, invoices.expedition_place, invoices.export_operation, invoices.confirmation, invoices.source_filename, invoices.xml_file_size, invoices.confidence_score, invoices.processing_time, invoices.processing_status, invoices.validation_errors, invoices.custom_fields 
+FROM invoices
+2025-07-14 14:33:55,780 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00502s] ()
+2025-07-14 14:33:55,816 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - COMMIT
+2025-07-14 14:33:55,816 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Writing 128 rows to PostgreSQL table 'invoices'...
+2025-07-14 14:33:55,824 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:55,842 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2025-07-14 14:33:55,843 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00139s] {'table_name': 'invoices', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2025-07-14 14:33:56,394 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - 
+CREATE TABLE invoices (
+	id BIGINT, 
+	uuid TEXT, 
+	series TEXT, 
+	folio TEXT, 
+	invoice_type TEXT, 
+	version TEXT, 
+	issue_date TIMESTAMP WITHOUT TIME ZONE, 
+	certification_date TIMESTAMP WITHOUT TIME ZONE, 
+	created_at TIMESTAMP WITHOUT TIME ZONE, 
+	updated_at TIMESTAMP WITHOUT TIME ZONE, 
+	issuer_rfc TEXT, 
+	issuer_name TEXT, 
+	issuer_fiscal_regime TEXT, 
+	issuer_use_cfdi TEXT, 
+	issuer_residence TEXT, 
+	issuer_tax_id TEXT, 
+	receiver_rfc TEXT, 
+	receiver_name TEXT, 
+	receiver_fiscal_address TEXT, 
+	receiver_residence TEXT, 
+	receiver_tax_id TEXT, 
+	receiver_use_cfdi TEXT, 
+	payment_method TEXT, 
+	payment_method_desc TEXT, 
+	payment_terms TEXT, 
+	payment_conditions TEXT, 
+	currency TEXT, 
+	exchange_rate FLOAT(53), 
+	subtotal FLOAT(53), 
+	total_discount FLOAT(53), 
+	total_transferred_taxes FLOAT(53), 
+	total_withheld_taxes BIGINT, 
+	total_amount FLOAT(53), 
+	digital_stamp TEXT, 
+	certificate_number TEXT, 
+	certificate TEXT, 
+	sat_seal TEXT, 
+	sat_certificate TEXT, 
+	fiscal_folio TEXT, 
+	stamp_datetime TIMESTAMP WITHOUT TIME ZONE, 
+	expedition_place TEXT, 
+	export_operation TEXT, 
+	confirmation TEXT, 
+	source_filename TEXT, 
+	xml_file_size BIGINT, 
+	confidence_score FLOAT(53), 
+	processing_time FLOAT(53), 
+	processing_status TEXT, 
+	validation_errors TEXT, 
+	custom_fields TEXT
+)
+
+
+2025-07-14 14:33:56,402 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [no key 0.00810s] {}
+2025-07-14 14:33:56,709 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - INSERT INTO invoices (id, uuid, series, folio, invoice_type, version, issue_date, certification_date, created_at, updated_at, issuer_rfc, issuer_name, issuer_fiscal_regime, issuer_use_cfdi, issuer_residence, issuer_tax_id, receiver_rfc, receiver_name ... 151363 characters truncated ... cessing_time__127)s, %(processing_status__127)s, %(validation_errors__127)s, %(custom_fields__127)s)
+2025-07-14 14:33:56,709 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00673s (insertmanyvalues) 1/1 (unordered)] {'invoice_type__0': 'I', 'receiver_residence__0': None, 'source_filename__0': '026E4ACE-A7AB-4379-8BC2-BD4939AC1F3C.xml', 'xml_file_size__0': 5026, 'issuer_name__0': 'FERRETERIA ROMEX', 'issuer_fiscal_regime__0': '601', 'total_withheld_taxes__0': 0, 'receiver_tax_id__0': None, 'confidence_score__0': 0.95, 'created_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 448893), 'issuer_use_cfdi__0': None, 'issuer_rfc__0': 'FRO******8G3', 'certification_date__0': None, 'issue_date__0': datetime.datetime(2025, 5, 14, 0, 0), 'updated_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 448893), 'version__0': '4.0', 'receiver_name__0': 'YASSER YUSSIF GONZALEZ', 'payment_terms__0': 'PUE', 'subtotal__0': 797.41, 'digital_stamp__0': 'IDndNgFfJacwwYknB6SyDc5oACw4GJxZBkltl6vEPlHFMZp+PHDk6sGwVNkM0x6UjB4+K1fL25TnRajiufyNkMYLRLvRJeHueUk/aUpQ0OjFLvjLYHWjf9i+BsZB3mb8snWa8gzCJQ/bs0OBJ9a0c ... (46 characters truncated) ... rIMH/suIKHuexuweQpMo/ZrE41t+ImxvO7UXoygwqPbeLzVhos9TytmZhGa5fcVz6KN42APzF1w0JADuZ/UVzMjtbMvkbgXNZZ1Afd6AVE0fvjM0EYTwnuz2inmMADM/HRkxgGip6FPb0HTjoFQ==', 'issuer_tax_id__0': None, 'receiver_fiscal_address__0': '23300', 'validation_errors__0': None, 'fiscal_folio__0': '026E4ACE-A7AB-4379-8BC2-BD4939AC1F3C', 'currency__0': 'MXN', 'uuid__0': '026E4ACE-A7AB-4379-8BC2-BD4939AC1F3C', 'total_amount__0': 925.0, 'processing_time__0': 2.403921127319336, 'total_transferred_taxes__0': 127.59, 'export_operation__0': None, 'certificate__0': None, 'folio__0': '243526', 'confirmation__0': None, 'expedition_place__0': None, 'receiver_rfc__0': 'YUGY******FK4', 'custom_fields__0': None, 'receiver_use_cfdi__0': None, 'certificate_number__0': '00001000000711166616', 'payment_conditions__0': None, 'payment_method__0': '28', 'id__0': 1, 'payment_method_desc__0': None, 'total_discount__0': 0.0, 'sat_seal__0': 'dpGtq6gnf2EyX42XdczK4/VVR4YlvvotVm6RWpfpnaf1paOXH11NQaD0lqqj5rifZvL6VYsQUt8DGIW36Qp5CE9kDzWA/74DZHc5IC5H//K024cI7NUT9py6og9SHd/gC1HD21PFshLd9BCm3Hm5E ... (46 characters truncated) ... e3HRrbThlzJ9ft+N+bfusQNe41YvaL1RYCB05NlHKp6xgjMHwzJZG+VW4tqVB9ttCoJcdlxoXmT0/e9S67bL+6J4V3kXGWgcBgONCZ5iyshgeJ9LFRRg9idU44JNGW5NfmIzJww791PHfp3JQog==', 'processing_status__0': 'processed', 'sat_certificate__0': None, 'issuer_residence__0': None, 'exchange_rate__0': 1.0, 'series__0': 'PSC', 'stamp_datetime__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 441457) ... 6300 parameters truncated ... 'invoice_type__127': 'I', 'receiver_residence__127': None, 'source_filename__127': 'db7ca908-83b2-49ab-8c86-649a9b9ba470.xml', 'xml_file_size__127': 8526, 'issuer_name__127': 'CPS LICORES', 'issuer_fiscal_regime__127': '601', 'total_withheld_taxes__127': 0, 'receiver_tax_id__127': None, 'confidence_score__127': 0.9500000000000001, 'created_at__127': datetime.datetime(2025, 7, 11, 23, 39, 50, 862856), 'issuer_use_cfdi__127': None, 'issuer_rfc__127': 'CLI******UP6', 'certification_date__127': None, 'issue_date__127': datetime.datetime(2025, 7, 1, 0, 0), 'updated_at__127': datetime.datetime(2025, 7, 11, 23, 39, 50, 862856), 'version__127': '4.0', 'receiver_name__127': 'YASSER YUSSIF GONZALEZ', 'payment_terms__127': 'PPD', 'subtotal__127': 4992.66, 'digital_stamp__127': 'TdQS3OOBBWc+TaSpD2+vonUqhQPZL6AwVFaHtKbqAW9ugTqU7D0/PipeRkSStVwa1/cwVKy1BtJUMWXUY/bWiQSMNIKnL0tMfft8yxGwztvTwVOng6iNLguj8FiareCL/7yyHYFykvlz+9r/m3BQ2 ... (46 characters truncated) ... 7tK5cu0rAtNzzwQjDCRWwi/arQqPreNrvhXBCvkE1RvmSMnL3k/aldPuvue4yMqfu1Zahlynr/RNp/eF96aDhuw4na+NarSVKETAfbyTDD/ZvZmjr9eDknEKel1grKGwJicaW3fOd2QSVOOmcHA==', 'issuer_tax_id__127': None, 'receiver_fiscal_address__127': '23300', 'validation_errors__127': None, 'fiscal_folio__127': 'db7ca908-83b2-49ab-8c86-649a9b9ba470', 'currency__127': 'MXN', 'uuid__127': 'db7ca908-83b2-49ab-8c86-649a9b9ba470', 'total_amount__127': 8734.61, 'processing_time__127': 10.45948600769043, 'total_transferred_taxes__127': 3741.95, 'export_operation__127': None, 'certificate__127': None, 'folio__127': 'CAB-INV-000013', 'confirmation__127': None, 'expedition_place__127': None, 'receiver_rfc__127': 'YUGY******FK4', 'custom_fields__127': None, 'receiver_use_cfdi__127': None, 'certificate_number__127': '00001000000704586310', 'payment_conditions__127': None, 'payment_method__127': '99', 'id__127': 128, 'payment_method_desc__127': None, 'total_discount__127': 0.0, 'sat_seal__127': 'WWhOG5XAAmLILE2IZdEagtsBy9eWU064xskv+Nuj0vNGU09Pe5gGF/CH6bH8PaKeUa+EO092XkmEGFNtQrm+tHEF7hTfx1QcE0oduC8eNSQYYOf5d1h6C1DEk05AsyWzM2fjXkzmqWYzU0iZaDNKm ... (46 characters truncated) ... sOD7QxAU58/nhsQoCQyloZ+BT6Nk4UaJd8oyscqafs/tirtIwTmozntJRp6uptfBpakm/6VuO+8xJUREDfwGkD9K7r/q5aTYTBIS05miD9pyrwG0VeZ+qq2RtAcrcuaQcZTIuKkwz4gxJGWRvWA==', 'processing_status__127': 'processed', 'sat_certificate__127': None, 'issuer_residence__127': None, 'exchange_rate__127': 1.0, 'series__127': 'Los Cabos', 'stamp_datetime__127': datetime.datetime(2025, 7, 1, 15, 52, 1)}
+2025-07-14 14:33:57,525 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - COMMIT
+2025-07-14 14:33:57,779 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Successfully migrated 128 rows for table 'invoices'.
+2025-07-14 14:33:57,780 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:57,780 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT COUNT(*) FROM approved_skus
+2025-07-14 14:33:57,781 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00112s] ()
+2025-07-14 14:33:57,782 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - ROLLBACK
+2025-07-14 14:33:57,782 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Reading 339 rows from SQLite table 'approved_skus'...
+2025-07-14 14:33:57,783 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:57,783 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_info("approved_skus")
+2025-07-14 14:33:57,785 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,786 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name
+2025-07-14 14:33:57,786 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,787 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT name FROM sqlite_master WHERE type='view' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name
+2025-07-14 14:33:57,787 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,788 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_xinfo("approved_skus")
+2025-07-14 14:33:57,789 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,790 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:57,791 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('approved_skus',)
+2025-07-14 14:33:57,792 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.foreign_key_list("approved_skus")
+2025-07-14 14:33:57,793 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,794 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA temp.foreign_key_list("approved_skus")
+2025-07-14 14:33:57,794 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,796 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:57,796 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('approved_skus',)
+2025-07-14 14:33:57,796 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("approved_skus")
+2025-07-14 14:33:57,800 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,803 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_review_status")
+2025-07-14 14:33:57,805 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,806 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_usage")
+2025-07-14 14:33:57,807 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,809 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_product_code")
+2025-07-14 14:33:57,810 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,812 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_approved_skus_product_code")
+2025-07-14 14:33:57,812 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,813 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_approved_skus_sku_key")
+2025-07-14 14:33:57,818 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,820 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_category")
+2025-07-14 14:33:57,820 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,821 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("approved_skus")
+2025-07-14 14:33:57,823 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,824 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_review_status")
+2025-07-14 14:33:57,824 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,826 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_usage")
+2025-07-14 14:33:57,827 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,828 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_product_code")
+2025-07-14 14:33:57,829 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,830 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_approved_skus_product_code")
+2025-07-14 14:33:57,830 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,836 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_approved_skus_sku_key")
+2025-07-14 14:33:57,837 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,839 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_sku_category")
+2025-07-14 14:33:57,840 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:57,843 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:57,844 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('approved_skus',)
+2025-07-14 14:33:57,852 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT approved_skus.id, approved_skus.sku_key, approved_skus.product_code, approved_skus.internal_code, approved_skus.normalized_description, approved_skus.category, approved_skus.subcategory, approved_skus.sub_sub_category, approved_skus.standardized_unit, approved_skus.correct_unit_code, approved_skus.units_per_package, approved_skus.package_type, approved_skus.conversion_notes, approved_skus.typical_quantity_range, approved_skus.approved_by, approved_skus.approval_date, approved_skus.confidence_score, approved_skus.usage_count, approved_skus.last_used, approved_skus.review_status, approved_skus.review_notes, approved_skus.created_at, approved_skus.updated_at 
+FROM approved_skus
+2025-07-14 14:33:57,853 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00229s] ()
+2025-07-14 14:33:57,879 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - COMMIT
+2025-07-14 14:33:57,879 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Writing 339 rows to PostgreSQL table 'approved_skus'...
+2025-07-14 14:33:57,879 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:57,889 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2025-07-14 14:33:57,891 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [cached since 2.049s ago] {'table_name': 'approved_skus', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2025-07-14 14:33:58,408 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - 
+CREATE TABLE approved_skus (
+	id BIGINT, 
+	sku_key TEXT, 
+	product_code TEXT, 
+	internal_code TEXT, 
+	normalized_description TEXT, 
+	category TEXT, 
+	subcategory TEXT, 
+	sub_sub_category TEXT, 
+	standardized_unit TEXT, 
+	correct_unit_code TEXT, 
+	units_per_package FLOAT(53), 
+	package_type TEXT, 
+	conversion_notes TEXT, 
+	typical_quantity_range TEXT, 
+	approved_by TEXT, 
+	approval_date TIMESTAMP WITHOUT TIME ZONE, 
+	confidence_score FLOAT(53), 
+	usage_count BIGINT, 
+	last_used TIMESTAMP WITHOUT TIME ZONE, 
+	review_status TEXT, 
+	review_notes TEXT, 
+	created_at TIMESTAMP WITHOUT TIME ZONE, 
+	updated_at TIMESTAMP WITHOUT TIME ZONE
+)
+
+
+2025-07-14 14:33:58,408 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [no key 0.00404s] {}
+2025-07-14 14:33:58,712 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - INSERT INTO approved_skus (id, sku_key, product_code, internal_code, normalized_description, category, subcategory, sub_sub_category, standardized_unit, correct_unit_code, units_per_package, package_type, conversion_notes, typical_quantity_range, app ... 184623 characters truncated ... sed__338)s, %(review_status__338)s, %(review_notes__338)s, %(created_at__338)s, %(updated_at__338)s)
+2025-07-14 14:33:58,712 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.01202s (insertmanyvalues) 1/1 (unordered)] {'approved_by__0': 'excel_import', 'review_status__0': 'approved', 'sub_sub_category__0': 'Aceite vegetal', 'category__0': 'Abarrotes', 'standardized_unit__0': 'Litros', 'confidence_score__0': 1.0, 'last_used__0': datetime.datetime(2025, 7, 11, 23, 39, 7, 84700), 'typical_quantity_range__0': None, 'created_at__0': datetime.datetime(2025, 6, 18, 2, 19, 43, 27913), 'updated_at__0': datetime.datetime(2025, 6, 18, 2, 19, 43, 27913), 'sku_key__0': 'sku_1789b909_50151500_aceite_puro_de_palma_palmina_20lt', 'normalized_description__0': 'ACEITE PURO DE PALMA PALMINA 20LT', 'subcategory__0': 'Aceite', 'correct_unit_code__0': None, 'conversion_notes__0': None, 'approval_date__0': datetime.datetime(2025, 6, 18, 2, 19, 43, 11787), 'usage_count__0': 5, 'product_code__0': None, 'units_per_package__0': 20.0, 'id__0': 1, 'package_type__0': None, 'internal_code__0': None, 'review_notes__0': None, 'approved_by__1': 'excel_import', 'review_status__1': 'approved', 'sub_sub_category__1': 'Aceite de oliva', 'category__1': 'Abarrotes', 'standardized_unit__1': 'Litros', 'confidence_score__1': 1.0, 'last_used__1': datetime.datetime(2025, 7, 11, 23, 39, 7, 48642), 'typical_quantity_range__1': None, 'created_at__1': datetime.datetime(2025, 6, 18, 2, 19, 43, 190021), 'updated_at__1': datetime.datetime(2025, 6, 18, 2, 19, 43, 190021), 'sku_key__1': 'sku_8d0019cc_50151513_aceite_oliva_pomace_genco_plast_378_lt', 'normalized_description__1': 'ACEITE OLIVA POMACE GENCO PLAST 3.78 LT', 'subcategory__1': 'Aceite', 'correct_unit_code__1': None, 'conversion_notes__1': None, 'approval_date__1': datetime.datetime(2025, 6, 18, 2, 19, 43, 137293), 'usage_count__1': 4, 'product_code__1': None, 'units_per_package__1': 3.78, 'id__1': 2, 'package_type__1': None, 'internal_code__1': None, 'review_notes__1': None, 'approved_by__2': 'excel_import', 'review_status__2': 'approved', 'sub_sub_category__2': 'Aceite vegetal', 'category__2': 'Abarrotes' ... 7697 parameters truncated ... 'id__336': 337, 'package_type__336': None, 'internal_code__336': None, 'review_notes__336': None, 'approved_by__337': 'excel_import', 'review_status__337': 'approved', 'sub_sub_category__337': 'Limpiador multiuso', 'category__337': 'Suministros', 'standardized_unit__337': 'Litros', 'confidence_score__337': 1.0, 'last_used__337': None, 'typical_quantity_range__337': None, 'created_at__337': datetime.datetime(2025, 7, 12, 20, 48, 54, 526132), 'updated_at__337': datetime.datetime(2025, 7, 12, 20, 48, 54, 526132), 'sku_key__337': 'sku_5fdb5cfc_47131821_desengrasante_liquido', 'normalized_description__337': 'DESENGRASANTE LIQUIDO', 'subcategory__337': 'Detergente', 'correct_unit_code__337': None, 'conversion_notes__337': None, 'approval_date__337': datetime.datetime(2025, 7, 12, 20, 48, 54, 517964), 'usage_count__337': 0, 'product_code__337': None, 'units_per_package__337': 1.0, 'id__337': 338, 'package_type__337': None, 'internal_code__337': None, 'review_notes__337': None, 'approved_by__338': 'excel_import', 'review_status__338': 'approved', 'sub_sub_category__338': 'Esponjas y Fibras para Lavar', 'category__338': 'Suministros', 'standardized_unit__338': 'Piezas', 'confidence_score__338': 1.0, 'last_used__338': None, 'typical_quantity_range__338': None, 'created_at__338': datetime.datetime(2025, 7, 12, 20, 48, 54, 554956), 'updated_at__338': datetime.datetime(2025, 7, 12, 20, 48, 54, 554956), 'sku_key__338': 'sku_8d7ae4ed_52152200_fibra_alambre', 'normalized_description__338': 'FIBRA ALAMBRE', 'subcategory__338': 'Jabón', 'correct_unit_code__338': None, 'conversion_notes__338': None, 'approval_date__338': datetime.datetime(2025, 7, 12, 20, 48, 54, 548812), 'usage_count__338': 0, 'product_code__338': None, 'units_per_package__338': 1.0, 'id__338': 339, 'package_type__338': None, 'internal_code__338': None, 'review_notes__338': None}
+2025-07-14 14:33:59,356 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - COMMIT
+2025-07-14 14:33:59,616 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Successfully migrated 339 rows for table 'approved_skus'.
+2025-07-14 14:33:59,616 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:59,616 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT COUNT(*) FROM invoice_items
+2025-07-14 14:33:59,622 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00323s] ()
+2025-07-14 14:33:59,624 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - ROLLBACK
+2025-07-14 14:33:59,626 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Reading 1112 rows from SQLite table 'invoice_items'...
+2025-07-14 14:33:59,627 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:59,628 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_info("invoice_items")
+2025-07-14 14:33:59,629 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,631 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name
+2025-07-14 14:33:59,632 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,637 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT name FROM sqlite_master WHERE type='view' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name
+2025-07-14 14:33:59,638 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,640 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_xinfo("invoice_items")
+2025-07-14 14:33:59,642 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,643 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:59,645 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoice_items',)
+2025-07-14 14:33:59,647 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.foreign_key_list("invoice_items")
+2025-07-14 14:33:59,648 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,650 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:59,652 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoice_items',)
+2025-07-14 14:33:59,653 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("invoice_items")
+2025-07-14 14:33:59,654 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,656 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_product_code")
+2025-07-14 14:33:59,657 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,659 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_invoice_line")
+2025-07-14 14:33:59,660 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,661 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_description")
+2025-07-14 14:33:59,662 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,666 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_sku_key")
+2025-07-14 14:33:59,667 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,668 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_product_code")
+2025-07-14 14:33:59,669 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,670 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_approval_status")
+2025-07-14 14:33:59,670 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,670 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_sku_key")
+2025-07-14 14:33:59,672 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,673 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_category")
+2025-07-14 14:33:59,675 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,677 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_category")
+2025-07-14 14:33:59,677 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,679 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("invoice_items")
+2025-07-14 14:33:59,683 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,683 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_product_code")
+2025-07-14 14:33:59,685 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,686 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_invoice_line")
+2025-07-14 14:33:59,687 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,687 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_description")
+2025-07-14 14:33:59,687 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,689 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_sku_key")
+2025-07-14 14:33:59,690 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,692 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_product_code")
+2025-07-14 14:33:59,693 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,695 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_approval_status")
+2025-07-14 14:33:59,695 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,695 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_sku_key")
+2025-07-14 14:33:59,695 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,695 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_item_category")
+2025-07-14 14:33:59,695 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,704 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoice_items_category")
+2025-07-14 14:33:59,704 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,706 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:59,708 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoice_items',)
+2025-07-14 14:33:59,712 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.table_xinfo("invoices")
+2025-07-14 14:33:59,716 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,718 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:59,718 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoices',)
+2025-07-14 14:33:59,719 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.foreign_key_list("invoices")
+2025-07-14 14:33:59,720 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,720 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA temp.foreign_key_list("invoices")
+2025-07-14 14:33:59,721 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,722 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:59,723 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoices',)
+2025-07-14 14:33:59,726 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("invoices")
+2025-07-14 14:33:59,727 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,728 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issue_date")
+2025-07-14 14:33:59,730 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,732 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_uuid")
+2025-07-14 14:33:59,734 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,734 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_type_date")
+2025-07-14 14:33:59,736 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,736 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_receiver_date")
+2025-07-14 14:33:59,737 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,738 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_status")
+2025-07-14 14:33:59,739 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,742 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_issuer_date")
+2025-07-14 14:33:59,742 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,744 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_folio")
+2025-07-14 14:33:59,745 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,748 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_receiver_rfc")
+2025-07-14 14:33:59,750 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,751 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_amount_date")
+2025-07-14 14:33:59,751 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,752 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issuer_rfc")
+2025-07-14 14:33:59,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,753 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_list("invoices")
+2025-07-14 14:33:59,754 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,756 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issue_date")
+2025-07-14 14:33:59,757 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,759 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_uuid")
+2025-07-14 14:33:59,760 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,760 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_type_date")
+2025-07-14 14:33:59,760 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_receiver_date")
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_status")
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_issuer_date")
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,767 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_folio")
+2025-07-14 14:33:59,772 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,772 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_receiver_rfc")
+2025-07-14 14:33:59,775 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,776 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("idx_invoice_amount_date")
+2025-07-14 14:33:59,777 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,778 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - PRAGMA main.index_info("ix_invoices_issuer_rfc")
+2025-07-14 14:33:59,781 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ()
+2025-07-14 14:33:59,783 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT sql FROM  (SELECT * FROM sqlite_master UNION ALL   SELECT * FROM sqlite_temp_master) WHERE name = ? AND type in ('table', 'view')
+2025-07-14 14:33:59,784 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [raw sql] ('invoices',)
+2025-07-14 14:33:59,792 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT invoice_items.id, invoice_items.invoice_id, invoice_items.line_number, invoice_items.product_code, invoice_items.internal_code, invoice_items.description, invoice_items.quantity, invoice_items.unit_code, invoice_items.unit_description, invoice_items.units_per_package, invoice_items.package_description, invoice_items.unit_price, invoice_items.subtotal, invoice_items.discount, invoice_items.transferred_taxes, invoice_items.withheld_taxes, invoice_items.total_tax_amount, invoice_items.total_amount, invoice_items.category, invoice_items.subcategory, invoice_items.sub_sub_category, invoice_items.standardized_unit, invoice_items.standardized_quantity, invoice_items.conversion_factor, invoice_items.category_confidence, invoice_items.classification_source, invoice_items.approval_status, invoice_items.sku_key, invoice_items.classification_timestamp, invoice_items.custom_fields, invoice_items.created_at, invoice_items.updated_at 
+FROM invoice_items
+2025-07-14 14:33:59,794 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.00133s] ()
+2025-07-14 14:33:59,845 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - COMMIT
+2025-07-14 14:33:59,849 - __main__ - INFO - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - Writing 1112 rows to PostgreSQL table 'invoice_items'...
+2025-07-14 14:33:59,849 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - BEGIN (implicit)
+2025-07-14 14:33:59,854 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2025-07-14 14:33:59,855 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [cached since 4.013s ago] {'table_name': 'invoice_items', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2025-07-14 14:34:00,370 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - 
+CREATE TABLE invoice_items (
+	id BIGINT, 
+	invoice_id BIGINT, 
+	line_number BIGINT, 
+	product_code TEXT, 
+	internal_code TEXT, 
+	description TEXT, 
+	quantity FLOAT(53), 
+	unit_code TEXT, 
+	unit_description TEXT, 
+	units_per_package FLOAT(53), 
+	package_description TEXT, 
+	unit_price FLOAT(53), 
+	subtotal FLOAT(53), 
+	discount FLOAT(53), 
+	transferred_taxes TEXT, 
+	withheld_taxes TEXT, 
+	total_tax_amount BIGINT, 
+	total_amount FLOAT(53), 
+	category TEXT, 
+	subcategory TEXT, 
+	sub_sub_category TEXT, 
+	standardized_unit TEXT, 
+	standardized_quantity FLOAT(53), 
+	conversion_factor FLOAT(53), 
+	category_confidence FLOAT(53), 
+	classification_source TEXT, 
+	approval_status TEXT, 
+	sku_key TEXT, 
+	classification_timestamp TIMESTAMP WITHOUT TIME ZONE, 
+	custom_fields TEXT, 
+	created_at TIMESTAMP WITHOUT TIME ZONE, 
+	updated_at TIMESTAMP WITHOUT TIME ZONE
+)
+
+
+2025-07-14 14:34:00,370 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [no key 0.00469s] {}
+2025-07-14 14:34:00,722 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - INSERT INTO invoice_items (id, invoice_id, line_number, product_code, internal_code, description, quantity, unit_code, unit_description, units_per_package, package_description, unit_price, subtotal, discount, transferred_taxes, withheld_taxes, total_ ... 772648 characters truncated ... %(classification_timestamp__999)s, %(custom_fields__999)s, %(created_at__999)s, %(updated_at__999)s)
+2025-07-14 14:34:00,722 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - [generated in 0.02495s (insertmanyvalues) 1/1 (unordered)] {'package_description__0': 'Saco', 'quantity__0': 5.0, 'sub_sub_category__0': 'Mantenimiento y conservación Oficina', 'category__0': 'Gastos Generales', 'standardized_unit__0': 'Kilogramos', 'conversion_factor__0': 25.0, 'created_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'standardized_quantity__0': 125.0, 'updated_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'subtotal__0': 797.41, 'sku_key__0': 'sku_7e77527c_30111601_cemento_gris_holcim_25kg', 'unit_description__0': None, 'withheld_taxes__0': None, 'subcategory__0': 'Mantenimiento y conservación Oficina', 'line_number__0': 1, 'total_amount__0': 925.0, 'unit_price__0': 159.482, 'invoice_id__0': 1, 'description__0': 'CEMENTO GRIS HOLCIM 25KG', 'unit_code__0': 'H87', 'classification_source__0': 'gemini_api', 'classification_timestamp__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'custom_fields__0': {'processing_time': 2.403921127319336, 'api_attempt': 1, 'reasoning': "Cement is a construction material, so it falls under 'Suministros'. Since it's  ... (19 characters truncated) ... hen supply, it's classified as 'Otros' within 'Suministros Cocina'. The description indicates a 25kg bag, so units_per_package is 25.", 'error': None}, 'product_code__0': '30111601', 'total_tax_amount__0': 0, 'units_per_package__0': 25.0, 'discount__0': 0.0, 'id__0': 1, 'approval_status__0': 'approved', 'internal_code__0': None, 'transferred_taxes__0': None, 'category_confidence__0': 0.95, 'package_description__1': None, 'quantity__1': 0.46, 'sub_sub_category__1': 'Col', 'category__1': 'Vegetales', 'standardized_unit__1': 'Kilogramos', 'conversion_factor__1': 1.0, 'created_at__1': datetime.datetime(2025, 6, 17, 23, 27, 9, 841983), 'standardized_quantity__1': 0.46, 'updated_at__1': datetime.datetime(2025, 6, 17, 23, 27, 9, 841983), 'subtotal__1': 184.0, 'sku_key__1': 'sku_14c77eea_50414500_kale', 'unit_description__1': None, 'withheld_taxes__1': None, 'subcategory__1': 'Verduras', 'line_number__1': 1, 'total_amount__1': 184.0, 'unit_price__1': 400.0, 'invoice_id__1': 2 ... 31900 parameters truncated ... 'line_number__998': 11, 'total_amount__998': 120.0, 'unit_price__998': 240.0, 'invoice_id__998': 115, 'description__998': 'SHALLOT', 'unit_code__998': 'KGM', 'classification_source__998': 'approved_sku', 'classification_timestamp__998': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'custom_fields__998': {'processing_time': 0.0, 'api_attempt': None, 'reasoning': None, 'error': None}, 'product_code__998': '50403800', 'total_tax_amount__998': 0, 'units_per_package__998': 1.0, 'discount__998': 0.0, 'id__998': 999, 'approval_status__998': 'approved', 'internal_code__998': None, 'transferred_taxes__998': None, 'category_confidence__998': 1.0, 'package_description__999': None, 'quantity__999': 1.0, 'sub_sub_category__999': 'Lechuga Mixta', 'category__999': 'Vegetales', 'standardized_unit__999': 'Kilogramos', 'conversion_factor__999': 0.454, 'created_at__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'standardized_quantity__999': 1.0, 'updated_at__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'subtotal__999': 130.0, 'sku_key__999': 'sku_f6ce5c99_50404600_lechuga_mixta', 'unit_description__999': None, 'withheld_taxes__999': None, 'subcategory__999': 'Verduras', 'line_number__999': 12, 'total_amount__999': 130.0, 'unit_price__999': 130.0, 'invoice_id__999': 115, 'description__999': 'LECHUGA MIXTA', 'unit_code__999': 'H87', 'classification_source__999': 'gemini_api', 'classification_timestamp__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'custom_fields__999': {'processing_time': 1.4898877143859863, 'api_attempt': 1, 'reasoning': "The item is 'LECHUGA MIXTA' which is 'Lechuga Mixta' in the Vegetables > Verdu ... (23 characters truncated) ... s a vegetable, the standardized unit is Kilogramos. The quantity is 1 and there is no package information, so units_per_package is 1.", 'error': None}, 'product_code__999': '50404600', 'total_tax_amount__999': 0, 'units_per_package__999': 0.454, 'discount__999': 0.0, 'id__999': 1000, 'approval_status__999': 'approved', 'internal_code__999': None, 'transferred_taxes__999': None, 'category_confidence__999': 0.95}
+2025-07-14 14:34:00,744 - sqlalchemy.engine.Engine - INFO - File: base.py - File: base.py - File: base.py - COMMIT
+2025-07-14 14:34:01,005 - __main__ - ERROR - File: migrate_data.py - File: migrate_data.py - File: migrate_data.py - FAILED to migrate table 'invoice_items': (psycopg2.ProgrammingError) can't adapt type 'dict'
+[SQL: INSERT INTO invoice_items (id, invoice_id, line_number, product_code, internal_code, description, quantity, unit_code, unit_description, units_per_package, package_description, unit_price, subtotal, discount, transferred_taxes, withheld_taxes, total_ ... 772648 characters truncated ... %(classification_timestamp__999)s, %(custom_fields__999)s, %(created_at__999)s, %(updated_at__999)s)]
+[parameters: {'package_description__0': 'Saco', 'quantity__0': 5.0, 'sub_sub_category__0': 'Mantenimiento y conservación Oficina', 'category__0': 'Gastos Generales', 'standardized_unit__0': 'Kilogramos', 'conversion_factor__0': 25.0, 'created_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'standardized_quantity__0': 125.0, 'updated_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'subtotal__0': 797.41, 'sku_key__0': 'sku_7e77527c_30111601_cemento_gris_holcim_25kg', 'unit_description__0': None, 'withheld_taxes__0': None, 'subcategory__0': 'Mantenimiento y conservación Oficina', 'line_number__0': 1, 'total_amount__0': 925.0, 'unit_price__0': 159.482, 'invoice_id__0': 1, 'description__0': 'CEMENTO GRIS HOLCIM 25KG', 'unit_code__0': 'H87', 'classification_source__0': 'gemini_api', 'classification_timestamp__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'custom_fields__0': {'processing_time': 2.403921127319336, 'api_attempt': 1, 'reasoning': "Cement is a construction material, so it falls under 'Suministros'. Since it's  ... (19 characters truncated) ... hen supply, it's classified as 'Otros' within 'Suministros Cocina'. The description indicates a 25kg bag, so units_per_package is 25.", 'error': None}, 'product_code__0': '30111601', 'total_tax_amount__0': 0, 'units_per_package__0': 25.0, 'discount__0': 0.0, 'id__0': 1, 'approval_status__0': 'approved', 'internal_code__0': None, 'transferred_taxes__0': None, 'category_confidence__0': 0.95, 'package_description__1': None, 'quantity__1': 0.46, 'sub_sub_category__1': 'Col', 'category__1': 'Vegetales', 'standardized_unit__1': 'Kilogramos', 'conversion_factor__1': 1.0, 'created_at__1': datetime.datetime(2025, 6, 17, 23, 27, 9, 841983), 'standardized_quantity__1': 0.46, 'updated_at__1': datetime.datetime(2025, 6, 17, 23, 27, 9, 841983), 'subtotal__1': 184.0, 'sku_key__1': 'sku_14c77eea_50414500_kale', 'unit_description__1': None, 'withheld_taxes__1': None, 'subcategory__1': 'Verduras', 'line_number__1': 1, 'total_amount__1': 184.0, 'unit_price__1': 400.0, 'invoice_id__1': 2 ... 31900 parameters truncated ... 'line_number__998': 11, 'total_amount__998': 120.0, 'unit_price__998': 240.0, 'invoice_id__998': 115, 'description__998': 'SHALLOT', 'unit_code__998': 'KGM', 'classification_source__998': 'approved_sku', 'classification_timestamp__998': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'custom_fields__998': {'processing_time': 0.0, 'api_attempt': None, 'reasoning': None, 'error': None}, 'product_code__998': '50403800', 'total_tax_amount__998': 0, 'units_per_package__998': 1.0, 'discount__998': 0.0, 'id__998': 999, 'approval_status__998': 'approved', 'internal_code__998': None, 'transferred_taxes__998': None, 'category_confidence__998': 1.0, 'package_description__999': None, 'quantity__999': 1.0, 'sub_sub_category__999': 'Lechuga Mixta', 'category__999': 'Vegetales', 'standardized_unit__999': 'Kilogramos', 'conversion_factor__999': 0.454, 'created_at__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'standardized_quantity__999': 1.0, 'updated_at__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'subtotal__999': 130.0, 'sku_key__999': 'sku_f6ce5c99_50404600_lechuga_mixta', 'unit_description__999': None, 'withheld_taxes__999': None, 'subcategory__999': 'Verduras', 'line_number__999': 12, 'total_amount__999': 130.0, 'unit_price__999': 130.0, 'invoice_id__999': 115, 'description__999': 'LECHUGA MIXTA', 'unit_code__999': 'H87', 'classification_source__999': 'gemini_api', 'classification_timestamp__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'custom_fields__999': {'processing_time': 1.4898877143859863, 'api_attempt': 1, 'reasoning': "The item is 'LECHUGA MIXTA' which is 'Lechuga Mixta' in the Vegetables > Verdu ... (23 characters truncated) ... s a vegetable, the standardized unit is Kilogramos. The quantity is 1 and there is no package information, so units_per_package is 1.", 'error': None}, 'product_code__999': '50404600', 'total_tax_amount__999': 0, 'units_per_package__999': 0.454, 'discount__999': 0.0, 'id__999': 1000, 'approval_status__999': 'approved', 'internal_code__999': None, 'transferred_taxes__999': None, 'category_confidence__999': 0.95}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 2112, in _exec_insertmany_context
+    dialect.do_execute(
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.ProgrammingError: can't adapt type 'dict'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\Lenovo.DESKTOP-IFK4702\Desktop\02. PROGRAMACION\01. TRAINING EXCERSISES\01. Proyecto Costeo Facturas_v3\scripts\migrate_data.py", line 120, in migrate_data
+    df.to_sql(
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\core\generic.py", line 3084, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\sql.py", line 842, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\sql.py", line 2018, in to_sql
+    total_inserted = sql_engine.insert_records(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\sql.py", line 1567, in insert_records
+    raise err
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\sql.py", line 1558, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\sql.py", line 1119, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\sql.py", line 1010, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\sql\elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_insertmany_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 2120, in _exec_insertmany_context
+    self._handle_dbapi_exception(
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 2343, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 2112, in _exec_insertmany_context
+    dialect.do_execute(
+  File "C:\Users\Lenovo.DESKTOP-IFK4702\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.ProgrammingError) can't adapt type 'dict'
+[SQL: INSERT INTO invoice_items (id, invoice_id, line_number, product_code, internal_code, description, quantity, unit_code, unit_description, units_per_package, package_description, unit_price, subtotal, discount, transferred_taxes, withheld_taxes, total_ ... 772648 characters truncated ... %(classification_timestamp__999)s, %(custom_fields__999)s, %(created_at__999)s, %(updated_at__999)s)]
+[parameters: {'package_description__0': 'Saco', 'quantity__0': 5.0, 'sub_sub_category__0': 'Mantenimiento y conservación Oficina', 'category__0': 'Gastos Generales', 'standardized_unit__0': 'Kilogramos', 'conversion_factor__0': 25.0, 'created_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'standardized_quantity__0': 125.0, 'updated_at__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'subtotal__0': 797.41, 'sku_key__0': 'sku_7e77527c_30111601_cemento_gris_holcim_25kg', 'unit_description__0': None, 'withheld_taxes__0': None, 'subcategory__0': 'Mantenimiento y conservación Oficina', 'line_number__0': 1, 'total_amount__0': 925.0, 'unit_price__0': 159.482, 'invoice_id__0': 1, 'description__0': 'CEMENTO GRIS HOLCIM 25KG', 'unit_code__0': 'H87', 'classification_source__0': 'gemini_api', 'classification_timestamp__0': datetime.datetime(2025, 6, 17, 23, 26, 55, 484636), 'custom_fields__0': {'processing_time': 2.403921127319336, 'api_attempt': 1, 'reasoning': "Cement is a construction material, so it falls under 'Suministros'. Since it's  ... (19 characters truncated) ... hen supply, it's classified as 'Otros' within 'Suministros Cocina'. The description indicates a 25kg bag, so units_per_package is 25.", 'error': None}, 'product_code__0': '30111601', 'total_tax_amount__0': 0, 'units_per_package__0': 25.0, 'discount__0': 0.0, 'id__0': 1, 'approval_status__0': 'approved', 'internal_code__0': None, 'transferred_taxes__0': None, 'category_confidence__0': 0.95, 'package_description__1': None, 'quantity__1': 0.46, 'sub_sub_category__1': 'Col', 'category__1': 'Vegetales', 'standardized_unit__1': 'Kilogramos', 'conversion_factor__1': 1.0, 'created_at__1': datetime.datetime(2025, 6, 17, 23, 27, 9, 841983), 'standardized_quantity__1': 0.46, 'updated_at__1': datetime.datetime(2025, 6, 17, 23, 27, 9, 841983), 'subtotal__1': 184.0, 'sku_key__1': 'sku_14c77eea_50414500_kale', 'unit_description__1': None, 'withheld_taxes__1': None, 'subcategory__1': 'Verduras', 'line_number__1': 1, 'total_amount__1': 184.0, 'unit_price__1': 400.0, 'invoice_id__1': 2 ... 31900 parameters truncated ... 'line_number__998': 11, 'total_amount__998': 120.0, 'unit_price__998': 240.0, 'invoice_id__998': 115, 'description__998': 'SHALLOT', 'unit_code__998': 'KGM', 'classification_source__998': 'approved_sku', 'classification_timestamp__998': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'custom_fields__998': {'processing_time': 0.0, 'api_attempt': None, 'reasoning': None, 'error': None}, 'product_code__998': '50403800', 'total_tax_amount__998': 0, 'units_per_package__998': 1.0, 'discount__998': 0.0, 'id__998': 999, 'approval_status__998': 'approved', 'internal_code__998': None, 'transferred_taxes__998': None, 'category_confidence__998': 1.0, 'package_description__999': None, 'quantity__999': 1.0, 'sub_sub_category__999': 'Lechuga Mixta', 'category__999': 'Vegetales', 'standardized_unit__999': 'Kilogramos', 'conversion_factor__999': 0.454, 'created_at__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'standardized_quantity__999': 1.0, 'updated_at__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'subtotal__999': 130.0, 'sku_key__999': 'sku_f6ce5c99_50404600_lechuga_mixta', 'unit_description__999': None, 'withheld_taxes__999': None, 'subcategory__999': 'Verduras', 'line_number__999': 12, 'total_amount__999': 130.0, 'unit_price__999': 130.0, 'invoice_id__999': 115, 'description__999': 'LECHUGA MIXTA', 'unit_code__999': 'H87', 'classification_source__999': 'gemini_api', 'classification_timestamp__999': datetime.datetime(2025, 7, 11, 23, 38, 46, 301985), 'custom_fields__999': {'processing_time': 1.4898877143859863, 'api_attempt': 1, 'reasoning': "The item is 'LECHUGA MIXTA' which is 'Lechuga Mixta' in the Vegetables > Verdu ... (23 characters truncated) ... s a vegetable, the standardized unit is Kilogramos. The quantity is 1 and there is no package information, so units_per_package is 1.", 'error': None}, 'product_code__999': '50404600', 'total_tax_amount__999': 0, 'units_per_package__999': 0.454, 'discount__999': 0.0, 'id__999': 1000, 'approval_status__999': 'approved', 'internal_code__999': None, 'transferred_taxes__999': None, 'category_confidence__999': 0.95}]
+(Background on this error at: https://sqlalche.me/e/20/f405)

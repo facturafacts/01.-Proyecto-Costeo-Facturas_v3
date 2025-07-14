@@ -27,7 +27,7 @@ p62_processing.log
 /docs/
 
 # Local scripts and test files
-/scripts/
+# We now need /scripts/ and /config/ for the build command on DigitalOcean
 /tests/
 
 # Other local files

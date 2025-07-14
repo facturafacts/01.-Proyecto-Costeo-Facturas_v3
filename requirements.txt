@@ -16,6 +16,7 @@ openai>=1.0.0  # Alternative AI provider
 
 # Database
 alembic>=1.12.0  # Database migrations
+psycopg2-binary>=2.9.0 # PostgreSQL driver
 
 # Data Analysis (for notebooks)
 jupyter>=1.0.0

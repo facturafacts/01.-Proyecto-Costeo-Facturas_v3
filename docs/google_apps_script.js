@@ -17,7 +17,7 @@
 // ========================================
 
 // Base ngrok URL (just change this part when ngrok restarts)
-const BASE_URL = 'https://22ae-79-127-180-19.ngrok-free.app';
+const BASE_URL = 'https://octopus-app-vzk4s.ondigitalocean.app';
 
 // API endpoints (don't change these)
 const ENDPOINTS = {
