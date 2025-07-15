@@ -131,7 +131,7 @@ class InvoiceItem(Base):
     
     # Primary Key & Relationships
     id = Column(Integer, primary_key=True, autoincrement=True)
-    invoice_id = Column(Integer, ForeignKey('invoices.id'), nullable=False)
+    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_invoice_items_invoice_id', use_alter=True), nullable=False)
     line_number = Column(Integer, nullable=False)
     
     # Item Identification
@@ -260,7 +260,7 @@ class ProcessingLog(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     
     # Optional Foreign Key
-    invoice_id = Column(Integer, ForeignKey('invoices.id'), nullable=True)
+    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_processing_logs_invoice_id', use_alter=True), nullable=True)
     
     # Log Classification
     log_level = Column(String(10), nullable=False)
@@ -302,7 +302,7 @@ class InvoiceMetadata(Base):
     
     # Primary Key & Relationship
     id = Column(Integer, primary_key=True, autoincrement=True)
-    invoice_id = Column(Integer, ForeignKey('invoices.id'), unique=True, nullable=False)
+    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_invoice_metadata_invoice_id', use_alter=True), unique=True, nullable=False)
     
     # Basic Invoice Info
     uuid = Column(String(36), nullable=False)
@@ -429,7 +429,7 @@ class SalesItem(Base):
     __tablename__ = 'sales_items'
     
     id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey('sales_orders.id'), nullable=False)
+    order_id = Column(Integer, ForeignKey('sales_orders.id', name='fk_sales_items_order_id', use_alter=True), nullable=False)
     
     # Business keys from comandas file
     folio_comanda = Column(String, nullable=True, index=True)  # Can be null since we match by foliocuenta
@@ -477,7 +477,7 @@ class SalesQualityLog(Base):
     __tablename__ = 'sales_quality_log'
     
     id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey('sales_orders.id'), nullable=True)
+    order_id = Column(Integer, ForeignKey('sales_orders.id', name='fk_sales_quality_log_order_id', use_alter=True), nullable=True)
     
     # Issue classification
     issue_type = Column(String, nullable=False, index=True)  # DUPLICATE, MISMATCH, ORPHAN, etc.
