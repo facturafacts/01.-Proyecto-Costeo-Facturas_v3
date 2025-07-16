@@ -6,108 +6,61 @@ Main FastAPI Application for CFDI Processing System v4
 Local API server for serving invoice metadata to Google Sheets.
 """
 
-import logging
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
-from .endpoints import router
-from config.settings import get_settings
-
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Get settings
-settings = get_settings()
-
-# Create FastAPI app
 app = FastAPI(
-    title=settings.API_TITLE,
-    version=settings.API_VERSION,
-    description="REST API for CFDI invoice metadata export to Google Sheets",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    title="CFDI Processing System v4 - Minimal Test",
+    description="A temporary, minimal API to confirm deployment health.",
+    version="0.0.1",
 )
 
-# Add CORS middleware for Google Sheets access
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://script.google.com",  # Google Apps Script
-        "https://docs.google.com",    # Google Sheets
-        "https://sheets.googleapis.com",  # Google Sheets API
-        "http://localhost:3000",      # Local development
-        "http://127.0.0.1:3000",      # Local development
-    ],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["*"],
-)
-
-# Include API router
-app.include_router(router)
-
-# Root endpoint
-@app.get("/", tags=["Root"])
+@app.get("/", summary="Health Check")
 async def read_root():
-    """
-    Root endpoint with API information.
-    """
-    return {
-        "message": "CFDI Invoice Metadata API",
-        "version": settings.API_VERSION,
-        "docs": "/docs",
-        "health": "/api/health",
-        "endpoints": {
-            "invoice_metadata": "/api/invoices/metadata",
-            "single_invoice": "/api/invoices/metadata/{uuid}"
-        }
-    }
+    """A simple health check endpoint."""
+    return {"status": "ok", "message": "API is running!"}
 
-# Global exception handler
-@app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
-    """
-    Global exception handler for unhandled errors.
-    """
-    logger.error(f"Unhandled exception: {exc}")
-    return JSONResponse(
-        status_code=500,
-        content={
-            "success": False,
-            "error": "Internal server error",
-            "detail": str(exc) if settings.DEBUG else "An unexpected error occurred"
-        }
-    )
+# All other code is temporarily commented out for debugging.
+# from fastapi.middleware.cors import CORSMiddleware
+# from .endpoints import router as api_router
+# from ..utils.logging_config import get_logger
 
-# Startup event
-@app.on_event("startup")
-async def startup_event():
-    """
-    Application startup event.
-    """
-    logger.info(f"Starting {settings.API_TITLE} v{settings.API_VERSION}")
-    logger.info(f"Environment: {settings.ENVIRONMENT}")
-    logger.info(f"Debug mode: {settings.DEBUG}")
-    logger.info(f"API docs available at: http://{settings.API_HOST}:{settings.API_PORT}/docs")
+# logger = get_logger(__name__)
 
-# Shutdown event
-@app.on_event("shutdown")
-async def shutdown_event():
-    """
-    Application shutdown event.
-    """
-    logger.info("Shutting down CFDI Invoice Metadata API")
+# app = FastAPI(
+#     title="CFDI Processing System v4",
+#     description="API for processing and analyzing CFDI invoices.",
+#     version="4.0.0",
+# )
 
-if __name__ == "__main__":
-    import uvicorn
-    
-    logger.info(f"Starting server on {settings.API_HOST}:{settings.API_PORT}")
-    uvicorn.run(
-        "main:app",
-        host=settings.API_HOST,
-        port=settings.API_PORT,
-        reload=settings.DEBUG,
-        log_level="info" if settings.DEBUG else "warning"
-    ) 
+# # Configure CORS
+# origins = [
+#     "http://localhost",
+#     "http://localhost:3000",
+#     "https://*.google.com",
+#     "https://*.gstatic.com",
+#     "https://*.googleapis.com",
+# ]
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+# @app.on_event("startup")
+# async def startup_event():
+#     logger.info("🚀 API is starting up...")
+
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     logger.info("🔌 API is shutting down...")
+
+# @app.get("/", summary="Health Check")
+# async def read_root():
+#     """A simple health check endpoint."""
+#     return {"status": "ok", "message": "CFDI API is running!"}
+
+# # Include the API router
+# app.include_router(api_router, prefix="/api", tags=["CFDI API"]) 
