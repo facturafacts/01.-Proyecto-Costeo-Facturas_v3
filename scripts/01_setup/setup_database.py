@@ -96,78 +96,55 @@ def create_purchase_details_table(db_manager: DatabaseManager) -> bool:
         print(f"   ❌ Failed to create purchase_details table: {e}")
         return False
 
+def check_db_connection(engine):
+    """Checks if the database connection is valid."""
+    try:
+        connection = engine.connect()
+        connection.close()
+        print("✅ Database connection successful.")
+        return True
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        return False
+
+def setup_database(engine):
+    """Initializes the database, creating tables and adding default data."""
+    print("📊 Initializing database...")
+    try:
+        # Drop all tables to ensure a clean slate
+        print("Dropping all existing tables...")
+        Base.metadata.drop_all(engine)
+        print("Tables dropped successfully.")
+        
+        # Create all tables defined in the models
+        print("Creating new tables...")
+        Base.metadata.create_all(engine)
+        print("✅ Tables created successfully.")
+
+    except Exception as e:
+        print(f"❌ Setup failed: {e}")
+        # Re-raise the exception to make the script exit with an error code
+        raise
+
 def main():
     """Setup database and directory structure."""
     print("🚀 Setting up CFDI Processing System v4")
-    print("=" * 50)
+    print("==================================================")
     
-    try:
-        # Load settings
-        settings = get_settings()
-        print(f"Environment: {settings.ENVIRONMENT}")
-        
-        # Initialize database
-        print("\n📊 Initializing database...")
-        db_manager = DatabaseManager()
-        db_manager.initialize_database()
-        print("✅ Core tables initialized successfully!")
+    # Load environment-specific settings
+    settings = get_settings()
+    print(f"Environment: {settings.ENVIRONMENT}")
+    print()
+    
+    # Initialize database engine
+    engine = get_engine()
 
-        # Also create the purchase_details table
-        create_purchase_details_table(db_manager)
-        
-        # Verify tables
-        print("\n🔍 Verifying tables...")
-        
-        # Import models to check table creation
-        from data.models import Invoice, InvoiceItem, ApprovedSku, ProcessingLog, InvoiceMetadata, SalesOrder, SalesItem, SalesQualityLog
-        
-        # Try to query each table
-        with db_manager.get_session() as session:
-            invoice_count = session.query(Invoice).count()
-            item_count = session.query(InvoiceItem).count()
-            sku_count = session.query(ApprovedSku).count()
-            log_count = session.query(ProcessingLog).count()
-            metadata_count = session.query(InvoiceMetadata).count()
-            
-            # P62 Sales tables
-            sales_order_count = session.query(SalesOrder).count()
-            sales_item_count = session.query(SalesItem).count()
-            sales_quality_count = session.query(SalesQualityLog).count()
-        
-        print(f"   • Invoices: {invoice_count}")
-        print(f"   • Invoice Items: {item_count}")
-        print(f"   • Approved SKUs: {sku_count}")
-        print(f"   • Processing Logs: {log_count}")
-        print(f"   • Invoice Metadata: {metadata_count}")
-        print(f"   • Sales Orders (P62): {sales_order_count}")
-        print(f"   • Sales Items (P62): {sales_item_count}")
-        print(f"   • Sales Quality Logs (P62): {sales_quality_count}")
-        
-        # Directory verification
-        print("\n📁 Directory structure:")
-        directories = [
-            settings.INBOX_PATH,
-            settings.PROCESSED_PATH,
-            settings.FAILED_PATH,
-            settings.LOGS_PATH
-        ]
-        
-        for directory in directories:
-            path = Path(directory)
-            if path.exists():
-                print(f"   ✅ {directory}")
-            else:
-                print(f"   ❌ {directory} (missing)")
-        
-        print("\n🎉 Setup completed successfully!")
-        print("\nNext steps:")
-        print("1. Configure your environment variables in config/.env")
-        print("2. Place XML files in data/inbox/")
-        print("3. Run: python main.py")
-        
-    except Exception as e:
-        print(f"\n❌ Setup failed: {e}")
-        sys.exit(1)
+    # Check database connection before proceeding
+    if not check_db_connection(engine):
+        return  # Exit if connection fails
+
+    # Setup database schema and initial data
+    setup_database(engine)
 
 if __name__ == "__main__":
     main() 
