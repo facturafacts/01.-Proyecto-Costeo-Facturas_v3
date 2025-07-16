@@ -43,9 +43,11 @@ class DatabaseManager:
     def _initialize_connection(self) -> None:
         """Initialize database connection and session factory."""
         try:
-            # Ensure database directory exists
-            db_path = Path(self.settings.DATABASE_URL.replace('sqlite:///', ''))
-            db_path.parent.mkdir(parents=True, exist_ok=True)
+            # For SQLite, ensure the database directory exists.
+            # This is not needed for PostgreSQL.
+            if "sqlite" in self.settings.DATABASE_URL:
+                db_path = Path(self.settings.DATABASE_URL.replace('sqlite:///', ''))
+                db_path.parent.mkdir(parents=True, exist_ok=True)
             
             # Create engine with optimizations.
             # The connect_args are specific to SQLite and should not be used for PostgreSQL.
