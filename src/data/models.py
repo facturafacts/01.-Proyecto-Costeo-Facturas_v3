@@ -359,3 +359,26 @@ class InvoiceMetadata(Base):
         Index('idx_meta_mxn_total', 'mxn_total'),
         Index('idx_meta_status', 'processing_status'),
     ) 
+
+class PurchaseDetails(Base):
+    """
+    Stores details about purchases, linking items to specific purchase orders.
+    """
+    __tablename__ = 'purchase_details'
+
+    id = Column(Integer, primary_key=True)
+    purchase_order = Column(String, nullable=False, index=True)
+    item_id = Column(Integer, ForeignKey('invoice_items.id'), nullable=False, index=True)
+    quantity_purchased = Column(Numeric(15, 6), nullable=False)
+    purchase_date = Column(Date, nullable=False, index=True)
+    supplier_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    item = relationship("InvoiceItem")
+
+    __table_args__ = (
+        Index('idx_purchase_order_date', 'purchase_order', 'purchase_date'),
+    )
+
+    def __repr__(self):
+        return f"<PurchaseDetails(po='{self.purchase_order}', item_id={self.item_id}, qty={self.quantity_purchased})>" 
