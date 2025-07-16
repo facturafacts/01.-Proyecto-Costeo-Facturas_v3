@@ -25,6 +25,7 @@ from data.models import Base  # Import the Base for metadata operations
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 
+
 def check_db_connection(engine):
     """Checks if the database connection is valid."""
     try:
@@ -33,8 +34,9 @@ def check_db_connection(engine):
         logger.info("✅ Database connection successful.")
         return True
     except OperationalError as e:
-        logger.error(f"❌ Database connection failed: {e}")
+        logger.error(f"❌ Database connection failed: {e}", exc_info=True)
         return False
+
 
 def setup_database(engine):
     """Initializes the database, creating tables and adding default data."""
@@ -51,9 +53,10 @@ def setup_database(engine):
         logger.info("✅ Tables created successfully.")
 
     except Exception as e:
-        logger.error(f"❌ Setup failed: {e}")
+        logger.error(f"❌ Setup failed during table creation: {e}", exc_info=True)
         # Re-raise the exception to make the script exit with an error code
         raise
+
 
 def main():
     """Setup database and directory structure."""
@@ -62,8 +65,7 @@ def main():
     
     # Load environment-specific settings
     settings = get_settings()
-    logger.info(f"Environment: {settings.ENVIRONMENT}")
-    logger.info("")
+    logger.info(f"Environment: {settings.ENVIRONMENT}\n")
     
     # Initialize database manager and get the engine
     db_manager = DatabaseManager()
@@ -71,10 +73,11 @@ def main():
 
     # Check database connection before proceeding
     if not check_db_connection(engine):
-        return  # Exit if connection fails
-
-    # Setup database schema and initial data
+        logger.error("Aborting setup due to database connection failure.")
+        sys.exit(1)
+    
     setup_database(engine)
+
 
 if __name__ == "__main__":
     main() 
