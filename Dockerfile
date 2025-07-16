@@ -25,4 +25,4 @@ EXPOSE 8080
 # The command to run your application using uvicorn
 # We run it directly, bypassing the local run_api.py script.
 # The host 0.0.0.0 is required to make the app accessible from outside the container.
-CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8080"] 
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8080", "--timeout-keep-alive", "60"] 
