@@ -40,9 +40,9 @@ def setup_database(engine):
     """Initializes the database, creating tables and adding default data."""
     logger.info("📊 Initializing database...")
     try:
-        # Drop all tables to ensure a clean slate
+        # Drop all tables to ensure a clean slate, checking for existence first
         logger.info("Dropping all existing tables...")
-        Base.metadata.drop_all(engine)
+        Base.metadata.drop_all(engine, checkfirst=True)
         logger.info("Tables dropped successfully.")
         
         # Create all tables defined in the models
