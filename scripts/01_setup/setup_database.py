@@ -18,7 +18,7 @@ sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(project_root / "src"))
 
 from config.settings import get_settings
-from data.database import get_engine
+from data.database import DatabaseManager  # Import the manager class
 from data.models import Base  # Import the Base for metadata operations
 
 # Configure logging
@@ -65,8 +65,9 @@ def main():
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info("")
     
-    # Initialize database engine
-    engine = get_engine()
+    # Initialize database manager and get the engine
+    db_manager = DatabaseManager()
+    engine = db_manager.engine
 
     # Check database connection before proceeding
     if not check_db_connection(engine):
