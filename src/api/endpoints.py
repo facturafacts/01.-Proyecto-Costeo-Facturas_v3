@@ -36,7 +36,7 @@ from .models import (
 logger = logging.getLogger(__name__)
 
 # Create router
-router = APIRouter(prefix="/api", tags=["Invoice Metadata"])
+router = APIRouter(tags=["Invoice Metadata"])
 
 # Database dependency
 def get_db_manager():

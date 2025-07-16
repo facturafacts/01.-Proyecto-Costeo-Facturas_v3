@@ -6,12 +6,18 @@ Main FastAPI Application for CFDI Processing System v4
 Local API server for serving invoice metadata to Google Sheets.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from .endpoints import router as api_router
 from ..utils.logging_config import get_logger
 
 logger = get_logger(__name__)
+
+# Create main router
+router = APIRouter()
+
+# Include the API router
+router.include_router(api_router)
 
 app = FastAPI(
     title="CFDI Processing System v4",
@@ -46,7 +52,7 @@ async def shutdown_event():
     logger.info("🛑 API is shutting down...")
 
 # Include the main API router
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(router, prefix="/api/v1")
 
 @app.get("/", summary="Health Check")
 def read_root():
