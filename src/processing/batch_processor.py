@@ -180,8 +180,7 @@ class BatchProcessor:
             logger.info(f"[METADATA] Creating business metadata")
             self._create_invoice_metadata(invoice_id, parsed_data, classifications)
             
-            # 6. Save to purchase_details table for Google Sheets export
-            self._save_to_purchase_details(invoice_id, parsed_data, classifications)
+            # The _save_to_purchase_details function is removed as this logic is now handled by the DatabaseManager
             
             # 7. Log success
             processing_time = time.time() - start_time
@@ -728,121 +727,8 @@ class BatchProcessor:
         
         return duplicate_info
 
-    def _save_to_purchase_details(self, invoice_id: int, parsed_data: Dict[str, Any], 
-                                 classifications: List[Dict[str, Any]]) -> None:
-        """
-        Save invoice data to purchase_details table for Google Sheets export.
-        
-        Args:
-            invoice_id: Invoice database ID
-            parsed_data: Parsed XML data
-            classifications: Item classifications
-        """
-        try:
-            logger.info(f"[PURCHASE_DETAILS] Saving to purchase_details table")
-            
-            with self.db_manager.get_session() as session:
-                # Import models to avoid circular imports
-                from src.data.models import Invoice, InvoiceMetadata
-                
-                # Get invoice and metadata info
-                invoice = session.get(Invoice, invoice_id)
-                metadata = session.query(InvoiceMetadata).filter_by(invoice_id=invoice_id).first()
-                
-                if not invoice or not metadata:
-                    logger.warning(f"Could not find invoice or metadata for ID {invoice_id}")
-                    return
-                
-                # Use direct SQLite connection for purchase_details insert
-                import sqlite3
-                db_path = self.settings.DATABASE_URL.replace('sqlite:///', '')
-                conn = sqlite3.connect(db_path)
-                cursor = conn.cursor()
-                
-                try:
-                    # Insert each item into purchase_details
-                    for idx, (item_data, classification) in enumerate(zip(parsed_data.get('items', []), classifications)):
-                        
-                        # Calculate values with safe decimal conversion
-                        original_quantity = float(self._safe_decimal(item_data.get('quantity', 0)))
-                        unit_price = float(self._safe_decimal(item_data.get('unit_price', 0)))
-                        total_amount = float(self._safe_decimal(item_data.get('total_amount', 0)))
-                        subtotal = float(self._safe_decimal(item_data.get('subtotal', 0)))
-                        discount = float(self._safe_decimal(item_data.get('discount', 0)))
-                        total_tax_amount = float(self._safe_decimal(item_data.get('total_tax_amount', 0)))
-                        
-                        exchange_rate = float(invoice.exchange_rate or 1.0)
-                        units_per_package = float(self._safe_decimal(classification.get('units_per_package', 1)))
-                        conversion_factor = float(self._safe_decimal(classification.get('conversion_factor', 1)))
-                        
-                        # Calculate MXN values
-                        item_mxn_total = total_amount * exchange_rate
-                        unit_mxn_price = unit_price * exchange_rate
-                        standardized_quantity = original_quantity * units_per_package
-                        standardized_mxn_value = standardized_quantity * unit_price * exchange_rate if standardized_quantity else None
-                        
-                        cursor.execute("""
-                            INSERT INTO purchase_details (
-                                invoice_uuid, folio, issue_date, issuer_rfc, issuer_name,
-                                receiver_rfc, receiver_name, payment_method, payment_terms,
-                                currency, exchange_rate, invoice_mxn_total, is_installments, is_immediate,
-                                line_number, product_code, description, quantity, unit_code,
-                                unit_price, subtotal, discount, total_amount, total_tax_amount,
-                                units_per_package, standardized_unit, standardized_quantity, conversion_factor,
-                                category, subcategory, sub_sub_category, category_confidence,
-                                classification_source, approval_status, sku_key,
-                                item_mxn_total, standardized_mxn_value, unit_mxn_price,
-                                created_at, updated_at
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        """, (
-                            invoice.uuid, 
-                            invoice.folio, 
-                            invoice.issue_date.date() if invoice.issue_date else None,
-                            invoice.issuer_rfc, 
-                            invoice.issuer_name,
-                            invoice.receiver_rfc, 
-                            invoice.receiver_name, 
-                            invoice.payment_method, 
-                            invoice.payment_terms,
-                            invoice.currency, 
-                            exchange_rate, 
-                            float(metadata.mxn_total), 
-                            metadata.is_installments, 
-                            metadata.is_immediate,
-                            idx + 1, 
-                            item_data.get('product_code'), 
-                            item_data.get('description', ''),
-                            original_quantity, 
-                            item_data.get('unit_code'), 
-                            unit_price,
-                            subtotal, 
-                            discount,
-                            total_amount, 
-                            total_tax_amount,
-                            units_per_package, 
-                            classification.get('standardized_unit'), 
-                            standardized_quantity,
-                            conversion_factor, 
-                            classification.get('category'),
-                            classification.get('subcategory'), 
-                            classification.get('sub_sub_category'),
-                            classification.get('confidence'), 
-                            classification.get('source'),
-                            classification.get('approval_status', 'pending'), 
-                            classification.get('sku_key'),
-                            item_mxn_total, 
-                            standardized_mxn_value, 
-                            unit_mxn_price,
-                            datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
-                            datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-                        ))
-                    
-                    conn.commit()
-                    logger.info(f"[PURCHASE_DETAILS] Saved {len(classifications)} items to purchase_details table")
-                    
-                finally:
-                    conn.close()
-                    
-        except Exception as e:
-            logger.error(f"[PURCHASE_DETAILS] Failed to save to purchase_details table: {e}")
-            # Don't raise exception - this shouldn't stop the main processing 
+# The _save_to_purchase_details function has been removed as this functionality is
+# now handled by the DatabaseManager, which correctly populates all necessary tables,
+# including purchase_details, through SQLAlchemy models and relationships.
+# This centralization ensures that all database operations are consistent,
+# transactional, and independent of the underlying database engine (SQLite or PostgreSQL). 
