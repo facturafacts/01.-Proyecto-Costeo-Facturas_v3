@@ -131,7 +131,7 @@ class InvoiceItem(Base):
     
     # Primary Key & Relationships
     id = Column(Integer, primary_key=True, autoincrement=True)
-    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_invoice_items_invoice_id', use_alter=True), nullable=False)
+    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_invoice_items_invoice_id'), nullable=False)
     line_number = Column(Integer, nullable=False)
     
     # Item Identification
@@ -260,7 +260,7 @@ class ProcessingLog(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     
     # Optional Foreign Key
-    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_processing_logs_invoice_id', use_alter=True), nullable=True)
+    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_processing_logs_invoice_id'), nullable=True)
     
     # Log Classification
     log_level = Column(String(10), nullable=False)
@@ -302,7 +302,7 @@ class InvoiceMetadata(Base):
     
     # Primary Key & Relationship
     id = Column(Integer, primary_key=True, autoincrement=True)
-    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_invoice_metadata_invoice_id', use_alter=True), unique=True, nullable=False)
+    invoice_id = Column(Integer, ForeignKey('invoices.id', name='fk_invoice_metadata_invoice_id'), unique=True, nullable=False)
     
     # Basic Invoice Info
     uuid = Column(String(36), nullable=False)
