@@ -24,11 +24,12 @@ logger = logging.getLogger(__name__)
 
 # Tables to clear, in an order that respects foreign key dependencies for truncation
 TABLES_TO_TRUNCATE = [
-    "invoice_items",
-    # "invoice_metadata", # This table did not exist, so we comment it out.
-    # "processing_logs", # This table also did not exist.
-    "invoices",
-    "approved_skus" 
+    "purchase_details",  # Clear this first as it depends on invoice_items
+    "invoice_metadata",  # Depends on invoices
+    "processing_logs",   # Depends on invoices
+    "invoice_items",     # Depends on invoices
+    "invoices",          # Main table
+    "approved_skus"      # Independent table
 ]
 
 def clear_database_tables():

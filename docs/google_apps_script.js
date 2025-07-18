@@ -21,9 +21,9 @@ const BASE_URL = 'https://octopus-app-vzk4s.ondigitalocean.app';
 
 // API endpoints (don't change these)
 const ENDPOINTS = {
-  health: '/api/health',
-  metadata: '/api/invoices/metadata',
-  purchase_details: '/api/purchase/details'
+  health: '/api/v1/health',
+  metadata: '/api/v1/invoices/metadata',
+  purchase_details: '/api/v1/purchase/details'
 };
 
 // Build full URLs

@@ -32,7 +32,8 @@ TABLES_TO_MIGRATE = [
     'approved_skus',
     'invoice_items',
     'invoice_metadata',
-    'processing_logs'
+    'processing_logs',
+    'purchase_details'
 ]
 
 def migrate_data():
@@ -74,7 +75,7 @@ def migrate_data():
 
             # --- FIX: Convert dict/list columns to JSON strings for PostgreSQL ---
             # Columns that are likely to contain dictionary-like data
-            json_columns = ['transferred_taxes', 'withheld_taxes', 'custom_fields', 'validation_errors']
+            json_columns = ['transferred_taxes', 'withheld_taxes', 'custom_fields', 'validation_errors', 'details']
             for col in json_columns:
                 if col in df.columns:
                     # Check if conversion is needed

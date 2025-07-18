@@ -240,15 +240,15 @@ async def get_purchase_details(
         
         with db_manager.get_session() as session:
             query = session.query(PurchaseDetails)
-
+            
             if date_from:
                 query = query.filter(PurchaseDetails.purchase_date >= date_from)
             
             if date_to:
                 query = query.filter(PurchaseDetails.purchase_date <= date_to)
-
+            
             query = query.order_by(PurchaseDetails.purchase_date.desc(), PurchaseDetails.id)
-
+            
             if limit:
                 query = query.limit(limit)
             
