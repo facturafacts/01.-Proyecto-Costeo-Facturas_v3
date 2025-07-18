@@ -19,7 +19,7 @@ import enum
 from sqlalchemy import (
     Column, Integer, String, Text, DateTime, Date, Numeric, 
     Boolean, ForeignKey, Index, JSON, Float, create_engine,
-    Enum, UniqueConstraint
+    Enum, UniqueConstraint, func
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
@@ -362,23 +362,66 @@ class InvoiceMetadata(Base):
 
 class PurchaseDetails(Base):
     """
-    Stores details about purchases, linking items to specific purchase orders.
+    Stores flattened, denormalized purchase details for fast API serving.
+    This table is a read-optimized view created for Google Sheets exports.
     """
     __tablename__ = 'purchase_details'
 
     id = Column(Integer, primary_key=True)
-    purchase_order = Column(String, nullable=False, index=True)
-    item_id = Column(Integer, ForeignKey('invoice_items.id'), nullable=False, index=True)
-    quantity_purchased = Column(Numeric(15, 6), nullable=False)
-    purchase_date = Column(Date, nullable=False, index=True)
-    supplier_notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-
-    item = relationship("InvoiceItem")
-
-    __table_args__ = (
-        Index('idx_purchase_order_date', 'purchase_order', 'purchase_date'),
-    )
+    
+    # Invoice Information
+    invoice_uuid = Column(String(36), nullable=False, index=True)
+    folio = Column(String(40))
+    issue_date = Column(Date, nullable=False, index=True)
+    issuer_rfc = Column(String(13), nullable=False, index=True)
+    issuer_name = Column(String(254))
+    receiver_rfc = Column(String(13), nullable=False)
+    receiver_name = Column(String(254))
+    payment_method = Column(String(2))
+    payment_terms = Column(String(10))
+    currency = Column(String(3), nullable=False, default='MXN')
+    exchange_rate = Column(Numeric(15, 6), nullable=False, default=1.0)
+    
+    # Metadata Business Logic
+    invoice_mxn_total = Column(Numeric(15, 2), nullable=False)
+    is_installments = Column(Boolean, nullable=False, default=False)
+    is_immediate = Column(Boolean, nullable=False, default=True)
+    
+    # Item Details
+    line_number = Column(Integer, nullable=False)
+    product_code = Column(String(50), index=True)
+    description = Column(Text, nullable=False)
+    quantity = Column(Numeric(15, 6), nullable=False)
+    unit_code = Column(String(10))
+    unit_price = Column(Numeric(15, 6), nullable=False)
+    subtotal = Column(Numeric(15, 2), nullable=False)
+    discount = Column(Numeric(15, 2), nullable=False, default=0)
+    total_amount = Column(Numeric(15, 2), nullable=False)
+    total_tax_amount = Column(Numeric(15, 2), nullable=False, default=0)
+    
+    # Enhanced Item Info
+    units_per_package = Column(Numeric(15, 6))
+    standardized_unit = Column(String(20))
+    standardized_quantity = Column(Numeric(15, 6))
+    conversion_factor = Column(Numeric(15, 6))
+    
+    # AI Classification
+    category = Column(String(50), index=True)
+    subcategory = Column(String(100))
+    sub_sub_category = Column(String(150))
+    category_confidence = Column(Numeric(5, 2))
+    classification_source = Column(String(20))
+    approval_status = Column(String(20), default='pending', index=True)
+    sku_key = Column(String(255), index=True)
+    
+    # Calculated Fields (MXN conversions)
+    item_mxn_total = Column(Numeric(15, 2), nullable=False)
+    standardized_mxn_value = Column(Numeric(15, 2))
+    unit_mxn_price = Column(Numeric(15, 6), nullable=False)
+    
+    # Timestamps
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     def __repr__(self):
-        return f"<PurchaseDetails(po='{self.purchase_order}', item_id={self.item_id}, qty={self.quantity_purchased})>" 
+        return f"<PurchaseDetails(id={self.id}, uuid='{self.invoice_uuid}', desc='{self.description[:30]}')>" 

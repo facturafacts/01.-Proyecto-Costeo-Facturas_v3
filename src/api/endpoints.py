@@ -242,12 +242,12 @@ async def get_purchase_details(
             query = session.query(PurchaseDetails)
             
             if date_from:
-                query = query.filter(PurchaseDetails.purchase_date >= date_from)
+                query = query.filter(PurchaseDetails.issue_date >= date_from)
             
             if date_to:
-                query = query.filter(PurchaseDetails.purchase_date <= date_to)
+                query = query.filter(PurchaseDetails.issue_date <= date_to)
             
-            query = query.order_by(PurchaseDetails.purchase_date.desc(), PurchaseDetails.id)
+            query = query.order_by(PurchaseDetails.issue_date.desc(), PurchaseDetails.id.desc())
             
             if limit:
                 query = query.limit(limit)
