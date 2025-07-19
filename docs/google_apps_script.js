@@ -512,9 +512,12 @@ function onOpen() {
   const clientSubMenu = ui.createMenu('Update Client Sheets');
   for (const clientName in CLIENT_CONFIG) {
     const rfc = CLIENT_CONFIG[clientName];
-    // This creates a closure to correctly pass the clientName and rfc
+    // This creates a valid global function name, e.g., "update_YasserYussif"
     const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
-    this[functionName] = () => updateClientSheet(clientName, rfc);
+    
+    // CORRECTED: Make the function global so the menu can find it
+    globalThis[functionName] = () => updateClientSheet(clientName, rfc);
+
     clientSubMenu.addItem(`🔄 Update ${clientName}`, functionName);
   }
   menu.addSubMenu(clientSubMenu);
@@ -605,7 +608,7 @@ function createApprovalSheet() {
     // Add richer headers for better user context
     const headers = [
       'Approve?', 'SKU Key', 'Product Code', 'Description', 
-      'Unit', 'AI Category', 'AI Subcategory', 'AI Sub-Subcategory',
+      'Unit', 'AI Units/Package', 'AI Category', 'AI Subcategory', 'AI Sub-Subcategory',
       'AI Standardized Unit'
     ];
     sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#4a86e8').setFontColor('#ffffff');
@@ -617,6 +620,7 @@ function createApprovalSheet() {
       item.product_code,
       item.description,
       item.unit_code,
+      item.units_per_package, // ADDED THIS LINE
       item.category,
       item.subcategory,
       item.sub_sub_category,
