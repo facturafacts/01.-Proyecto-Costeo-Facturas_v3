@@ -35,6 +35,13 @@ def create_purchase_details_table() -> bool:
         settings = get_settings()
         db_path = Path(settings.DATABASE_URL.replace('sqlite:///', ''))
         
+        # This function is now only for local SQLite setup.
+        # It should NOT run against a production PostgreSQL database.
+        if "ondigitalocean.com" in settings.DATABASE_URL:
+            print("❌ SAFETY CHECK: This script is for local setup and should not run on the production database.")
+            print("   The 'purchase_details' table on production should be managed by migration scripts.")
+            return False
+
         if not db_path.exists():
             print(f"❌ Database not found: {db_path}")
             return False
@@ -45,6 +52,19 @@ def create_purchase_details_table() -> bool:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
+        # --- SAFETY CHECK ---
+        # Check if the table already has data. If so, abort to prevent data loss.
+        try:
+            cursor.execute("SELECT COUNT(*) FROM purchase_details")
+            count = cursor.fetchone()[0]
+            if count > 0:
+                print(f"✅ 'purchase_details' table already exists and contains {count} records. No action taken.")
+                conn.close()
+                return True
+        except sqlite3.OperationalError:
+            # This is expected if the table doesn't exist yet.
+            pass
+            
         # 1. Create the purchase_details table
         print("📋 Creating purchase_details table...")
         cursor.execute("""
@@ -130,7 +150,7 @@ def create_purchase_details_table() -> bool:
         if invoice_count > 0:
             print(f"📊 Found {invoice_count} existing invoices. Populating purchase_details table...")
             
-            # Clear existing data to avoid duplicates
+            # The DELETE command is the most dangerous part. It's now protected by the safety check above.
             cursor.execute("DELETE FROM purchase_details")
             
             # Populate the table with existing data
@@ -231,7 +251,7 @@ def create_purchase_details_table() -> bool:
             print(f"📦 Total line items: {total_records:,}")
             print(f"🧾 Unique invoices: {unique_invoices:,}")
             print(f"✅ Approved classifications: {approved_items:,}")
-            print(f"📅 Date range: {date_range[0]} to {date_range[1]}")
+            print(f"�� Date range: {date_range[0]} to {date_range[1]}")
             print(f"💰 Total MXN value: ${total_mxn_value:,.2f}")
             print(f"📊 Success rate: {(approved_items/total_records*100):.1f}%")
         else:

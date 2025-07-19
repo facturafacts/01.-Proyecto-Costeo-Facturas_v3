@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante Version="4.0" Serie="B" Folio="120892235" Fecha="2025-07-17T19:45:12" Sello="KKl3MPCP37y8XM1wzPX2TxHJHDg6PnvXi3m++Jj1qYlqUfLFTZrAwoMGYzEFYCw7bPTAhBne+/f1HRuyOb5eD8W5KesjwatWiXiCZLnokXaLQSf+vUZH7Yjzs7jwuTaob9EkP1NI4CBNUvaZLhvFutjC5M2Gj52WN4q0Y0W4V+fivHX3WXUiLNufoyZS7UWSkp+bt8dmNOobNN/ehF8iPvOJ8OjmRyZdKiq1ixJFZmg9OEP8Q8rt6j3tATPYQhdWQRTbYiLfgxFxZtECMQQDi4/eMK7TpWtJ69kstS4LsBPYK3vpPd/uS2VmSPGtheDluEr1fkNA39/kXA42uKkJtg==" FormaPago="01" NoCertificado="00001000000709590036" Certificado="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" CondicionesDePago="Contado" SubTotal="991.37" Descuento="245.93" Moneda="MXN" TipoCambio="1" Total="864.71" TipoDeComprobante="I" Exportacion="01" MetodoPago="PUE" LugarExpedicion="23020" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" xmlns:cfdi="http://www.sat.gob.mx/cfd/4">
+  <cfdi:Emisor Rfc="CCM010710UU1" Nombre="CERVEZAS CUAUHTEMOC MOCTEZUMA" RegimenFiscal="601" />
+  <cfdi:Receptor Rfc="YUGY931216FK4" Nombre="YASSER YUSSIF GONZALEZ" DomicilioFiscalReceptor="23300" RegimenFiscalReceptor="612" UsoCFDI="G03" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="50202201" NoIdentificacion="7501061625032" Cantidad="1" ClaveUnidad="HLT" Unidad="CJ" Descripcion="BOHEMIA OBSCURA 2x6 BOT 355ml" ValorUnitario="258.62" Importe="258.62" Descuento="62.50" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="196.12" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="31.38" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="50202201" NoIdentificacion="7503024416442" Cantidad="1" ClaveUnidad="HLT" Unidad="CJ" Descripcion="CARTA BLANCA CAGUAMITA 4x6BOT 300ml" ValorUnitario="293.10" Importe="293.10" Descuento="65.78" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="227.38" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="36.38" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="50202201" NoIdentificacion="7503024416510" Cantidad="1" ClaveUnidad="HLT" Unidad="CJ" Descripcion="Heineken 0.0% 2x6 LAT 355ml" ValorUnitario="206.89" Importe="206.89" Descuento="57.60" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="149.25" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="23.88" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="50202201" NoIdentificacion="7503028412570" Cantidad="1" ClaveUnidad="HLT" Unidad="CJ" Descripcion="BOHEMIA CRISTAL 2x6 BOT 355ml" ValorUnitario="232.76" Importe="232.76" Descuento="60.05" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="172.69" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="27.63" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosTrasladados="119.27">
+    <cfdi:Traslados>
+      <cfdi:Traslado Base="745.44" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="119.27" />
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital Version="1.1" UUID="39DFD638-CD36-4FDC-B1D4-811C1A61665B" FechaTimbrado="2025-07-17T20:45:13" RfcProvCertif="INT020124V62" SelloCFD="KKl3MPCP37y8XM1wzPX2TxHJHDg6PnvXi3m++Jj1qYlqUfLFTZrAwoMGYzEFYCw7bPTAhBne+/f1HRuyOb5eD8W5KesjwatWiXiCZLnokXaLQSf+vUZH7Yjzs7jwuTaob9EkP1NI4CBNUvaZLhvFutjC5M2Gj52WN4q0Y0W4V+fivHX3WXUiLNufoyZS7UWSkp+bt8dmNOobNN/ehF8iPvOJ8OjmRyZdKiq1ixJFZmg9OEP8Q8rt6j3tATPYQhdWQRTbYiLfgxFxZtECMQQDi4/eMK7TpWtJ69kstS4LsBPYK3vpPd/uS2VmSPGtheDluEr1fkNA39/kXA42uKkJtg==" NoCertificadoSAT="00001000000708361008" SelloSAT="abRVjQq2R/iM4ChtjW3mWx0jBk1dmIbpp1OWN0V8f6K8C9bhLBfirEnJ2CnvRBjBg0BLtXYZ/ihkDZlCJ416OPdR7dFeHUHUgtapZHJxDpLPKGjQV/TLBQZukPZVn9hPdFXm+AbYRyUiZ+ZDMjD2cMh0oMCLK7oumFQSqweYZ/OIKJo44Qj/db9D6F/4mN3dfolqjn6cGieiOP1R79L6GIMbwYWHRYQTNcG2orU1iRQGgIqUeohD8E0lgUxfdrsYUfDsytMIWmFYR13lC2SApMpDpjNx9YlJ6bEc+YxIXkDvkOaybm4sgHgSaWhBDS4rtrP9C+NBNchIhyIRpfRyyw==" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" />
+  </cfdi:Complemento>
+</cfdi:Comprobante>

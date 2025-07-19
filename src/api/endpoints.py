@@ -11,9 +11,10 @@ from typing import Optional, List
 from datetime import date
 from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import func, update # Added for new endpoints
 
 from ..data.database import DatabaseManager
-from ..data.models import InvoiceMetadata, PurchaseDetails # Import PurchaseDetails
+from ..data.models import InvoiceMetadata, PurchaseDetails, ApprovedSKU # Added ApprovedSKU
 from .models import (
     InvoiceMetadataResponse, 
     InvoiceMetadataListResponse, 
@@ -21,16 +22,8 @@ from .models import (
     # Purchase Details models (NEW)
     PurchaseDetailsResponse,
     PurchaseDetailsListResponse,
-    # Dashboard models
-    DashboardSalesResponse,
-    DashboardExpensesResponse, 
-    DashboardKPIsResponse,
-    SalesWeeklySummaryResponse,
-    ProductPerformanceResponse,
-    ExpenseCategoryResponse,
-    SupplierAnalysisResponse,
-    WeeklyKPIsResponse,
-    RealTimeMetricResponse
+    SKUApprovalRequest,      # <--- ADD THIS
+    GenericSuccessResponse   # <--- ADD THIS
 )
 
 logger = logging.getLogger(__name__)
@@ -228,6 +221,7 @@ async def get_invoice_metadata_by_uuid(
 async def get_purchase_details(
     limit: Optional[int] = Query(None, ge=1, le=10000, description="Maximum number of records"),
     offset: Optional[int] = Query(0, ge=0, description="Number of records to skip"),
+    receiver_rfc: Optional[str] = Query(None, description="Filter by a specific Receiver RFC"), # <--- ADD THIS
     category: Optional[str] = Query(None, description="Filter by category is not supported in this version"),
     approval_status: Optional[str] = Query(None, description="Filter by approval status is not supported in this version"),
     date_from: Optional[date] = Query(None, description="Filter from date"),
@@ -236,11 +230,15 @@ async def get_purchase_details(
 ):
     """Get complete purchase details for Google Sheets export."""
     try:
-        logger.info(f"API request: purchase details, limit={limit}, offset={offset}")
+        logger.info(f"API request: purchase details, limit={limit}, offset={offset}, rfc={receiver_rfc}") # Log the RFC
         
         with db_manager.get_session() as session:
             query = session.query(PurchaseDetails)
             
+            # Add the new RFC filter to the query
+            if receiver_rfc:
+                query = query.filter(PurchaseDetails.receiver_rfc == receiver_rfc)
+
             if date_from:
                 query = query.filter(PurchaseDetails.issue_date >= date_from)
             
@@ -559,6 +557,73 @@ async def get_purchase_details(
 #             status_code=500,
 #             detail=f"Internal server error: {str(e)}"
 #         )
+
+
+@router.get(
+    "/skus/pending",
+    response_model=PurchaseDetailsListResponse,
+    summary="Get Pending SKU Approvals",
+    description="Retrieve all unique line items that have an approval_status of 'pending'."
+)
+async def get_pending_skus(db_manager: DatabaseManager = Depends(get_db_manager)):
+    """Provides a list of unapproved SKUs for the approval sheet."""
+    try:
+        with db_manager.get_session() as session:
+            # Find the first instance of each pending SKU key
+            subquery = session.query(
+                PurchaseDetails.sku_key,
+                func.min(PurchaseDetails.id).label('min_id')
+            ).filter(PurchaseDetails.approval_status == 'pending').group_by(PurchaseDetails.sku_key).subquery()
+
+            pending_items = session.query(PurchaseDetails).join(
+                subquery, PurchaseDetails.id == subquery.c.min_id
+            ).order_by(PurchaseDetails.issue_date.desc()).all()
+
+            return PurchaseDetailsListResponse(
+                success=True,
+                data=[PurchaseDetailsResponse.from_orm(item) for item in pending_items],
+                count=len(pending_items)
+            )
+    except Exception as e:
+        logger.error(f"Error in get_pending_skus: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post(
+    "/skus/approve",
+    response_model=GenericSuccessResponse,
+    summary="Approve SKUs",
+    description="Receives a list of SKU keys and updates their status to 'approved'."
+)
+async def approve_skus(
+    request: SKUApprovalRequest,
+    db_manager: DatabaseManager = Depends(get_db_manager)
+):
+    """Receives a list of SKU keys to approve in the database."""
+    try:
+        sku_keys_to_approve = request.sku_keys
+        if not sku_keys_to_approve:
+            return GenericSuccessResponse(success=True, message="No SKUs to approve.")
+
+        with db_manager.get_session() as session:
+            # Update purchase_details table
+            stmt_details = update(PurchaseDetails).where(
+                PurchaseDetails.sku_key.in_(sku_keys_to_approve)
+            ).values(approval_status='approved')
+            session.execute(stmt_details)
+
+            # Update approved_skus table
+            stmt_skus = update(ApprovedSKU).where(
+                ApprovedSKU.sku_key.in_(sku_keys_to_approve)
+            ).values(approval_status='approved')
+            session.execute(stmt_skus)
+            
+            session.commit()
+
+        return GenericSuccessResponse(success=True, message=f"Successfully approved {len(sku_keys_to_approve)} SKUs.")
+    except Exception as e:
+        logger.error(f"Error in approve_skus: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get(

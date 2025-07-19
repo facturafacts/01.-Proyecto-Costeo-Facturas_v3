@@ -19,6 +19,19 @@
 // Base ngrok URL (just change this part when ngrok restarts)
 const BASE_URL = 'https://octopus-app-vzk4s.ondigitalocean.app';
 
+// ========================================
+// NEW: MULTI-CLIENT CONFIGURATION
+// ========================================
+// Map your Google Sheet tab names to the client's RFC.
+// The script will create a menu item for each client listed here.
+const CLIENT_CONFIG = {
+  // "Sheet Tab Name": "CLIENT_RFC_123"
+  "Client A": "RFC_CLIENT_A", // Replace with actual RFC
+  "Client B": "RFC_CLIENT_B", // Replace with actual RFC
+  "Yasser Yussif": "YUGY931216FK4" // Example with your RFC
+};
+
+
 // API endpoints (don't change these)
 const ENDPOINTS = {
   health: '/api/v1/health',
@@ -142,11 +155,14 @@ function updatePurchaseDetails() {
       addPurchaseDetailsHeaders(sheet);
     }
     
-    // Get existing SKU keys to avoid duplicates
-    const existingSKUs = getExistingSKUs(sheet, hasHeaders ? 2 : 1);
+    // Get existing line items to avoid duplicates (FIXED)
+    const existingLineItemKeys = getExistingLineItemKeys(sheet, hasHeaders ? 2 : 1);
     
-    // Filter new purchase details
-    const newPurchaseDetails = data.data.filter(item => !existingSKUs.has(item.sku_key));
+    // Filter new purchase details using a composite key (FIXED)
+    const newPurchaseDetails = data.data.filter(item => {
+      const uniqueKey = `${item.invoice_uuid}_${item.line_number}`;
+      return !existingLineItemKeys.has(uniqueKey);
+    });
     
     if (newPurchaseDetails.length === 0) {
       SpreadsheetApp.getUi().alert('No new purchase details found!');
@@ -211,147 +227,57 @@ function testAPIConnection() {
   }
 }
 
-// ========================================
-// HELPER FUNCTIONS
-// ========================================
-
 /**
- * Get or create a sheet
+ * NEW: Generic function to update a sheet for a specific client.
  */
-function getOrCreateSheet(spreadsheet, sheetName) {
-  let sheet = spreadsheet.getSheetByName(sheetName);
-  if (!sheet) {
-    sheet = spreadsheet.insertSheet(sheetName);
-  }
-  return sheet;
-}
-
-/**
- * Get existing UUIDs from Facturas sheet
- */
-function getExistingUUIDs(sheet, startRow) {
-  const existingUUIDs = new Set();
-  
-  if (sheet.getLastRow() >= startRow) {
-    const uuidRange = sheet.getRange(startRow, 1, sheet.getLastRow() - startRow + 1, 1);
-    const uuidValues = uuidRange.getValues();
+function updateClientSheet(clientName, rfc) {
+  try {
+    console.log(`🚀 Starting update for ${clientName} (RFC: ${rfc})...`);
     
-    uuidValues.forEach(row => {
-      if (row[0]) {
-        existingUUIDs.add(row[0]);
-      }
-    });
-  }
-  
-  return existingUUIDs;
-}
-
-/**
- * Get existing SKU keys from Purchase_Details sheet
- */
-function getExistingSKUs(sheet, startRow) {
-  const existingSKUs = new Set();
-  
-  if (sheet.getLastRow() >= startRow) {
-    const skuRange = sheet.getRange(startRow, 35, sheet.getLastRow() - startRow + 1, 1); // SKU Key is column 35
-    const skuValues = skuRange.getValues();
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, clientName);
     
-    skuValues.forEach(row => {
-      if (row[0]) {
-        existingSKUs.add(row[0]);
-      }
+    showProgress(`Fetching data for ${clientName}...`);
+    
+    // Call the API with the RFC filter
+    const data = fetchPurchaseDetails(rfc);
+    
+    if (!data || !data.success) {
+      throw new Error(`Failed to fetch data for ${clientName}`);
+    }
+    
+    console.log(`📊 Received ${data.count} records for ${clientName}`);
+    
+    const hasHeaders = sheet.getLastRow() > 0;
+    if (!hasHeaders) {
+      showProgress('Adding headers...');
+      addPurchaseDetailsHeaders(sheet);
+    }
+    
+    const existingLineItemKeys = getExistingLineItemKeys(sheet, hasHeaders ? 2 : 1);
+    
+    const newPurchaseDetails = data.data.filter(item => {
+      const uniqueKey = `${item.invoice_uuid}_${item.line_number}`;
+      return !existingLineItemKeys.has(uniqueKey);
     });
+    
+    if (newPurchaseDetails.length === 0) {
+      SpreadsheetApp.getUi().alert(`No new details found for ${clientName}!`);
+      return;
+    }
+    
+    showProgress(`Inserting ${newPurchaseDetails.length} new records for ${clientName}...`);
+    insertPurchaseDetailsAtTop(sheet, newPurchaseDetails);
+    
+    showProgress('Formatting sheet...');
+    formatPurchaseDetailsSheet(sheet);
+    
+    SpreadsheetApp.getUi().alert(`Update Complete for ${clientName}!\n\nInserted ${newPurchaseDetails.length} new records.`);
+    
+  } catch (error) {
+    console.error(`❌ Update for ${clientName} failed:`, error);
+    SpreadsheetApp.getUi().alert(`Update Failed for ${clientName}\n\nError: ${error.message}`);
   }
-  
-  return existingSKUs;
-}
-
-/**
- * Insert new facturas at the top
- */
-function insertFacturasAtTop(sheet, newInvoices) {
-  if (newInvoices.length === 0) return;
-  
-  // Insert rows at the top (after headers)
-  sheet.insertRowsAfter(1, newInvoices.length);
-  
-  // Convert invoice objects to arrays
-  const rows = newInvoices.map(invoice => [
-    invoice.uuid,
-    invoice.folio || '',
-    invoice.issue_date,
-    invoice.issuer_rfc,
-    invoice.issuer_name || '',
-    invoice.receiver_rfc,
-    invoice.receiver_name || '',
-    invoice.original_currency,
-    invoice.original_total,
-    invoice.mxn_total,
-    invoice.exchange_rate,
-    invoice.payment_method || '',
-    invoice.is_installments ? 'Yes' : 'No',
-    invoice.is_immediate ? 'Yes' : 'No'
-  ]);
-  
-  // Add data to the top rows
-  const dataRange = sheet.getRange(2, 1, rows.length, rows[0].length);
-  dataRange.setValues(rows);
-}
-
-/**
- * Insert new purchase details at the top
- */
-function insertPurchaseDetailsAtTop(sheet, newPurchaseDetails) {
-  if (newPurchaseDetails.length === 0) return;
-  
-  // Insert rows at the top (after headers)
-  sheet.insertRowsAfter(1, newPurchaseDetails.length);
-  
-  // Convert to arrays for Google Sheets
-  const rows = newPurchaseDetails.map(item => [
-    item.invoice_uuid,
-    item.folio || '',
-    item.issue_date || '',
-    item.issuer_rfc,
-    item.issuer_name || '',
-    item.receiver_rfc,
-    item.receiver_name || '',
-    item.payment_method || '',
-    item.payment_terms || '',
-    item.currency,
-    item.exchange_rate,
-    item.invoice_mxn_total,
-    item.is_installments ? 'Yes' : 'No',
-    item.is_immediate ? 'Yes' : 'No',
-    item.line_number,
-    item.product_code || '',
-    item.description,
-    item.quantity,
-    item.unit_code || '',
-    item.unit_price,
-    item.subtotal,
-    item.discount,
-    item.total_amount,
-    item.total_tax_amount,
-    item.units_per_package,
-    item.standardized_unit || '',
-    item.standardized_quantity || '',
-    item.conversion_factor,
-    item.category || '',
-    item.subcategory || '',
-    item.sub_sub_category || '',
-    item.category_confidence || '',
-    item.classification_source || '',
-    item.approval_status || '',
-    item.sku_key || '',
-    item.item_mxn_total,
-    item.standardized_mxn_value || '',
-    item.unit_mxn_price
-  ]);
-  
-  // Add data to the top rows
-  const dataRange = sheet.getRange(2, 1, rows.length, rows[0].length);
-  dataRange.setValues(rows);
 }
 
 /**
@@ -397,13 +323,18 @@ function fetchInvoiceData() {
 }
 
 /**
- * Fetch purchase details data from API
+ * Fetch purchase details data from API. Now accepts an RFC to filter.
  */
-function fetchPurchaseDetails() {
+function fetchPurchaseDetails(rfc = null) {
   try {
-    console.log('📡 Fetching purchase details...');
+    console.log(`📡 Fetching purchase details... (RFC: ${rfc})`);
     
-    const response = UrlFetchApp.fetch(PURCHASE_DETAILS_URL + '?limit=5000', {
+    let url = PURCHASE_DETAILS_URL + '?limit=5000';
+    if (rfc) {
+      url += `&receiver_rfc=${encodeURIComponent(rfc)}`;
+    }
+
+    const response = UrlFetchApp.fetch(url, {
       method: 'GET',
       headers: {
         'ngrok-skip-browser-warning': 'true',
@@ -575,10 +506,26 @@ function showProgress(message) {
  */
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
-  ui.createMenu('CFDI System')
-    .addItem('🔄 Update Facturas', 'updateFacturas')
-    .addItem('📊 Update Purchase Details', 'updatePurchaseDetails')
-    .addSeparator()
+  const menu = ui.createMenu('CFDI System');
+  
+  // Dynamically add an "Update" item for each client in the config
+  const clientSubMenu = ui.createMenu('Update Client Sheets');
+  for (const clientName in CLIENT_CONFIG) {
+    const rfc = CLIENT_CONFIG[clientName];
+    // This creates a closure to correctly pass the clientName and rfc
+    const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
+    this[functionName] = () => updateClientSheet(clientName, rfc);
+    clientSubMenu.addItem(`🔄 Update ${clientName}`, functionName);
+  }
+  menu.addSubMenu(clientSubMenu);
+  
+  // Add SKU Approval Workflow
+  const skuMenu = ui.createMenu('SKU Approval');
+  skuMenu.addItem('📋 Create/Refresh Approval Sheet', 'createApprovalSheet');
+  skuMenu.addItem('✅ Submit Approved SKUs', 'submitSkuApprovals');
+  menu.addSubMenu(skuMenu);
+
+  menu.addSeparator()
     .addItem('🔍 Test API Connection', 'testAPIConnection')
     .addSeparator()
     .addSubMenu(ui.createMenu('Advanced')
@@ -628,4 +575,105 @@ For support, check the console logs.
   `;
   
   SpreadsheetApp.getUi().alert(`System Information\n\n${info}`);
+} 
+
+const SKU_APPROVAL_URL = BASE_URL + '/api/v1/skus/pending';
+const SKU_SUBMIT_URL = BASE_URL + '/api/v1/skus/approve';
+
+/**
+ * Creates or refreshes the SKU Approval sheet with pending items.
+ */
+function createApprovalSheet() {
+  try {
+    console.log('🚀 Creating SKU Approval sheet...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, 'SKU Approval');
+    sheet.clear(); // Clear old data
+
+    showProgress('Fetching pending SKUs...');
+    const response = UrlFetchApp.fetch(SKU_APPROVAL_URL);
+    const data = JSON.parse(response.getContentText());
+
+    if (!data.success || data.data.length === 0) {
+      SpreadsheetApp.getUi().alert('No SKUs are pending approval!');
+      return;
+    }
+
+    // Add headers
+    const headers = ['Approve?', 'SKU Key', 'Description', 'Category', 'Subcategory'];
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold');
+
+    // Populate data
+    const rows = data.data.map(item => [
+      '', // Checkbox placeholder
+      item.sku_key,
+      item.description,
+      item.category,
+      item.subcategory
+    ]);
+    sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
+
+    // Add checkboxes
+    const checkboxRange = sheet.getRange(2, 1, rows.length, 1);
+    checkboxRange.insertCheckboxes();
+    
+    sheet.autoResizeColumns(1, headers.length);
+    SpreadsheetApp.getUi().alert(`SKU Approval sheet is ready with ${rows.length} items to review.`);
+
+  } catch (error) {
+    console.error('❌ Could not create approval sheet:', error);
+    SpreadsheetApp.getUi().alert(`Error: ${error.message}`);
+  }
+}
+
+/**
+ * Submits the approved SKUs back to the API.
+ */
+function submitSkuApprovals() {
+  try {
+    console.log('🚀 Submitting SKU approvals...');
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SKU Approval');
+    if (!sheet) throw new Error('SKU Approval sheet not found.');
+
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    const skuKeysToApprove = [];
+    // Start from row 2 (index 1) to skip headers
+    for (let i = 1; i < values.length; i++) {
+      const isApproved = values[i][0]; // Checkbox in column 1
+      if (isApproved === true) {
+        const skuKey = values[i][1]; // SKU Key in column 2
+        skuKeysToApprove.push(skuKey);
+      }
+    }
+
+    if (skuKeysToApprove.length === 0) {
+      SpreadsheetApp.getUi().alert('No SKUs were checked for approval.');
+      return;
+    }
+
+    // Send data to the API
+    const payload = JSON.stringify({ sku_keys: skuKeysToApprove });
+    const options = {
+      method: 'post',
+      contentType: 'application/json',
+      payload: payload,
+    };
+    
+    showProgress(`Submitting ${skuKeysToApprove.length} approved SKUs...`);
+    const response = UrlFetchApp.fetch(SKU_SUBMIT_URL, options);
+    const result = JSON.parse(response.getContentText());
+
+    if (result.success) {
+      SpreadsheetApp.getUi().alert(`Success! ${result.message}`);
+      sheet.clear(); // Clear the sheet after successful submission
+    } else {
+      throw new Error(result.detail || 'Submission failed.');
+    }
+
+  } catch (error) {
+    console.error('❌ SKU submission failed:', error);
+    SpreadsheetApp.getUi().alert(`Submission Failed:\n\n${error.message}`);
+  }
 } 

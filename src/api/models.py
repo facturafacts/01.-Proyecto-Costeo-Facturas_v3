@@ -284,6 +284,16 @@ class PurchaseDetailsListResponse(BaseModel):
         }
 
 
+class SKUApprovalRequest(BaseModel):
+    """Request model for approving a list of SKUs."""
+    sku_keys: List[str] = Field(..., description="A list of sku_key strings to be approved.")
+
+class GenericSuccessResponse(BaseModel):
+    """A generic success response model."""
+    success: bool = True
+    message: str
+
+
 class ErrorResponse(BaseModel):
     """Error response model."""
     
