@@ -12,6 +12,7 @@ from datetime import date
 from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func, update # Added for new endpoints
+from sqlalchemy.orm import Session # Added for new endpoints
 
 from src.data.database import DatabaseManager
 from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel

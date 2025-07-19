@@ -582,16 +582,19 @@ const SKU_SUBMIT_URL = BASE_URL + '/api/v1/skus/approve';
 
 /**
  * Creates or refreshes the SKU Approval sheet with pending items.
+ * UPDATED to include more columns for better context.
  */
 function createApprovalSheet() {
   try {
     console.log('🚀 Creating SKU Approval sheet...');
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getOrCreateSheet(spreadsheet, 'SKU Approval');
+    const sheet = getOrCreateSheet(spreadsheet, 'SKU Approval'); // Now uses the new helper
     sheet.clear(); // Clear old data
 
     showProgress('Fetching pending SKUs...');
-    const response = UrlFetchApp.fetch(SKU_APPROVAL_URL);
+    const response = UrlFetchApp.fetch(SKU_APPROVAL_URL, {
+      headers: { 'ngrok-skip-browser-warning': 'true' }
+    });
     const data = JSON.parse(response.getContentText());
 
     if (!data.success || data.data.length === 0) {
@@ -599,17 +602,25 @@ function createApprovalSheet() {
       return;
     }
 
-    // Add headers
-    const headers = ['Approve?', 'SKU Key', 'Description', 'Category', 'Subcategory'];
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold');
+    // Add richer headers for better user context
+    const headers = [
+      'Approve?', 'SKU Key', 'Product Code', 'Description', 
+      'Unit', 'AI Category', 'AI Subcategory', 'AI Sub-Subcategory',
+      'AI Standardized Unit'
+    ];
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#4a86e8').setFontColor('#ffffff');
 
-    // Populate data
+    // Populate data using the new, richer fields from the API
     const rows = data.data.map(item => [
       '', // Checkbox placeholder
       item.sku_key,
+      item.product_code,
       item.description,
+      item.unit_code,
       item.category,
-      item.subcategory
+      item.subcategory,
+      item.sub_sub_category,
+      item.standardized_unit
     ]);
     sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
 
@@ -676,4 +687,20 @@ function submitSkuApprovals() {
     console.error('❌ SKU submission failed:', error);
     SpreadsheetApp.getUi().alert(`Submission Failed:\n\n${error.message}`);
   }
+} 
+
+// ========================================
+// UTILITY FUNCTIONS (NEW SECTION)
+// ========================================
+
+/**
+ * Gets a sheet by name, or creates it if it doesn't exist.
+ * This function was missing, causing errors in the update functions.
+ */
+function getOrCreateSheet(spreadsheet, sheetName) {
+  let sheet = spreadsheet.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(sheetName);
+  }
+  return sheet;
 } 
