@@ -13,8 +13,8 @@ from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func, update # Added for new endpoints
 
-from ..data.database import DatabaseManager
-from ..data.models import InvoiceMetadata, PurchaseDetails, ApprovedSKU # Added ApprovedSKU
+from src.data.database import DatabaseManager
+from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel
 from .models import (
     InvoiceMetadataResponse, 
     InvoiceMetadataListResponse, 
@@ -613,8 +613,8 @@ async def approve_skus(
             session.execute(stmt_details)
 
             # Update approved_skus table
-            stmt_skus = update(ApprovedSKU).where(
-                ApprovedSKU.sku_key.in_(sku_keys_to_approve)
+            stmt_skus = update(ApprovedSKUModel).where(
+                ApprovedSKUModel.sku_key.in_(sku_keys_to_approve)
             ).values(approval_status='approved')
             session.execute(stmt_skus)
             
