@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Configuration Settings for CFDI Processing System v4
+Centralized Settings Management for CFDI Processing System v4.
 
-This module handles all configuration settings with environment-specific
-support for dev, test, and production environments.
+Loads configuration from environment variables to ensure a secure and flexible
+deployment across different environments (development, testing, production).
 """
-
 import os
 from pathlib import Path
-from typing import Optional, Dict, Any
 from dotenv import load_dotenv
 
-# Load environment variables from the root .env file
-load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
-
+# Load environment variables from a .env file if it exists
+load_dotenv()
 
 class Settings:
-    """
-    Configuration settings with environment support
-    """
+    """Enhanced settings class for CFDI Processing System v4."""
     
-    # Environment
+    # Environment Configuration
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "dev")
     DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
     
@@ -31,23 +26,18 @@ class Settings:
     GEMINI_TIMEOUT: int = int(os.getenv("GEMINI_TIMEOUT", "30"))
     GEMINI_MAX_RETRIES: int = int(os.getenv("GEMINI_MAX_RETRIES", "3"))
     
-    # File Paths
-    PROJECT_ROOT: Path = Path(__file__).parent.parent
-    
-    # Database Configuration - UPDATED for Production
-    # For production, DATABASE_URL will be provided by the environment (e.g., DigitalOcean).
-    # For local development, it falls back to the SQLite database.
-    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{PROJECT_ROOT / 'data' / 'database' / 'cfdi_system_v4.db'}")
+    # Database Configuration
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/database/cfdi_system_v4.db")
     DATABASE_ECHO: bool = os.getenv("DATABASE_ECHO", "False").lower() == "true"
     
-    # Paths remain relative to project root for consistency
-    INBOX_PATH: str = os.getenv("INBOX_PATH", str(PROJECT_ROOT / "data" / "inbox"))
-    PROCESSED_PATH: str = os.getenv("PROCESSED_PATH", str(PROJECT_ROOT / "data" / "processed"))
-    FAILED_PATH: str = os.getenv("FAILED_PATH", str(PROJECT_ROOT / "data" / "failed"))
-    LOGS_PATH: str = os.getenv("LOGS_PATH", str(PROJECT_ROOT / "logs"))
+    # File Paths
+    INBOX_PATH: str = os.getenv("INBOX_PATH", "data/inbox")
+    PROCESSED_PATH: str = os.getenv("PROCESSED_PATH", "data/processed") 
+    FAILED_PATH: str = os.getenv("FAILED_PATH", "data/failed")
+    LOGS_PATH: str = os.getenv("LOGS_PATH", "logs")
     
     # P62 Configuration
-    P62_CATEGORIES_PATH: str = os.getenv("P62_CATEGORIES_PATH", str(PROJECT_ROOT / "config" / "p62_categories.json"))
+    P62_CATEGORIES_PATH: str = os.getenv("P62_CATEGORIES_PATH", "config/p62_categories.json")
     
     # Processing Configuration
     BATCH_SIZE: int = int(os.getenv("BATCH_SIZE", "10"))
@@ -56,130 +46,57 @@ class Settings:
     
     # Currency Configuration
     DEFAULT_CURRENCY: str = os.getenv("DEFAULT_CURRENCY", "MXN")
-    EXCHANGE_RATE_API_KEY: str = os.getenv("EXCHANGE_RATE_API_KEY", "")
-    
-    # API Configuration
-    API_HOST: str = os.getenv("API_HOST", "127.0.0.1")
-    API_PORT: int = int(os.getenv("API_PORT", "8000"))
-    API_TITLE: str = os.getenv("API_TITLE", "CFDI Invoice Metadata API")
-    API_VERSION: str = os.getenv("API_VERSION", "1.0.0")
-    
-    # Ngrok Configuration
-    NGROK_AUTH_TOKEN: str = os.getenv("NGROK_AUTH_TOKEN", "")
-    NGROK_DOMAIN: str = os.getenv("NGROK_DOMAIN", "")
     
     # Logging Configuration
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
-    LOG_FORMAT: str = os.getenv("LOG_FORMAT", "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    LOG_MAX_BYTES: int = int(os.getenv("LOG_MAX_BYTES", "10485760"))  # 10MB
+    LOG_MAX_BYTES: int = int(os.getenv("LOG_MAX_BYTES", "10485760"))
     LOG_BACKUP_COUNT: int = int(os.getenv("LOG_BACKUP_COUNT", "5"))
     
     # Performance Configuration
-    ENABLE_PROFILING: bool = os.getenv("ENABLE_PROFILING", "False").lower() == "true"
+    ENABLE_PROFILING: bool = os.getenv("ENABLE_PROFILING", "True").lower() == "true"
     MEMORY_LIMIT_MB: int = int(os.getenv("MEMORY_LIMIT_MB", "512"))
     
     # Security Configuration
     ENCRYPT_LOGS: bool = os.getenv("ENCRYPT_LOGS", "False").lower() == "true"
-    SENSITIVE_FIELDS: list = ["digital_stamp", "certificate", "sat_seal"]
-    
-    def __init__(self):
-        """Initialize settings and create necessary directories."""
-        self._create_directories()
-        self._validate_required_settings()
-    
-    def _create_directories(self) -> None:
-        """Create necessary directories if they don't exist."""
-        directories = [
-            self.INBOX_PATH,
-            self.PROCESSED_PATH,
-            self.FAILED_PATH,
-            self.LOGS_PATH,
-        ]
-
-        # Only try to create a database directory if it's a local SQLite file
-        if "sqlite" in self.DATABASE_URL:
-            db_dir = os.path.dirname(self.DATABASE_URL.replace("sqlite:///", ""))
-            if db_dir:
-                directories.append(db_dir)
-        
-        for directory in directories:
-            if directory:
-                Path(directory).mkdir(parents=True, exist_ok=True)
-    
-    def _validate_required_settings(self) -> None:
-        """Validate required settings are present."""
-        required_settings = {
-            "GEMINI_API_KEY": self.GEMINI_API_KEY,
-        }
-        
-        missing_settings = [
-            key for key, value in required_settings.items() 
-            if not value
-        ]
-        
-        if missing_settings:
-            raise ValueError(f"Missing required settings: {', '.join(missing_settings)}")
-    
-    def get_database_url(self) -> str:
-        """Get database URL with environment-specific handling."""
-        if self.ENVIRONMENT == "test":
-            return "sqlite:///:memory:"
-        return self.DATABASE_URL
-    
-    def is_production(self) -> bool:
-        """Check if running in production environment."""
-        return self.ENVIRONMENT.lower() == "prod"
     
     def is_development(self) -> bool:
         """Check if running in development environment."""
-        return self.ENVIRONMENT.lower() == "dev"
+        return self.ENVIRONMENT.lower() in ["dev", "development"]
     
-    def get_all_settings(self) -> Dict[str, Any]:
-        """Get all settings as dictionary (excluding sensitive data)."""
-        settings_dict = {}
-        for attr in dir(self):
-            if not attr.startswith('_') and not callable(getattr(self, attr)):
-                value = getattr(self, attr)
-                # Hide sensitive data
-                if 'key' in attr.lower() or 'password' in attr.lower():
-                    value = "*" * len(str(value)) if value else ""
-                settings_dict[attr] = value
-        return settings_dict
-
-
-# Environment-specific configurations
-class DevelopmentSettings(Settings):
-    """Development environment specific settings."""
-    DEBUG = True
-    LOG_LEVEL = "DEBUG"
-    DATABASE_ECHO = True
-
-
-class TestSettings(Settings):
-    """Test environment specific settings."""
-    DEBUG = True
-    LOG_LEVEL = "DEBUG"
-    BATCH_SIZE = 2
-    DATABASE_URL = "sqlite:///:memory:"
-    GEMINI_TIMEOUT = 10
-
-
-class ProductionSettings(Settings):
-    """Production environment specific settings."""
-    DEBUG = False
-    LOG_LEVEL = "INFO"
-    DATABASE_ECHO = False
-    ENCRYPT_LOGS = True
-    ENABLE_PROFILING = False
-
-
-def get_settings() -> Settings:
-    """Get settings based on environment."""
-    environment = os.getenv("ENVIRONMENT", "dev").lower()
+    def is_production(self) -> bool:
+        """Check if running in production environment."""
+        return self.ENVIRONMENT.lower() in ["prod", "production"]
     
-    if environment == "test":
-        return TestSettings()
-    elif environment == "prod":
-        return ProductionSettings()
-    else:
-        return DevelopmentSettings() 
+    def validate_required_settings(self) -> list:
+        """Validate required settings and return missing ones."""
+        missing = []
+        
+        if not self.GEMINI_API_KEY:
+            missing.append("GEMINI_API_KEY")
+            
+        return missing
+
+def get_settings():
+    """Returns a dictionary of application settings for backward compatibility."""
+    settings = Settings()
+    return {
+        "GEMINI_API_KEY": settings.GEMINI_API_KEY,
+        "DATABASE_URL": settings.DATABASE_URL,
+        "LOG_LEVEL": settings.LOG_LEVEL,
+        "LOGS_PATH": settings.LOGS_PATH,
+        "LOG_MAX_BYTES": settings.LOG_MAX_BYTES,
+        "LOG_BACKUP_COUNT": settings.LOG_BACKUP_COUNT,
+        "ENABLE_PROFILING": settings.ENABLE_PROFILING,
+        "ENVIRONMENT": settings.ENVIRONMENT,
+        "is_development": settings.is_development,
+        "DATABASE_ECHO": settings.DATABASE_ECHO,
+        "INBOX_PATH": settings.INBOX_PATH,
+        "PROCESSED_PATH": settings.PROCESSED_PATH,
+        "FAILED_PATH": settings.FAILED_PATH,
+        "P62_CATEGORIES_PATH": settings.P62_CATEGORIES_PATH,
+        "BATCH_SIZE": settings.BATCH_SIZE,
+        "DEFAULT_CURRENCY": settings.DEFAULT_CURRENCY,
+    }
+
+# Create settings instance
+settings = Settings() 

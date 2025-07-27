@@ -27,6 +27,10 @@ from src.processing.batch_processor import BatchProcessor
 from src.data.database import DatabaseManager
 from src.utils.logging_config import setup_logging as configure_logging
 from config.settings import get_settings
+# from automation_service.portal_scraper import PortalScraper  # Commented out - module not available
+import os
+import schedule
+import time
 
 
 def create_purchase_details_table() -> bool:
@@ -64,7 +68,7 @@ def create_purchase_details_table() -> bool:
         except sqlite3.OperationalError:
             # This is expected if the table doesn't exist yet.
             pass
-            
+        
         # 1. Create the purchase_details table
         print("📋 Creating purchase_details table...")
         cursor.execute("""
@@ -251,7 +255,7 @@ def create_purchase_details_table() -> bool:
             print(f"📦 Total line items: {total_records:,}")
             print(f"🧾 Unique invoices: {unique_invoices:,}")
             print(f"✅ Approved classifications: {approved_items:,}")
-            print(f"�� Date range: {date_range[0]} to {date_range[1]}")
+            print(f"🗓️ Date range: {date_range[0]} to {date_range[1]}")
             print(f"💰 Total MXN value: ${total_mxn_value:,.2f}")
             print(f"📊 Success rate: {(approved_items/total_records*100):.1f}%")
         else:
@@ -330,6 +334,47 @@ def process_inbox() -> None:
         print(f"❌ Inbox processing failed: {e}")
 
 
+def run_pipeline():
+    """
+    Executes the entire CFDI processing pipeline.
+    """
+    configure_logging(get_settings())
+    logging.info("Starting CFDI processing pipeline...")
+    
+    # Initialize batch processor and run
+    processor = BatchProcessor()
+    processor.run()
+    
+    logging.info("CFDI processing pipeline finished.")
+
+def run_scraper():
+    """
+    Executes the web scraping process to download new invoices.
+    """
+    # Temporarily disabled - PortalScraper module not available
+    logging.info("--- Scraper temporarily disabled ---")
+    return
+    
+    # setup_logging()
+    # logging.info("--- Starting Scraper ---")
+
+    # # --- Use environment variables for credentials ---
+    # test_username = os.getenv("PORTAL_USERNAME")
+    # test_password = os.getenv("PORTAL_PASSWORD")
+    # test_rfc = "YUGY931216FK4" 
+    
+    # if not test_username or not test_password:
+    #     logging.error("Portal credentials not found in environment variables.")
+    #     return
+
+    # scraper = PortalScraper()
+    # try:
+    #     if scraper.login(test_username, test_password):
+    #         scraper.download_invoices_for_rfc(test_rfc)
+    # finally:
+    #     scraper.close()
+    # logging.info("--- Scraper Finished ---")
+
 def main() -> None:
     """Main application entry point."""
     parser = argparse.ArgumentParser(
@@ -403,6 +448,19 @@ def main() -> None:
         logger.info("Starting inbox processing...")
         process_inbox()
         logger.info("Inbox processing completed")
+
+    # Schedule the scraper to run every 24 hours
+    schedule.every(24).hours.do(run_scraper)
+
+    # --- Immediate execution for testing ---
+    run_scraper()  # Run once immediately
+    run_pipeline() # Then process any files found
+    # ----------------------------------------
+    
+    logging.info("Scheduler started. Waiting for the next scheduled run...")
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == "__main__":

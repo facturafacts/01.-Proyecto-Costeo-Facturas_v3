@@ -31,6 +31,19 @@ const CLIENT_CONFIG = {
   "Yasser Yussif": "YUGY931216FK4" // Example with your RFC
 };
 
+// ========================================
+// DYNAMIC MENU FUNCTION CREATION (NEW)
+// ========================================
+// This creates global functions for each client menu item.
+// This is necessary because menu items can only call global functions.
+(function() {
+  for (const clientName in CLIENT_CONFIG) {
+    const rfc = CLIENT_CONFIG[clientName];
+    const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
+    globalThis[functionName] = () => updateClientSheet(clientName, rfc);
+  }
+})();
+
 
 // API endpoints (don't change these)
 const ENDPOINTS = {
@@ -228,52 +241,68 @@ function testAPIConnection() {
 }
 
 /**
- * NEW: Generic function to update a sheet for a specific client.
+ * NEW & CORRECTED: Generic function to update a sheet for a specific client.
+ * This function now performs a "smart update", adding new records to the top
+ * of two dedicated sheets for the client without deleting existing data.
  */
 function updateClientSheet(clientName, rfc) {
   try {
-    console.log(`🚀 Starting update for ${clientName} (RFC: ${rfc})...`);
-    
+    console.log(`🚀 Starting smart update for ${clientName} (RFC: ${rfc})...`);
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getOrCreateSheet(spreadsheet, clientName);
-    
-    showProgress(`Fetching data for ${clientName}...`);
-    
-    // Call the API with the RFC filter
-    const data = fetchPurchaseDetails(rfc);
-    
-    if (!data || !data.success) {
-      throw new Error(`Failed to fetch data for ${clientName}`);
+
+    // --- Part 1: Update Client Facturas Sheet ---
+    const facturasSheetName = `Facturas - ${clientName}`;
+    const facturasSheet = getOrCreateSheet(spreadsheet, facturasSheetName);
+    showProgress(`Fetching invoices for ${clientName}...`);
+
+    const invoiceData = fetchInvoiceData(rfc); // Fetch with RFC
+    if (invoiceData && invoiceData.success && invoiceData.count > 0) {
+      const hasHeaders = facturasSheet.getLastRow() > 0;
+      if (!hasHeaders) { addFacturasHeaders(facturasSheet); }
+      
+      const existingUUIDs = getExistingUUIDs(facturasSheet, hasHeaders ? 2 : 1);
+      const newInvoices = invoiceData.data.filter(invoice => !existingUUIDs.has(invoice.uuid));
+
+      if (newInvoices.length > 0) {
+        insertFacturasAtTop(facturasSheet, newInvoices);
+        formatFacturasSheet(facturasSheet);
+        console.log(`✅ Invoices updated for ${clientName}: ${newInvoices.length} new records.`);
+      } else {
+        console.log(`ℹ️ No new invoices found for ${clientName}.`);
+      }
+    } else {
+      console.log(`ℹ️ No invoices found for ${clientName}.`);
     }
-    
-    console.log(`📊 Received ${data.count} records for ${clientName}`);
-    
-    const hasHeaders = sheet.getLastRow() > 0;
-    if (!hasHeaders) {
-      showProgress('Adding headers...');
-      addPurchaseDetailsHeaders(sheet);
+
+    // --- Part 2: Update Client Purchase Details Sheet ---
+    const detailsSheetName = `Purchase Details - ${clientName}`;
+    const detailsSheet = getOrCreateSheet(spreadsheet, detailsSheetName);
+    showProgress(`Fetching purchase details for ${clientName}...`);
+
+    const purchaseData = fetchPurchaseDetails(rfc); // Fetch with RFC
+    if (purchaseData && purchaseData.success && purchaseData.count > 0) {
+      const hasHeaders = detailsSheet.getLastRow() > 0;
+      if (!hasHeaders) { addPurchaseDetailsHeaders(detailsSheet); }
+
+      const existingLineItemKeys = getExistingLineItemKeys(detailsSheet, hasHeaders ? 2 : 1);
+      const newPurchaseDetails = purchaseData.data.filter(item => {
+        const uniqueKey = `${item.invoice_uuid}_${item.line_number}`;
+        return !existingLineItemKeys.has(uniqueKey);
+      });
+      
+      if (newPurchaseDetails.length > 0) {
+        insertPurchaseDetailsAtTop(detailsSheet, newPurchaseDetails);
+        formatPurchaseDetailsSheet(detailsSheet);
+        console.log(`✅ Purchase details updated for ${clientName}: ${newPurchaseDetails.length} new records.`);
+      } else {
+        console.log(`ℹ️ No new purchase details found for ${clientName}.`);
+      }
+    } else {
+      console.log(`ℹ️ No purchase details found for ${clientName}.`);
     }
-    
-    const existingLineItemKeys = getExistingLineItemKeys(sheet, hasHeaders ? 2 : 1);
-    
-    const newPurchaseDetails = data.data.filter(item => {
-      const uniqueKey = `${item.invoice_uuid}_${item.line_number}`;
-      return !existingLineItemKeys.has(uniqueKey);
-    });
-    
-    if (newPurchaseDetails.length === 0) {
-      SpreadsheetApp.getUi().alert(`No new details found for ${clientName}!`);
-      return;
-    }
-    
-    showProgress(`Inserting ${newPurchaseDetails.length} new records for ${clientName}...`);
-    insertPurchaseDetailsAtTop(sheet, newPurchaseDetails);
-    
-    showProgress('Formatting sheet...');
-    formatPurchaseDetailsSheet(sheet);
-    
-    SpreadsheetApp.getUi().alert(`Update Complete for ${clientName}!\n\nInserted ${newPurchaseDetails.length} new records.`);
-    
+
+    SpreadsheetApp.getUi().alert(`Update for ${clientName} complete!\n\nNew Invoices: ${invoiceData.new_count || 0}\nNew Details: ${purchaseData.new_count || 0}`);
+
   } catch (error) {
     console.error(`❌ Update for ${clientName} failed:`, error);
     SpreadsheetApp.getUi().alert(`Update Failed for ${clientName}\n\nError: ${error.message}`);
@@ -283,7 +312,7 @@ function updateClientSheet(clientName, rfc) {
 /**
  * Fetch invoice data from the API
  */
-function fetchInvoiceData() {
+function fetchInvoiceData(rfc = null) { // ADDED rfc parameter
   try {
     // Build URL with filters
     let url = API_URL;
@@ -511,13 +540,8 @@ function onOpen() {
   // Dynamically add an "Update" item for each client in the config
   const clientSubMenu = ui.createMenu('Update Client Sheets');
   for (const clientName in CLIENT_CONFIG) {
-    const rfc = CLIENT_CONFIG[clientName];
-    // This creates a valid global function name, e.g., "update_YasserYussif"
+    // This MUST match the function name created in the global scope above
     const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
-    
-    // CORRECTED: Make the function global so the menu can find it
-    globalThis[functionName] = () => updateClientSheet(clientName, rfc);
-
     clientSubMenu.addItem(`🔄 Update ${clientName}`, functionName);
   }
   menu.addSubMenu(clientSubMenu);
@@ -707,4 +731,79 @@ function getOrCreateSheet(spreadsheet, sheetName) {
     sheet = spreadsheet.insertSheet(sheetName);
   }
   return sheet;
+} 
+
+// ========================================
+// HELPER FUNCTIONS FOR SMART UPDATES (NEW)
+// ========================================
+
+/**
+ * Gets existing invoice UUIDs from a sheet to prevent duplicates.
+ */
+function getExistingUUIDs(sheet, startRow) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < startRow) {
+    return new Set();
+  }
+  const range = sheet.getRange(startRow, 1, lastRow - startRow + 1, 1);
+  const values = range.getValues().flat();
+  return new Set(values);
+}
+
+/**
+ * Gets existing line item composite keys (uuid_linenumber) to prevent duplicates.
+ */
+function getExistingLineItemKeys(sheet, startRow) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < startRow) {
+    return new Set();
+  }
+  const uuidRange = sheet.getRange(startRow, 1, lastRow - startRow + 1, 1).getValues();
+  const lineNumRange = sheet.getRange(startRow, 15, lastRow - startRow + 1, 1).getValues();
+  
+  const keys = new Set();
+  for (let i = 0; i < uuidRange.length; i++) {
+    keys.add(`${uuidRange[i][0]}_${lineNumRange[i][0]}`);
+  }
+  return keys;
+}
+
+/**
+ * Inserts new invoice data at the top of the sheet.
+ */
+function insertFacturasAtTop(sheet, newInvoices) {
+  if (newInvoices.length === 0) return;
+
+  const dataToInsert = newInvoices.map(invoice => [
+    invoice.uuid, invoice.folio, invoice.issue_date,
+    invoice.issuer_rfc, invoice.issuer_name, invoice.receiver_rfc,
+    invoice.receiver_name, invoice.original_currency, invoice.original_total,
+    invoice.mxn_total, invoice.exchange_rate, invoice.payment_method,
+    invoice.is_installments, invoice.is_immediate
+  ]);
+
+  sheet.insertRowsAfter(1, newInvoices.length);
+  sheet.getRange(2, 1, dataToInsert.length, dataToInsert[0].length).setValues(dataToInsert);
+}
+
+/**
+ * Inserts new purchase detail data at the top of the sheet.
+ */
+function insertPurchaseDetailsAtTop(sheet, newDetails) {
+  if (newDetails.length === 0) return;
+  
+  const dataToInsert = newDetails.map(item => [
+      item.invoice_uuid, item.folio, item.issue_date, item.issuer_rfc, item.issuer_name,
+      item.receiver_rfc, item.receiver_name, item.payment_method, item.payment_terms,
+      item.currency, item.exchange_rate, item.invoice_mxn_total, item.is_installments, item.is_immediate,
+      item.line_number, item.product_code, item.description, item.quantity, item.unit_code,
+      item.unit_price, item.subtotal, item.discount, item.total_amount, item.total_tax_amount,
+      item.units_per_package, item.standardized_unit, item.standardized_quantity, item.conversion_factor,
+      item.category, item.subcategory, item.sub_sub_category, item.category_confidence,
+      item.classification_source, item.approval_status, item.sku_key,
+      item.item_mxn_total, item.standardized_mxn_value, item.unit_mxn_price
+  ]);
+  
+  sheet.insertRowsAfter(1, newDetails.length);
+  sheet.getRange(2, 1, dataToInsert.length, dataToInsert[0].length).setValues(dataToInsert);
 } 

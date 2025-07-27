@@ -27,12 +27,28 @@ from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
 
 import google.generativeai as genai
+from sqlalchemy.orm import Session
+from tenacity import retry, stop_after_attempt, wait_exponential
 
-from config.settings import get_settings
-from src.data.database import DatabaseManager
+from src.data.database import get_session
+from src.data.models import ApprovedSku
+from config.settings import settings
+from src.utils.logging_config import get_logger
+
+# --- Configuration ---
+# Configure the generative AI model with the API key from settings
+try:
+    if not settings.GEMINI_API_KEY:
+        raise ValueError("GEMINI_API_KEY is not set. Please check your .env file.")
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    logging.info("Gemini AI configured successfully.")
+except Exception as e:
+    logging.error(f"Gemini AI configuration failed: {e}", exc_info=True)
+    # The application might not function correctly without the classifier.
+    # Depending on requirements, you might want to exit or run in a degraded mode.
 
 # Configure logger
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class GeminiClassifier:
@@ -50,8 +66,8 @@ class GeminiClassifier:
     
     def __init__(self):
         """Initialize Gemini classifier with configuration and P62 categories."""
-        self.settings = get_settings()
-        self.db_manager = DatabaseManager()
+        self.settings = settings
+        self.db_manager = get_session()
         
         # Initialize Gemini API
         self._initialize_gemini_api()
@@ -395,9 +411,8 @@ Where:
             Approved classification if found, None otherwise
         """
         try:
-            with self.db_manager.get_session() as session:
+            with self.db_manager as session:
                 # Query approved SKU
-                from src.data.models import ApprovedSku
                 approved_sku = session.query(ApprovedSku).filter_by(sku_key=sku_key).first()
                 
                 if approved_sku:

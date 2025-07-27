@@ -15,7 +15,10 @@ from contextlib import contextmanager
 from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any, Tuple, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Generator
 
 from sqlalchemy import create_engine, func
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -25,6 +28,21 @@ from .models import Base, Invoice, InvoiceItem, ApprovedSku, ProcessingLog, Invo
 from config.settings import get_settings
 
 logger = logging.getLogger(__name__)
+
+# Global database manager instance
+_db_manager = None
+
+def get_database_manager():
+    """Get singleton database manager instance."""
+    global _db_manager
+    if _db_manager is None:
+        _db_manager = DatabaseManager()
+    return _db_manager
+
+def get_session():
+    """Get database session from the global database manager."""
+    db_manager = get_database_manager()
+    return db_manager.get_session()
 
 
 class DatabaseManager:
