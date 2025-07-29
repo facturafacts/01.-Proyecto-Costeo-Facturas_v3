@@ -460,14 +460,14 @@ class CFDIParser:
             for traslado in traslados.findall(f'{{{self.namespaces[self.current_ns]}}}Traslado'):
                 tax_info = {
                     'tax_type': traslado.get('Impuesto'),
-                    'tax_rate': self._to_decimal(traslado.get('TasaOCuota')),
-                    'tax_amount': self._to_decimal(traslado.get('Importe')),
-                    'tax_base': self._to_decimal(traslado.get('Base')),
+                    'tax_rate': float(self._to_decimal(traslado.get('TasaOCuota')) or 0),
+                    'tax_amount': float(self._to_decimal(traslado.get('Importe')) or 0),
+                    'tax_base': float(self._to_decimal(traslado.get('Base')) or 0),
                     'factor_type': traslado.get('TipoFactor')
                 }
                 taxes_data['transferred_taxes'].append(tax_info)
                 if tax_info['tax_amount']:
-                    taxes_data['total_tax_amount'] += tax_info['tax_amount']
+                    taxes_data['total_tax_amount'] += Decimal(str(tax_info['tax_amount']))
         
         # Extract withheld taxes (retenciones)
         retenciones = impuestos.find(f'{{{self.namespaces[self.current_ns]}}}Retenciones')
@@ -475,14 +475,14 @@ class CFDIParser:
             for retencion in retenciones.findall(f'{{{self.namespaces[self.current_ns]}}}Retencion'):
                 tax_info = {
                     'tax_type': retencion.get('Impuesto'),
-                    'tax_rate': self._to_decimal(retencion.get('TasaOCuota')),
-                    'tax_amount': self._to_decimal(retencion.get('Importe')),
-                    'tax_base': self._to_decimal(retencion.get('Base')),
+                    'tax_rate': float(self._to_decimal(retencion.get('TasaOCuota')) or 0),
+                    'tax_amount': float(self._to_decimal(retencion.get('Importe')) or 0),
+                    'tax_base': float(self._to_decimal(retencion.get('Base')) or 0),
                     'factor_type': retencion.get('TipoFactor')
                 }
                 taxes_data['withheld_taxes'].append(tax_info)
                 if tax_info['tax_amount']:
-                    taxes_data['total_tax_amount'] -= tax_info['tax_amount']  # Subtract withheld taxes
+                    taxes_data['total_tax_amount'] -= Decimal(str(tax_info['tax_amount']))  # Subtract withheld taxes
         
         return taxes_data
     

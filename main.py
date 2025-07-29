@@ -16,7 +16,7 @@ Usage:
 import sys
 import argparse
 import logging
-import sqlite3
+# SQLite import removed - using PostgreSQL only
 from pathlib import Path
 from typing import Optional
 
@@ -37,232 +37,230 @@ def create_purchase_details_table() -> bool:
     """Create and populate the purchase_details table for Google Sheets export."""
     try:
         settings = get_settings()
-        db_path = Path(settings.DATABASE_URL.replace('sqlite:///', ''))
         
-        # This function is now only for local SQLite setup.
-        # It should NOT run against a production PostgreSQL database.
-        if "ondigitalocean.com" in settings.DATABASE_URL:
-            print("❌ SAFETY CHECK: This script is for local setup and should not run on the production database.")
-            print("   The 'purchase_details' table on production should be managed by migration scripts.")
-            return False
-
-        if not db_path.exists():
-            print(f"❌ Database not found: {db_path}")
+        # This function is for PostgreSQL setup only
+        if not settings.is_using_postgresql():
+            print("❌ This function requires PostgreSQL database.")
             return False
         
         print("\n🛒 Creating Purchase Details Table for Google Sheets Export")
         print("=" * 70)
         
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
+        # Use SQLAlchemy for PostgreSQL
+        from src.data.database import get_database_manager
+        db_manager = get_database_manager()
         
-        # --- SAFETY CHECK ---
-        # Check if the table already has data. If so, abort to prevent data loss.
-        try:
-            cursor.execute("SELECT COUNT(*) FROM purchase_details")
-            count = cursor.fetchone()[0]
-            if count > 0:
-                print(f"✅ 'purchase_details' table already exists and contains {count} records. No action taken.")
-                conn.close()
-                return True
-        except sqlite3.OperationalError:
-            # This is expected if the table doesn't exist yet.
-            pass
+        with db_manager.get_session() as session:
+            # --- SAFETY CHECK ---
+            # Check if the table already has data. If so, abort to prevent data loss.
+            try:
+                from sqlalchemy import text
+                result = session.execute(text("SELECT COUNT(*) FROM purchase_details"))
+                count = result.scalar()
+                if count > 0:
+                    print(f"✅ 'purchase_details' table already exists and contains {count} records. No action taken.")
+                    return True
+            except Exception:
+                # This is expected if the table doesn't exist yet.
+                pass
         
-        # 1. Create the purchase_details table
-        print("📋 Creating purchase_details table...")
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS purchase_details (
-                -- Unique identifier for each line item
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+            # 1. Create the purchase_details table
+            print("📋 Creating purchase_details table...")
+            create_table_sql = text("""
+                CREATE TABLE IF NOT EXISTS purchase_details (
+                    -- Unique identifier for each line item
+                    id SERIAL PRIMARY KEY,
                 
-                -- Invoice Information
-                invoice_uuid VARCHAR(36) NOT NULL,
-                folio VARCHAR(40),
-                issue_date DATE NOT NULL,
-                issuer_rfc VARCHAR(13) NOT NULL,
-                issuer_name VARCHAR(254),
-                receiver_rfc VARCHAR(13) NOT NULL,
-                receiver_name VARCHAR(254),
-                payment_method VARCHAR(2),
-                payment_terms VARCHAR(10),
-                currency VARCHAR(3) NOT NULL DEFAULT 'MXN',
-                exchange_rate DECIMAL(15,6) NOT NULL DEFAULT 1.0,
+                    -- Invoice Information
+                    invoice_uuid VARCHAR(36) NOT NULL,
+                    folio VARCHAR(40),
+                    issue_date DATE NOT NULL,
+                    issuer_rfc VARCHAR(13) NOT NULL,
+                    issuer_name VARCHAR(254),
+                    receiver_rfc VARCHAR(13) NOT NULL,
+                    receiver_name VARCHAR(254),
+                    payment_method VARCHAR(2),
+                    payment_terms VARCHAR(10),
+                    currency VARCHAR(3) NOT NULL DEFAULT 'MXN',
+                    exchange_rate DECIMAL(15,6) NOT NULL DEFAULT 1.0,
                 
-                -- Metadata Business Logic
-                invoice_mxn_total DECIMAL(15,2) NOT NULL,
-                is_installments BOOLEAN NOT NULL DEFAULT 0,
-                is_immediate BOOLEAN NOT NULL DEFAULT 1,
-                
-                -- Item Details
-                line_number INTEGER NOT NULL,
-                product_code VARCHAR(50),
-                description TEXT NOT NULL,
-                quantity DECIMAL(15,6) NOT NULL,
-                unit_code VARCHAR(10),
-                unit_price DECIMAL(15,6) NOT NULL,
-                subtotal DECIMAL(15,2) NOT NULL,
-                discount DECIMAL(15,2) NOT NULL DEFAULT 0,
-                total_amount DECIMAL(15,2) NOT NULL,
-                total_tax_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
-                
-                -- Enhanced Item Info
-                units_per_package DECIMAL(15,6),
-                standardized_unit VARCHAR(20),
-                standardized_quantity DECIMAL(15,6),
-                conversion_factor DECIMAL(15,6),
-                
-                -- AI Classification
-                category VARCHAR(50),
-                subcategory VARCHAR(100),
-                sub_sub_category VARCHAR(150),
-                category_confidence DECIMAL(5,2),
-                classification_source VARCHAR(20),
-                approval_status VARCHAR(20) DEFAULT 'pending',
-                sku_key VARCHAR(255),
-                
-                -- Calculated Fields (MXN conversions)
-                item_mxn_total DECIMAL(15,2) NOT NULL,
-                standardized_mxn_value DECIMAL(15,2),
-                unit_mxn_price DECIMAL(15,6) NOT NULL,
-                
-                -- Processing metadata
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        
-        # 2. Create indexes for performance
-        print("🚀 Creating indexes...")
-        indexes = [
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_issue_date ON purchase_details(issue_date)",
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_issuer ON purchase_details(issuer_rfc)",
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_category ON purchase_details(category)",
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_product ON purchase_details(product_code)",
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_approval ON purchase_details(approval_status)",
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_sku_key ON purchase_details(sku_key)",
-            "CREATE INDEX IF NOT EXISTS idx_purchase_details_uuid ON purchase_details(invoice_uuid)"
-        ]
-        
-        for index_sql in indexes:
-            cursor.execute(index_sql)
-        
-        # 3. Check if we have existing data to populate
-        cursor.execute("SELECT COUNT(*) FROM invoices")
-        invoice_count = cursor.fetchone()[0]
-        
-        if invoice_count > 0:
-            print(f"📊 Found {invoice_count} existing invoices. Populating purchase_details table...")
-            
-            # The DELETE command is the most dangerous part. It's now protected by the safety check above.
-            cursor.execute("DELETE FROM purchase_details")
-            
-            # Populate the table with existing data
-            cursor.execute("""
-                INSERT INTO purchase_details (
-                    invoice_uuid, folio, issue_date, issuer_rfc, issuer_name, 
-                    receiver_rfc, receiver_name, payment_method, payment_terms,
-                    currency, exchange_rate, invoice_mxn_total, is_installments, is_immediate,
-                    line_number, product_code, description, quantity, unit_code,
-                    unit_price, subtotal, discount, total_amount, total_tax_amount,
-                    units_per_package, standardized_unit, standardized_quantity, conversion_factor,
-                    category, subcategory, sub_sub_category, category_confidence,
-                    classification_source, approval_status, sku_key,
-                    item_mxn_total, standardized_mxn_value, unit_mxn_price
-                )
-                SELECT 
-                    -- Invoice Info
-                    i.uuid as invoice_uuid,
-                    i.folio,
-                    i.issue_date,
-                    i.issuer_rfc,
-                    i.issuer_name,
-                    i.receiver_rfc,
-                    i.receiver_name,
-                    i.payment_method,
-                    i.payment_terms,
-                    i.currency,
-                    i.exchange_rate,
-                    
                     -- Metadata Business Logic
-                    im.mxn_total as invoice_mxn_total,
-                    im.is_installments,
-                    im.is_immediate,
-                    
+                    invoice_mxn_total DECIMAL(15,2) NOT NULL,
+                    is_installments BOOLEAN NOT NULL DEFAULT FALSE,
+                    is_immediate BOOLEAN NOT NULL DEFAULT TRUE,
+                
                     -- Item Details
-                    ii.line_number,
-                    ii.product_code,
-                    ii.description,
-                    ii.quantity,
-                    ii.unit_code,
-                    ii.unit_price,
-                    ii.subtotal,
-                    ii.discount,
-                    ii.total_amount,
-                    ii.total_tax_amount,
-                    
+                    line_number INTEGER NOT NULL,
+                    product_code VARCHAR(50),
+                    description TEXT NOT NULL,
+                    quantity DECIMAL(15,6) NOT NULL,
+                    unit_code VARCHAR(10),
+                    unit_price DECIMAL(15,6) NOT NULL,
+                    subtotal DECIMAL(15,2) NOT NULL,
+                    discount DECIMAL(15,2) NOT NULL DEFAULT 0,
+                    total_amount DECIMAL(15,2) NOT NULL,
+                    total_tax_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
+                
                     -- Enhanced Item Info
-                    ii.units_per_package,
-                    ii.standardized_unit,
-                    ii.standardized_quantity,
-                    ii.conversion_factor,
-                    
+                    units_per_package DECIMAL(15,6),
+                    standardized_unit VARCHAR(20),
+                    standardized_quantity DECIMAL(15,6),
+                    conversion_factor DECIMAL(15,6),
+                
                     -- AI Classification
-                    ii.category,
-                    ii.subcategory,
-                    ii.sub_sub_category,
-                    ii.category_confidence,
-                    ii.classification_source,
-                    ii.approval_status,
-                    ii.sku_key,
-                    
-                    -- Calculated Fields
-                    (ii.total_amount * i.exchange_rate) as item_mxn_total,
-                    CASE 
-                        WHEN ii.standardized_quantity IS NOT NULL AND ii.unit_price IS NOT NULL 
-                        THEN (ii.standardized_quantity * ii.unit_price * i.exchange_rate)
-                        ELSE NULL 
-                    END as standardized_mxn_value,
-                    (ii.unit_price * i.exchange_rate) as unit_mxn_price
-                    
-                FROM invoices i
-                JOIN invoice_items ii ON i.id = ii.invoice_id
-                JOIN invoice_metadata im ON i.id = im.invoice_id
-                ORDER BY i.issue_date DESC, ii.line_number
+                    category VARCHAR(50),
+                    subcategory VARCHAR(100),
+                    sub_sub_category VARCHAR(150),
+                    category_confidence DECIMAL(5,2),
+                    classification_source VARCHAR(20),
+                    approval_status VARCHAR(20) DEFAULT 'pending',
+                    sku_key VARCHAR(255),
+                
+                    -- Calculated Fields (MXN conversions)
+                    item_mxn_total DECIMAL(15,2) NOT NULL,
+                    standardized_mxn_value DECIMAL(15,2),
+                    unit_mxn_price DECIMAL(15,6) NOT NULL,
+                
+                    -- Processing metadata
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
             """)
-        else:
-            print("📊 No existing invoices found. Purchase_details table created and ready.")
+            
+            session.execute(create_table_sql)
         
-        # 4. Get statistics
-        cursor.execute("SELECT COUNT(*) FROM purchase_details")
-        total_records = cursor.fetchone()[0]
+            # 2. Create indexes for performance
+            print("🚀 Creating indexes...")
+            indexes = [
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_issue_date ON purchase_details(issue_date)",
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_issuer ON purchase_details(issuer_rfc)",
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_category ON purchase_details(category)",
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_product ON purchase_details(product_code)",
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_approval ON purchase_details(approval_status)",
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_sku_key ON purchase_details(sku_key)",
+                "CREATE INDEX IF NOT EXISTS idx_purchase_details_uuid ON purchase_details(invoice_uuid)"
+            ]
         
-        if total_records > 0:
-            cursor.execute("SELECT COUNT(DISTINCT invoice_uuid) FROM purchase_details")
-            unique_invoices = cursor.fetchone()[0]
-            
-            cursor.execute("SELECT COUNT(*) FROM purchase_details WHERE approval_status = 'approved'")
-            approved_items = cursor.fetchone()[0]
-            
-            cursor.execute("SELECT MIN(issue_date), MAX(issue_date) FROM purchase_details")
-            date_range = cursor.fetchone()
-            
-            cursor.execute("SELECT SUM(item_mxn_total) FROM purchase_details")
-            total_mxn_value = cursor.fetchone()[0] or 0
-            
-            print("\n✅ Purchase Details Table Created Successfully!")
-            print("=" * 70)
-            print(f"📦 Total line items: {total_records:,}")
-            print(f"🧾 Unique invoices: {unique_invoices:,}")
-            print(f"✅ Approved classifications: {approved_items:,}")
-            print(f"🗓️ Date range: {date_range[0]} to {date_range[1]}")
-            print(f"💰 Total MXN value: ${total_mxn_value:,.2f}")
-            print(f"📊 Success rate: {(approved_items/total_records*100):.1f}%")
-        else:
-            print("✅ Purchase Details Table created successfully (empty)")
+            for index_sql in indexes:
+                session.execute(text(index_sql))
         
-        conn.commit()
-        conn.close()
+            # 3. Check if we have existing data to populate
+            result = session.execute(text("SELECT COUNT(*) FROM invoices"))
+            invoice_count = result.scalar()
+        
+            if invoice_count > 0:
+                print(f"📊 Found {invoice_count} existing invoices. Populating purchase_details table...")
+            
+                # The DELETE command is the most dangerous part. It's now protected by the safety check above.
+                session.execute(text("DELETE FROM purchase_details"))
+            
+                # Populate the table with existing data
+                insert_sql = text("""
+                    INSERT INTO purchase_details (
+                        invoice_uuid, folio, issue_date, issuer_rfc, issuer_name, 
+                        receiver_rfc, receiver_name, payment_method, payment_terms,
+                        currency, exchange_rate, invoice_mxn_total, is_installments, is_immediate,
+                        line_number, product_code, description, quantity, unit_code,
+                        unit_price, subtotal, discount, total_amount, total_tax_amount,
+                        units_per_package, standardized_unit, standardized_quantity, conversion_factor,
+                        category, subcategory, sub_sub_category, category_confidence,
+                        classification_source, approval_status, sku_key,
+                        item_mxn_total, standardized_mxn_value, unit_mxn_price
+                    )
+                    SELECT 
+                        -- Invoice Info
+                        i.uuid as invoice_uuid,
+                        i.folio,
+                        i.issue_date,
+                        i.issuer_rfc,
+                        i.issuer_name,
+                        i.receiver_rfc,
+                        i.receiver_name,
+                        i.payment_method,
+                        i.payment_terms,
+                        i.currency,
+                        i.exchange_rate,
+                        
+                        -- Metadata Business Logic
+                        im.mxn_total as invoice_mxn_total,
+                        im.is_installments,
+                        im.is_immediate,
+                        
+                        -- Item Details
+                        ii.line_number,
+                        ii.product_code,
+                        ii.description,
+                        ii.quantity,
+                        ii.unit_code,
+                        ii.unit_price,
+                        ii.subtotal,
+                        ii.discount,
+                        ii.total_amount,
+                        ii.total_tax_amount,
+                        
+                        -- Enhanced Item Info
+                        ii.units_per_package,
+                        ii.standardized_unit,
+                        ii.standardized_quantity,
+                        ii.conversion_factor,
+                        
+                        -- AI Classification
+                        ii.category,
+                        ii.subcategory,
+                        ii.sub_sub_category,
+                        ii.category_confidence,
+                        ii.classification_source,
+                        ii.approval_status,
+                        ii.sku_key,
+                        
+                        -- Calculated Fields
+                        (ii.total_amount * i.exchange_rate) as item_mxn_total,
+                        CASE 
+                            WHEN ii.standardized_quantity IS NOT NULL AND ii.unit_price IS NOT NULL 
+                            THEN (ii.standardized_quantity * ii.unit_price * i.exchange_rate)
+                            ELSE NULL 
+                        END as standardized_mxn_value,
+                        (ii.unit_price * i.exchange_rate) as unit_mxn_price
+                        
+                    FROM invoices i
+                    JOIN invoice_items ii ON i.id = ii.invoice_id
+                    JOIN invoice_metadata im ON i.id = im.invoice_id
+                    ORDER BY i.issue_date DESC, ii.line_number
+                """)
+                
+                session.execute(insert_sql)
+            else:
+                print("📊 No existing invoices found. Purchase_details table created and ready.")
+        
+            # 4. Get statistics
+            result = session.execute(text("SELECT COUNT(*) FROM purchase_details"))
+            total_records = result.scalar()
+        
+            if total_records > 0:
+                result = session.execute(text("SELECT COUNT(DISTINCT invoice_uuid) FROM purchase_details"))
+                unique_invoices = result.scalar()
+            
+                result = session.execute(text("SELECT COUNT(*) FROM purchase_details WHERE approval_status = 'approved'"))
+                approved_items = result.scalar() or 0
+            
+                result = session.execute(text("SELECT MIN(issue_date), MAX(issue_date) FROM purchase_details"))
+                date_range = result.fetchone()
+            
+                result = session.execute(text("SELECT SUM(item_mxn_total) FROM purchase_details"))
+                total_mxn_value = result.scalar() or 0
+            
+                print("\n✅ Purchase Details Table Created Successfully!")
+                print("=" * 70)
+                print(f"📦 Total line items: {total_records:,}")
+                print(f"🧾 Unique invoices: {unique_invoices:,}")
+                print(f"✅ Approved classifications: {approved_items:,}")
+                print(f"🗓️ Date range: {date_range[0]} to {date_range[1]}")
+                print(f"💰 Total MXN value: ${total_mxn_value:,.2f}")
+                print(f"📊 Success rate: {(approved_items/total_records*100):.1f}%")
+            else:
+                print("✅ Purchase Details Table created successfully (empty)")
+        
+            # Session is automatically committed and closed by the context manager
         
         print("\n🎯 Next Steps:")
         print("1. Use this table for Google Sheets export")
@@ -285,17 +283,14 @@ def setup_database() -> bool:
         
         # 1. Initialize core database tables
         print("1️⃣ Creating core database tables...")
-        db_manager = DatabaseManager()
+        from src.data.database import get_database_manager
+        db_manager = get_database_manager()
         db_manager.initialize_database()
         print("   ✅ Core tables created successfully!")
         
-        # 2. Create purchase_details table
-        print("\n2️⃣ Creating purchase_details table...")
-        if create_purchase_details_table():
-            print("   ✅ Purchase_details table created successfully!")
-        else:
-            print("   ❌ Failed to create purchase_details table")
-            return False
+        # 2. Purchase_details table is already created by the database manager
+        print("\n2️⃣ Purchase_details table already created with core tables!")
+        print("   ✅ Purchase_details table ready for use!")
         
         print("\n🎉 Complete Database Setup Finished!")
         print("   🗃️  Core CFDI tables: invoices, invoice_items, approved_skus, processing_logs, invoice_metadata")
@@ -354,7 +349,7 @@ def run_scraper():
     # Temporarily disabled - PortalScraper module not available
     logging.info("--- Scraper temporarily disabled ---")
     return
-    
+
     # setup_logging()
     # logging.info("--- Starting Scraper ---")
 
@@ -452,15 +447,16 @@ def main() -> None:
     # Schedule the scraper to run every 24 hours
     schedule.every(24).hours.do(run_scraper)
 
-    # --- Immediate execution for testing ---
-    run_scraper()  # Run once immediately
-    run_pipeline() # Then process any files found
-    # ----------------------------------------
+    logging.info("CFDI processing system started and ready.")
+    logging.info("Use Ctrl+C to stop the system.")
     
-    logging.info("Scheduler started. Waiting for the next scheduled run...")
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    try:
+        while True:
+            schedule.run_pending()
+            time.sleep(60)  # Check every minute
+    except KeyboardInterrupt:
+        logging.info("CFDI processing system stopped by user.")
+        print("\n✅ CFDI processing system stopped gracefully.")
 
 
 if __name__ == "__main__":

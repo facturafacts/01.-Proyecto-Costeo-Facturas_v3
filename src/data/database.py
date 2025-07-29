@@ -25,7 +25,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm import sessionmaker, Session
 
 from .models import Base, Invoice, InvoiceItem, ApprovedSku, ProcessingLog, InvoiceMetadata
-from config.settings import get_settings
+from config.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ class DatabaseManager:
     
     def __init__(self):
         """Initialize database manager with connection and session factory."""
-        self.settings = get_settings()
+        self.settings = settings
         self.engine = None
         self.SessionLocal = None
         self._initialize_connection()
@@ -61,23 +61,18 @@ class DatabaseManager:
     def _initialize_connection(self) -> None:
         """Initialize database connection and session factory."""
         try:
-            # For SQLite, ensure the database directory exists.
-            # This is not needed for PostgreSQL.
-            if "sqlite" in self.settings.DATABASE_URL:
-                db_path = Path(self.settings.DATABASE_URL.replace('sqlite:///', ''))
-                db_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Create engine with optimizations.
-            # The connect_args are specific to SQLite and should not be used for PostgreSQL.
-            connect_args = {}
-            if "sqlite" in self.settings.DATABASE_URL:
-                connect_args = {"check_same_thread": False, "timeout": 30}
-
+            # Create engine with PostgreSQL optimizations
             self.engine = create_engine(
                 self.settings.DATABASE_URL,
                 echo=self.settings.DATABASE_ECHO,
                 pool_pre_ping=True,
-                connect_args=connect_args
+                pool_size=5,
+                max_overflow=10,
+                pool_recycle=1800,
+                connect_args={
+                    "connect_timeout": 30,
+                    "application_name": "cfdi_processor"
+                }
             )
             
             # Create session factory
@@ -96,6 +91,7 @@ class DatabaseManager:
     def initialize_database(self) -> None:
         """Create all tables and indexes."""
         try:
+            logger.info("Creating database tables...")
             Base.metadata.create_all(bind=self.engine)
             logger.info("Database tables created successfully")
             
@@ -103,10 +99,11 @@ class DatabaseManager:
             with self.get_session() as session:
                 for table_name in Base.metadata.tables.keys():
                     try:
-                        count = session.execute(f"SELECT COUNT(*) FROM {table_name}").scalar()
+                        from sqlalchemy import text
+                        count = session.execute(text(f"SELECT COUNT(*) FROM {table_name}")).scalar()
                         logger.info(f"Table '{table_name}': {count} records")
-                    except Exception:
-                        logger.info(f"Table '{table_name}': initialized")
+                    except Exception as e:
+                        logger.info(f"Table '{table_name}': initialized (error checking count: {e})")
                         
         except Exception as e:
             logger.error(f"Failed to initialize database: {e}")
@@ -279,24 +276,24 @@ class DatabaseManager:
                 transferred_taxes=item_data.get('transferred_taxes'),
                 withheld_taxes=item_data.get('withheld_taxes'),
                 
-                # Classification (from approved or pending)
-                category=approved_classification.get('category') if approved_classification else None,
-                subcategory=approved_classification.get('subcategory') if approved_classification else None,
-                sub_sub_category=approved_classification.get('sub_sub_category') if approved_classification else None,
+                # Classification (use approved first, then Gemini classification)
+                category=approved_classification.get('category') if approved_classification else item_data.get('category'),
+                subcategory=approved_classification.get('subcategory') if approved_classification else item_data.get('subcategory'),
+                sub_sub_category=approved_classification.get('sub_sub_category') if approved_classification else item_data.get('sub_sub_category'),
                 
                 # Unit Standardization
-                standardized_unit=approved_classification.get('standardized_unit') if approved_classification else None,
+                standardized_unit=approved_classification.get('standardized_unit') if approved_classification else item_data.get('standardized_unit'),
                 standardized_quantity=self._calculate_standardized_quantity(
                     item_data.get('quantity'),
                     item_data.get('units_per_package'),
-                    approved_classification.get('conversion_factor') if approved_classification else None
+                    approved_classification.get('conversion_factor') if approved_classification else item_data.get('conversion_factor')
                 ),
-                conversion_factor=approved_classification.get('conversion_factor') if approved_classification else None,
+                conversion_factor=approved_classification.get('conversion_factor') if approved_classification else item_data.get('conversion_factor'),
                 
                 # Classification Metadata
-                category_confidence=approved_classification.get('confidence_score') if approved_classification else None,
-                classification_source='approved_sku' if approved_classification else 'pending',
-                approval_status='approved' if approved_classification else 'pending',
+                category_confidence=approved_classification.get('confidence_score') if approved_classification else item_data.get('confidence'),
+                classification_source='approved_sku' if approved_classification else item_data.get('source', 'gemini_api'),
+                approval_status='approved' if approved_classification else item_data.get('approval_status', 'pending'),
                 sku_key=sku_key,
                 
                 # Additional Data
@@ -413,12 +410,17 @@ class DatabaseManager:
         if not quantity:
             return None
         
+        # Convert to Decimal if needed
+        quantity = Decimal(str(quantity)) if not isinstance(quantity, Decimal) else quantity
+        
         # Apply package conversion if available
         if units_per_package and units_per_package > 0:
+            units_per_package = Decimal(str(units_per_package)) if not isinstance(units_per_package, Decimal) else units_per_package
             quantity = quantity * units_per_package
         
         # Apply additional conversion factor if available
         if conversion_factor and conversion_factor > 0:
+            conversion_factor = Decimal(str(conversion_factor)) if not isinstance(conversion_factor, Decimal) else conversion_factor
             quantity = quantity * conversion_factor
         
         return quantity
