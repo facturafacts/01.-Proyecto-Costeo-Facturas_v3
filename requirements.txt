@@ -17,8 +17,6 @@ openai>=1.0.0  # Alternative AI provider
 
 # Database
 alembic>=1.12.0  # Database migrations
-psycopg2-binary>=2.9.0 # PostgreSQL driver
-
 
 # Data Analysis (for notebooks)
 jupyter>=1.0.0
@@ -90,25 +88,16 @@ pip-tools>=7.0.0  # Dependency management
 
 # Documentation
 sphinx>=7.1.0  # Documentation generation
-sphinx-rtd-theme>=1.3.0 
+sphinx-rtd-theme>=1.3.0
 
-google-auth-oauthlib==1.2.0
-google-generativeai==0.7.1
-numpy==1.26.4
-oauthlib==3.2.2
-pandas==2.2.2
-pathlib==1.0.1
-pre-commit==3.7.1
-psycopg2-binary==2.9.9
-pydantic==2.8.2
-pydantic_core==2.20.1
-python-dateutil==2.9.0.post0
-python-dotenv==1.0.1
-pytz==2024.1
-requests==2.32.3
-requests-oauthlib==2.0.0
-six==1.16.0
-SQLAlchemy==2.0.31
-SQLAlchemy-Utils==0.41.2
-urllib3==2.2.2
-boto3==1.34.140 
+# Additional Dependencies
+sqlalchemy-utils>=0.41.0  # SQLAlchemy utilities
+pytz>=2024.1  # Timezone handling
+boto3>=1.34.0  # AWS SDK (if needed)
+urllib3>=2.2.0  # HTTP library
+six>=1.16.0  # Python 2/3 compatibility
+oauthlib>=3.2.0  # OAuth library
+requests-oauthlib>=2.0.0  # OAuth for requests
+google-auth-oauthlib>=1.2.0  # Google OAuth
+pydantic-core>=2.20.0  # Pydantic core
+pathlib>=1.0.1  # Path handling 
