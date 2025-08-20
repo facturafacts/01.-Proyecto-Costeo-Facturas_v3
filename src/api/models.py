@@ -288,6 +288,19 @@ class SKUApprovalRequest(BaseModel):
     """Request model for approving a list of SKUs."""
     sku_keys: List[str] = Field(..., description="A list of sku_key strings to be approved.")
 
+class SKUClassification(BaseModel):
+    """Individual SKU classification data."""
+    sku_key: str = Field(..., description="Unique SKU identifier")
+    category: str = Field(..., description="P62 main category")
+    subcategory: str = Field(..., description="P62 subcategory")
+    sub_sub_category: str = Field(..., description="P62 sub-subcategory")
+    standardized_unit: str = Field(..., description="Standardized unit (Litros, Kilogramos, Piezas)")
+    units_per_package: Optional[float] = Field(1.0, description="Units per package for conversion")
+
+class EnhancedSKUApprovalRequest(BaseModel):
+    """Request model for approving SKUs with P62 classifications."""
+    approvals: List[SKUClassification] = Field(..., description="List of SKU approvals with classifications")
+
 class GenericSuccessResponse(BaseModel):
     """A generic success response model."""
     success: bool = True

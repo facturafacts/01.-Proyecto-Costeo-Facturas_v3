@@ -26,10 +26,6 @@ class Settings:
     GEMINI_TIMEOUT: int = int(os.getenv("GEMINI_TIMEOUT", "30"))
     GEMINI_MAX_RETRIES: int = int(os.getenv("GEMINI_MAX_RETRIES", "3"))
     
-    # Database Configuration
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/database/cfdi_system_v4.db")
-    DATABASE_ECHO: bool = os.getenv("DATABASE_ECHO", "False").lower() == "true"
-    
     # File Paths
     INBOX_PATH: str = os.getenv("INBOX_PATH", "data/inbox")
     PROCESSED_PATH: str = os.getenv("PROCESSED_PATH", "data/processed") 
@@ -59,6 +55,34 @@ class Settings:
     # Security Configuration
     ENCRYPT_LOGS: bool = os.getenv("ENCRYPT_LOGS", "False").lower() == "true"
     
+    # Database Configuration
+    DATABASE_ECHO: bool = os.getenv("DATABASE_ECHO", "False").lower() == "true"
+    
+    @property 
+    def DATABASE_URL(self) -> str:
+        """
+        Construct DATABASE_URL from individual components or use direct URL.
+        Priority: Direct DATABASE_URL > Individual DB_ components > SQLite fallback
+        """
+        # Check for direct DATABASE_URL first
+        direct_url = os.getenv("DATABASE_URL")
+        if direct_url:
+            return direct_url
+        
+        # Check for individual PostgreSQL components
+        db_host = os.getenv("DB_HOST")
+        db_name = os.getenv("DB_NAME") 
+        db_user = os.getenv("DB_USER")
+        db_pass = os.getenv("DB_PASS")
+        db_port = os.getenv("DB_PORT", "5432")
+        
+        # If all PostgreSQL components are provided, construct URL
+        if all([db_host, db_name, db_user, db_pass]):
+            return f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}?sslmode=require"
+        
+        # Fallback to SQLite for development
+        return "sqlite:///data/database/cfdi_system_v4.db"
+    
     def is_development(self) -> bool:
         """Check if running in development environment."""
         return self.ENVIRONMENT.lower() in ["dev", "development"]
@@ -66,6 +90,10 @@ class Settings:
     def is_production(self) -> bool:
         """Check if running in production environment."""
         return self.ENVIRONMENT.lower() in ["prod", "production"]
+    
+    def is_using_postgresql(self) -> bool:
+        """Check if using PostgreSQL database."""
+        return self.DATABASE_URL.startswith("postgresql://")
     
     def validate_required_settings(self) -> list:
         """Validate required settings and return missing ones."""
@@ -77,26 +105,8 @@ class Settings:
         return missing
 
 def get_settings():
-    """Returns a dictionary of application settings for backward compatibility."""
-    settings = Settings()
-    return {
-        "GEMINI_API_KEY": settings.GEMINI_API_KEY,
-        "DATABASE_URL": settings.DATABASE_URL,
-        "LOG_LEVEL": settings.LOG_LEVEL,
-        "LOGS_PATH": settings.LOGS_PATH,
-        "LOG_MAX_BYTES": settings.LOG_MAX_BYTES,
-        "LOG_BACKUP_COUNT": settings.LOG_BACKUP_COUNT,
-        "ENABLE_PROFILING": settings.ENABLE_PROFILING,
-        "ENVIRONMENT": settings.ENVIRONMENT,
-        "is_development": settings.is_development,
-        "DATABASE_ECHO": settings.DATABASE_ECHO,
-        "INBOX_PATH": settings.INBOX_PATH,
-        "PROCESSED_PATH": settings.PROCESSED_PATH,
-        "FAILED_PATH": settings.FAILED_PATH,
-        "P62_CATEGORIES_PATH": settings.P62_CATEGORIES_PATH,
-        "BATCH_SIZE": settings.BATCH_SIZE,
-        "DEFAULT_CURRENCY": settings.DEFAULT_CURRENCY,
-    }
+    """Returns the Settings object instance."""
+    return Settings()
 
 # Create settings instance
 settings = Settings() 

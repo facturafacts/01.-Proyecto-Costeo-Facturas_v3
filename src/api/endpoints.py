@@ -8,7 +8,7 @@ FastAPI endpoints for serving invoice metadata.
 
 import logging
 from typing import Optional, List
-from datetime import date
+from datetime import date, datetime
 from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func, update # Added for new endpoints
@@ -24,6 +24,8 @@ from .models import (
     PurchaseDetailsResponse,
     PurchaseDetailsListResponse,
     SKUApprovalRequest,      # <--- ADD THIS
+    SKUClassification,       # <--- NEW
+    EnhancedSKUApprovalRequest,  # <--- NEW
     GenericSuccessResponse   # <--- ADD THIS
 )
 
@@ -613,10 +615,10 @@ async def approve_skus(
             ).values(approval_status='approved')
             session.execute(stmt_details)
 
-            # Update approved_skus table
+            # Update approved_skus table (fix: use review_status, not approval_status)
             stmt_skus = update(ApprovedSKUModel).where(
                 ApprovedSKUModel.sku_key.in_(sku_keys_to_approve)
-            ).values(approval_status='approved')
+            ).values(review_status='approved')
             session.execute(stmt_skus)
             
             session.commit()
@@ -624,6 +626,99 @@ async def approve_skus(
         return GenericSuccessResponse(success=True, message=f"Successfully approved {len(sku_keys_to_approve)} SKUs.")
     except Exception as e:
         logger.error(f"Error in approve_skus: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post(
+    "/skus/approve-with-classification",
+    response_model=GenericSuccessResponse,
+    summary="Approve SKUs with P62 Classifications",
+    description="Approve SKUs and save their P62 classifications to the database."
+)
+async def approve_skus_with_classification(
+    request: EnhancedSKUApprovalRequest,
+    db_manager: DatabaseManager = Depends(get_db_manager)
+):
+    """
+    Approve SKUs with full P62 classification data.
+    Based on the proven pattern from excel_approval.py
+    """
+    try:
+        if not request.approvals:
+            return GenericSuccessResponse(success=True, message="No SKUs to approve.")
+
+        stats = {'successful': 0, 'skipped': 0, 'errors': []}
+
+        with db_manager.get_session() as session:
+            for approval in request.approvals:
+                try:
+                    # Create or update approved_skus record
+                    existing_sku = session.query(ApprovedSKUModel).filter_by(
+                        sku_key=approval.sku_key
+                    ).first()
+                    
+                    if not existing_sku:
+                        # Get description from purchase_details
+                        purchase_item = session.query(PurchaseDetails).filter_by(
+                            sku_key=approval.sku_key
+                        ).first()
+                        
+                        description = purchase_item.description if purchase_item else "Unknown"
+                        
+                        approved_sku = ApprovedSKUModel(
+                            sku_key=approval.sku_key,
+                            normalized_description=description,
+                            category=approval.category,
+                            subcategory=approval.subcategory,
+                            sub_sub_category=approval.sub_sub_category,
+                            standardized_unit=approval.standardized_unit,
+                            units_per_package=approval.units_per_package,
+                            approved_by='google_sheets',
+                            approval_date=datetime.utcnow(),
+                            confidence_score=1.0
+                        )
+                        session.add(approved_sku)
+                    else:
+                        # Update existing
+                        existing_sku.category = approval.category
+                        existing_sku.subcategory = approval.subcategory
+                        existing_sku.sub_sub_category = approval.sub_sub_category
+                        existing_sku.standardized_unit = approval.standardized_unit
+                        existing_sku.units_per_package = approval.units_per_package
+                        existing_sku.review_status = 'approved'
+                        existing_sku.updated_at = datetime.utcnow()
+
+                    # Update purchase_details table
+                    session.query(PurchaseDetails).filter(
+                        PurchaseDetails.sku_key == approval.sku_key
+                    ).update({
+                        'approval_status': 'approved',
+                        'category': approval.category,
+                        'subcategory': approval.subcategory,
+                        'sub_sub_category': approval.sub_sub_category,
+                        'standardized_unit': approval.standardized_unit,
+                        'units_per_package': approval.units_per_package,
+                        'updated_at': datetime.utcnow()
+                    }, synchronize_session=False)
+
+                    stats['successful'] += 1
+
+                except Exception as e:
+                    error_msg = f"SKU {approval.sku_key}: {str(e)}"
+                    stats['errors'].append(error_msg)
+                    logger.error(f"Error approving SKU {approval.sku_key}: {e}")
+
+            session.commit()
+
+        message = f"Successfully approved {stats['successful']} SKUs"
+        if stats['errors']:
+            message += f". {len(stats['errors'])} errors occurred."
+
+        logger.info(f"Enhanced SKU approval completed: {message}")
+        return GenericSuccessResponse(success=True, message=message)
+
+    except Exception as e:
+        logger.error(f"Error in approve_skus_with_classification: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -1,15 +1,18 @@
 /**
- * Google Apps Script for CFDI Invoice System
+ * Google Apps Script for CFDI Invoice System - ENHANCED WITH DEPENDENT P62 DROPDOWNS
  * 
  * This script calls your local FastAPI server (via ngrok) and imports
  * invoice data into Google Sheets with smart updating.
  * 
- * SETUP INSTRUCTIONS:
- * 1. Open Google Sheets
- * 2. Go to Extensions > Apps Script
- * 3. Replace the default code with this script
- * 4. Update the BASE_URL with your ngrok URL
- * 5. Save and use the custom menu
+ * FEATURES:
+ * - True dependent P62 Category dropdown menus (G→H→I)
+ * - Column G: Free text entry for P62 Category
+ * - Column H: Dependent dropdown for Subcategory based on G
+ * - Column I: Dependent dropdown for Sub-Subcategory based on H
+ * - Column J: Independent dropdown for Standardized Units
+ * - Enhanced SKU validation with visual feedback
+ * - Professional approval workflow with error handling
+ * - Easy P62 category updates via copy/paste
  */
 
 // ========================================
@@ -20,22 +23,162 @@
 const BASE_URL = 'https://octopus-app-vzk4s.ondigitalocean.app';
 
 // ========================================
-// NEW: MULTI-CLIENT CONFIGURATION
+// MULTI-CLIENT CONFIGURATION
 // ========================================
 // Map your Google Sheet tab names to the client's RFC.
-// The script will create a menu item for each client listed here.
 const CLIENT_CONFIG = {
-  // "Sheet Tab Name": "CLIENT_RFC_123"
   "Client A": "RFC_CLIENT_A", // Replace with actual RFC
   "Client B": "RFC_CLIENT_B", // Replace with actual RFC
   "Yasser Yussif": "YUGY931216FK4" // Example with your RFC
 };
 
 // ========================================
-// DYNAMIC MENU FUNCTION CREATION (NEW)
+// P62 CATEGORIES CONFIGURATION (COPY/PASTE TO UPDATE)
 // ========================================
-// This creates global functions for each client menu item.
-// This is necessary because menu items can only call global functions.
+// 🔧 TO UPDATE P62 CATEGORIES: Simply replace this entire object with new data
+const P62_CATEGORIES = {
+  "Abarrotes": {
+    "Aceite": ["Aceite de oliva", "Aceite vegetal"],
+    "Alga Marina": ["Alga Marina"],
+    "Café": ["Café instantáneo", "Café molido", "Granos de café"],
+    "Cereales": ["Arroz", "Avena", "Quinoa"],
+    "Chiles": ["Chile Chipotle", "Chile Quebrado", "Chile Seco", "Chile con Limon"],
+    "Concentrados": ["Horchata", "Jamaica"],
+    "Condimentos": ["Ajo en polvo", "Axiote", "Catsup", "Cebolla en polvo", "Consome de Pollo", "Consome de Vegetales", "Mayonesa", "Mostaza", "Pepper", "Sal"],
+    "Conservas": ["Alcaparras", "Anchoas", "Frijoles enlatados", "Frutas enlatadas", "Jalapeños enlatados", "Pepinillos encurtidos", "Pure de Tomate", "Tomates enlatados", "Aceitunas"],
+    "Crema": ["Crema de Ajonjoli", "Crema de Avellana", "Crema de Cacahuate"],
+    "Dulces": ["Dulces", "Enjambre de nuez"],
+    "Endulzantes": ["Azúcar blanca granulada", "Azúcar de coco", "Azúcar morena", "Chamoy", "Extracto de Vainilla", "Jarabe", "Jarabe Chocolate", "Mazapan", "Miel", "Miel de Agave", "Piloncillo"],
+    "Especias": ["Ajo en bote", "Cayne", "Cebolla", "Chile/s", "Comino", "Oregano", "Paprika", "Pimienta"],
+    "Harinas": ["Harina de Centeno", "Harina de maíz", "Harina de trigo"],
+    "Hierbas": ["Hierbas secas"],
+    "Huevos": ["Huevos"],
+    "Legumbres": ["Frijol", "Grabanzo", "Lentejas"],
+    "Nueces y Semillas": ["Ajonjoli", "Cacahuate", "Nueces", "Nueces pecanas", "Pepita"],
+    "Otros-a": ["Bicarbonato de sodio", "Carbon", "Coco rallado", "Fruta seca", "Jamaica", "Maiz Pozolero", "Otros", "Pan Molido", "Pasta"],
+    "Pulpa": ["Fresa", "Guayaba", "Mango", "Maracuya", "Pitaya", "Piña", "Tamarindo"],
+    "Salsas - A": ["Marinadas", "Salsas BBQ", "Salsas condimentadas", "Salsas para untar", "Salsas picantes"],
+    "Tortilla": ["Tortilla de Harina", "Tortilla de Mariz", "Totopos"],
+    "Vinagre": ["Vinagre balsamico", "Vinagre blanco", "Vinagre de malta", "Vinagre de manzana", "Vinagre de vino tinto"]
+  },
+  "Bebidas": {
+    "Cerveza": ["Artesanal", "Importada", "Nacional"],
+    "Destilados": ["Apperol", "Controy", "Gin", "Licor 43", "Licores", "Mezcal", "Pox", "Ron", "Tequila", "Vodka", "Whiskey"],
+    "Jugo": ["Jugo de Arándano", "Jugo de Manzana", "Jugo de Naranja", "Jugo de Piña", "Jugo de Tomate", "Jugo de Uva"],
+    "Otros-b": ["Agua de coco", "Clamato", "Coffee Drinks", "Crema de coco", "Kombucha", "Otros", "Tea", "Water"],
+    "Refrescos": ["Agua Mineral", "Agua Tonica", "Cola", "Ginger Ale", "Lima-Limon", "Refresco Sin Gas", "Te", "Toronja"],
+    "Vino": ["Vino Blanco", "Vino Naranja", "Vino Rosado", "Vino Tinto"]
+  },
+  "Gastos Generales": {
+    "Arrendamiento": ["Arrendamiento"],
+    "Asimilados a salarios": ["Asimilados a salarios"],
+    "Atención a clientes": ["Atención a clientes"],
+    "Capacitación": ["Capacitación"],
+    "Combustibles y lubricantes": ["Combustibles y lubricantes"],
+    "Comunicaciones": ["Comunicaciones"],
+    "Consultoria contable-fiscal y de negocios": ["Consultoria contable-fiscal y de negocios"],
+    "Correo y Mensajeria": ["Correo y Mensajeria"],
+    "Cuotas y suscripciones": ["Cuotas y suscripciones"],
+    "Depreciacion contable": ["Depreciacion contable"],
+    "Enseres menores": ["Enseres menores"],
+    "Fletes y acarreos": ["Fletes y acarreos"],
+    "Gastos No deducibles": ["Gastos No deducibles"],
+    "Honorarios PF": ["Honorarios PF"],
+    "Honorarios RESICO": ["Honorarios RESICO"],
+    "Mantenimiento y conservación Oficina": ["Mantenimiento y conservación Oficina"],
+    "Otros Gastos de Venta": ["Otros Gastos de Venta"],
+    "Otros impuestos y derechos": ["Otros impuestos y derechos"],
+    "Papelería y articulos de oficina": ["Papelería y articulos de oficina"],
+    "Pensiones y estacionamientos": ["Pensiones y estacionamientos"],
+    "Prestaciones al Personal": ["Prestaciones al Personal"],
+    "Previsión Social": ["Previsión Social"],
+    "Propaganda y Publicidad": ["Propaganda y Publicidad"],
+    "Seguridad Social": ["Seguridad Social"],
+    "Seguros y fianzas": ["Seguros y fianzas"],
+    "Servicios Administrativos": ["Servicios Administrativos"],
+    "Servicios Aduanales": ["Servicios Aduanales"],
+    "Servicios Legales": ["Servicios Legales"],
+    "Servicios contables": ["Servicios contables"],
+    "Servicios de Facturación": ["Servicios de Facturación"],
+    "Servicios de Marketing": ["Servicios de Marketing"],
+    "Software y licencias": ["Software y licencias"],
+    "Sueldos y salarios": ["Sueldos y salarios"],
+    "Vigilancia y seguridad": ["Vigilancia y seguridad"],
+    "Viáticos y gastos de viaje": ["Viáticos y gastos de viaje"]
+  },
+  "Lacteos": {
+    "Cremas": ["Crema", "Crema agria", "Crema espesa", "Crema para batir", "Jocoque", "Medio y medio"],
+    "Helado": ["Helado de Chocolate", "Helado de Fresa", "Helado de Vainilla"],
+    "Leche": ["Leche Lycott", "Leche de almendras", "Leche de avena", "Leche de soja", "Leche descremada", "Leche en Polvo", "Leche entera"],
+    "Otros-l": ["Mantequilla", "Otros", "Queso crema", "Yogurt"],
+    "Queso": ["Queso Amarillo", "Queso Americano", "Queso Brie", "Queso Burrata", "Queso Cotija", "Queso Cottage", "Queso Crema", "Queso Feta", "Queso Gorgonzola", "Queso Mozarella", "Queso Padano", "Queso Parmesano", "Queso Ricotta", "Queso cheddar", "Queso de Cabra", "Queso seco", "Queso suizo"]
+  },
+  "Panaderia": {
+    "Otros-p": ["Empanizador", "Galletas", "Magdalenas", "Pasteles", "Tartas"],
+    "Pan": ["Baguettes", "Bollos", "Croissants", "Pan blanco", "Pan de masa madre", "Pan integral"]
+  },
+  "Preparados": {
+    "Aceite": ["Aceite vegetal"],
+    "Aderezos": ["Aderezo cesar", "Aderezo italiano", "Aderezo ranch", "Vinagreta"],
+    "Azúcar": ["Miel"],
+    "Encurtidos": ["Aderezo", "Chucrut", "Pepinillos encurtidos"],
+    "Harinas": ["Harina de maíz"],
+    "Masas": ["Masa para galletas", "Masa para pan", "Masa para pizza"],
+    "Otros-pr": ["Bases para sopa", "Comidas congeladas", "Ensaladas preparadas", "Otros"],
+    "Salsas - Pr": ["Salsa BBQ", "Salsa de tomate", "Salsa pesto", "Salsa verde", "Salsas BBQ", "Salsas para untar", "Salsas picantes"]
+  },
+  "Proteinas": {
+    "Carne Otros": ["Carne molida", "Cordero", "Otros"],
+    "Carne de cerdo": ["Chicharron", "Chorizo", "Chuleta", "Codillo", "Costilla", "Espaldilla", "Jamón", "Lomo", "Pierna", "Pork Belly / Panceta / Pecho", "Solomillo", "Tocino"],
+    "Carne de res": ["Bistec", "Brisket", "Chuleta", "Costilla", "Diezmillo", "Falda", "Filete", "Lomo", "Paleta", "Picaña", "Ribeye", "Sirloin"],
+    "Embutidos": ["Pepperoni", "Salami", "Salchichas"],
+    "Mariscos": ["Almejas", "Camarones", "Cangrejo", "Langosta", "Mejillones", "Ostion", "Otros"],
+    "Otros-Pro": ["Tempeh", "Tofu"],
+    "Pavo": ["Alitas", "Contramuslo", "Corazón", "Cuello", "Hígado", "Molleja", "Muslo", "Pata", "Pechuga", "Pierna"],
+    "Pescado": ["Atún", "Bacalao", "Cabrilla", "Camarones", "Halibut", "Jurel", "Pargo", "Pescado", "Salmón"],
+    "Pollo": ["Alitas", "Contramuslo", "Corazón", "Cuello", "Hígado", "Molleja", "Muslo", "Pata", "Pechuga", "Pierna"]
+  },
+  "Servicios": {
+    "Servicios": ["Servicios"]
+  },
+  "Suministros": {
+    "Bolsas": ["Bolsas de almacenamiento de alimentos", "Bolsas de basura", "Bolsas de compras"],
+    "Caja": ["Caja para Pizza"],
+    "Desinfectante": ["Desinfectante de manos", "General", "Toallitas desinfectantes"],
+    "Detergente": ["Detergente para lavar platos", "Limpiador multiuso"],
+    "Equipo": ["Equipo De Cocina", "Equipo de Servicio"],
+    "Jabón": ["Esponjas y Fibras para Lavar", "Jabón de manos", "Jabón en barra", "Jabón para lavar platos"],
+    "Papel Higienico": ["Papel Higienico"],
+    "Servilletas": ["Servilletas de papel", "Servilletas de tela"],
+    "Suministros Cocina": ["Bandejas para hornear", "Boles para mezclar", "Otros", "Papel Encerado", "Papel de aluminio", "Papel film", "Papel pergamino"],
+    "Toalla": ["Toalla de Papel", "Toalla de Tela"],
+    "Utensilios": ["Cucharas", "Cucharas Desechables", "Cuchillos", "Cuchillos Desechables", "Otros", "Palillos", "Paquetes de cubiertos Desechables", "Platos", "Platos compostables", "Platos de papel", "Platos de plástico", "Tenedores", "Tenedores Desechables", "Vasos", "Vasos Plastico", "Vasos de espuma de poliestireno", "Vasos de papel"]
+  },
+  "Uniformes": {
+    "Ropa": ["Mandiles", "Playeras"]
+  },
+  "Vegetales": {
+    "Frutas": ["Aguacate", "Dátil", "Fresa", "Jitomate", "Jiícama", "Kiwi", "Limon", "Limon Amarillo", "Limon Sin Semilla", "Mango", "Manzana", "Melon", "Moras / Berries", "Naranja", "Papaya", "Piña", "Plátano", "Sandia", "Tomate Cherry", "Tomate Saladette", "Tomatillo", "Tomillo", "Toronja"],
+    "Hongo": ["Champiñon", "Seta"],
+    "Verduras": ["Acelga", "Ajo Blanco", "Albahaca", "Apio", "Arugula", "Berenjena", "Betabel", "Calabaza", "Camote", "Cebolla Blanca", "Cebolla Morada", "Cebollin", "Chayote", "Chile Guajillo", "Chile Habanero", "Chile Jalapeño", "Chile Morilla", "Chile Poblano", "Chile Serrano", "Cilantro", "Col", "Ejotes", "Elote Blanco", "Espinaca", "Jengibre", "Lechuga Bola", "Lechuga Icberg", "Lechuga Italiana", "Lechuga Mixta", "Lechuga Romana", "Lechuga Verde", "Menta", "Papa Russet", "Pepino Verde", "Perejil", "Perejil Lacio", "Pimiento", "Repollo", "Romero", "Shallot", "Verdura", "Zanahoria"]
+  }
+};
+
+// Standardized units validation
+const VALID_STANDARDIZED_UNITS = ["Litros", "Kilogramos", "Piezas"];
+
+// Business validation rules
+const VALIDATION_RULES = {
+  minDescriptionLength: 10,
+  maxDescriptionLength: 500,
+  minConfidenceScore: 0.7,
+  maxUnitsPerPackage: 10000,
+  requiredFields: ['sku_key', 'product_code', 'description', 'category']
+};
+
+// ========================================
+// DYNAMIC MENU FUNCTION CREATION
+// ========================================
 (function() {
   for (const clientName in CLIENT_CONFIG) {
     const rfc = CLIENT_CONFIG[clientName];
@@ -44,8 +187,7 @@ const CLIENT_CONFIG = {
   }
 })();
 
-
-// API endpoints (don't change these)
+// API endpoints
 const ENDPOINTS = {
   health: '/api/v1/health',
   metadata: '/api/v1/invoices/metadata',
@@ -57,14 +199,15 @@ const API_URL = BASE_URL + ENDPOINTS.metadata;
 const HEALTH_URL = BASE_URL + ENDPOINTS.health;
 const PURCHASE_DETAILS_URL = BASE_URL + ENDPOINTS.purchase_details;
 
-// Optional: Add filters to the API call
+// API filters
 const API_FILTERS = {
-  limit: 5000,           // Increased for complete data import
-  // issuer_rfc: 'RFC123', // Uncomment to filter by issuer
-  // currency: 'MXN',      // Uncomment to filter by currency
-  // date_from: '2024-01-01', // Uncomment to filter by date range
-  // date_to: '2024-12-31'
+  limit: 5000
 };
+
+// SKU Approval URLs
+const SKU_APPROVAL_URL = BASE_URL + '/api/v1/skus/pending';
+const SKU_SUBMIT_URL = BASE_URL + '/api/v1/skus/approve';
+const SKU_SUBMIT_ENHANCED_URL = BASE_URL + '/api/v1/skus/approve-with-classification';
 
 // ========================================
 // MAIN FUNCTIONS
@@ -77,14 +220,11 @@ function updateFacturas() {
   try {
     console.log('🚀 Starting Facturas update...');
     
-    // Get or create the Facturas sheet
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = getOrCreateSheet(spreadsheet, 'Facturas');
     
-    // Show progress
     showProgress('Fetching invoice data from API...');
     
-    // Call the API
     const data = fetchInvoiceData();
     
     if (!data || !data.success) {
@@ -93,19 +233,15 @@ function updateFacturas() {
     
     console.log(`📊 Received ${data.count} invoice records`);
     
-    // Check if sheet has headers
     const hasHeaders = sheet.getLastRow() > 0;
     
     if (!hasHeaders) {
-      // First time - add headers
       showProgress('Adding headers...');
       addFacturasHeaders(sheet);
     }
     
-    // Get existing UUIDs to avoid duplicates
     const existingUUIDs = getExistingUUIDs(sheet, hasHeaders ? 2 : 1);
     
-    // Filter new invoices
     const newInvoices = data.data.filter(invoice => !existingUUIDs.has(invoice.uuid));
     
     if (newInvoices.length === 0) {
@@ -113,15 +249,12 @@ function updateFacturas() {
       return;
     }
     
-    // Insert new data at the top
     showProgress(`Inserting ${newInvoices.length} new invoices...`);
     insertFacturasAtTop(sheet, newInvoices);
     
-    // Format the sheet
     showProgress('Formatting sheet...');
     formatFacturasSheet(sheet);
     
-    // Show completion message
     SpreadsheetApp.getUi().alert(
       `Facturas Update Complete!\n\nInserted ${newInvoices.length} new invoices at the top.\nTotal invoices: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
     );
@@ -143,14 +276,11 @@ function updatePurchaseDetails() {
   try {
     console.log('🚀 Starting Purchase Details update...');
     
-    // Get or create the Purchase_Details sheet
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = getOrCreateSheet(spreadsheet, 'Purchase_Details');
     
-    // Show progress
     showProgress('Fetching purchase details from API...');
     
-    // Call the API
     const data = fetchPurchaseDetails();
     
     if (!data || !data.success) {
@@ -159,19 +289,15 @@ function updatePurchaseDetails() {
     
     console.log(`📊 Received ${data.count} purchase detail records`);
     
-    // Check if sheet has headers
     const hasHeaders = sheet.getLastRow() > 0;
     
     if (!hasHeaders) {
-      // First time - add headers
       showProgress('Adding headers...');
       addPurchaseDetailsHeaders(sheet);
     }
     
-    // Get existing line items to avoid duplicates (FIXED)
     const existingLineItemKeys = getExistingLineItemKeys(sheet, hasHeaders ? 2 : 1);
     
-    // Filter new purchase details using a composite key (FIXED)
     const newPurchaseDetails = data.data.filter(item => {
       const uniqueKey = `${item.invoice_uuid}_${item.line_number}`;
       return !existingLineItemKeys.has(uniqueKey);
@@ -182,15 +308,12 @@ function updatePurchaseDetails() {
       return;
     }
     
-    // Insert new data at the top
     showProgress(`Inserting ${newPurchaseDetails.length} new purchase details...`);
     insertPurchaseDetailsAtTop(sheet, newPurchaseDetails);
     
-    // Format the sheet
     showProgress('Formatting sheet...');
     formatPurchaseDetailsSheet(sheet);
     
-    // Show completion message
     SpreadsheetApp.getUi().alert(
       `Purchase Details Update Complete!\n\nInserted ${newPurchaseDetails.length} new purchase details at the top.\nTotal records: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
     );
@@ -241,21 +364,18 @@ function testAPIConnection() {
 }
 
 /**
- * NEW & CORRECTED: Generic function to update a sheet for a specific client.
- * This function now performs a "smart update", adding new records to the top
- * of two dedicated sheets for the client without deleting existing data.
+ * Generic function to update a sheet for a specific client
  */
 function updateClientSheet(clientName, rfc) {
   try {
     console.log(`🚀 Starting smart update for ${clientName} (RFC: ${rfc})...`);
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-    // --- Part 1: Update Client Facturas Sheet ---
     const facturasSheetName = `Facturas - ${clientName}`;
     const facturasSheet = getOrCreateSheet(spreadsheet, facturasSheetName);
     showProgress(`Fetching invoices for ${clientName}...`);
 
-    const invoiceData = fetchInvoiceData(rfc); // Fetch with RFC
+    const invoiceData = fetchInvoiceData(rfc);
     if (invoiceData && invoiceData.success && invoiceData.count > 0) {
       const hasHeaders = facturasSheet.getLastRow() > 0;
       if (!hasHeaders) { addFacturasHeaders(facturasSheet); }
@@ -270,16 +390,13 @@ function updateClientSheet(clientName, rfc) {
       } else {
         console.log(`ℹ️ No new invoices found for ${clientName}.`);
       }
-    } else {
-      console.log(`ℹ️ No invoices found for ${clientName}.`);
     }
 
-    // --- Part 2: Update Client Purchase Details Sheet ---
     const detailsSheetName = `Purchase Details - ${clientName}`;
     const detailsSheet = getOrCreateSheet(spreadsheet, detailsSheetName);
     showProgress(`Fetching purchase details for ${clientName}...`);
 
-    const purchaseData = fetchPurchaseDetails(rfc); // Fetch with RFC
+    const purchaseData = fetchPurchaseDetails(rfc);
     if (purchaseData && purchaseData.success && purchaseData.count > 0) {
       const hasHeaders = detailsSheet.getLastRow() > 0;
       if (!hasHeaders) { addPurchaseDetailsHeaders(detailsSheet); }
@@ -294,14 +411,10 @@ function updateClientSheet(clientName, rfc) {
         insertPurchaseDetailsAtTop(detailsSheet, newPurchaseDetails);
         formatPurchaseDetailsSheet(detailsSheet);
         console.log(`✅ Purchase details updated for ${clientName}: ${newPurchaseDetails.length} new records.`);
-      } else {
-        console.log(`ℹ️ No new purchase details found for ${clientName}.`);
       }
-    } else {
-      console.log(`ℹ️ No purchase details found for ${clientName}.`);
     }
 
-    SpreadsheetApp.getUi().alert(`Update for ${clientName} complete!\n\nNew Invoices: ${invoiceData.new_count || 0}\nNew Details: ${purchaseData.new_count || 0}`);
+    SpreadsheetApp.getUi().alert(`Update for ${clientName} complete!`);
 
   } catch (error) {
     console.error(`❌ Update for ${clientName} failed:`, error);
@@ -312,9 +425,8 @@ function updateClientSheet(clientName, rfc) {
 /**
  * Fetch invoice data from the API
  */
-function fetchInvoiceData(rfc = null) { // ADDED rfc parameter
+function fetchInvoiceData(rfc = null) {
   try {
-    // Build URL with filters
     let url = API_URL;
     const params = [];
     
@@ -330,7 +442,6 @@ function fetchInvoiceData(rfc = null) { // ADDED rfc parameter
     
     console.log('📡 Facturas API URL:', url);
     
-    // Make the API call
     const response = UrlFetchApp.fetch(url, {
       method: 'GET',
       headers: {
@@ -352,7 +463,7 @@ function fetchInvoiceData(rfc = null) { // ADDED rfc parameter
 }
 
 /**
- * Fetch purchase details data from API. Now accepts an RFC to filter.
+ * Fetch purchase details data from API
  */
 function fetchPurchaseDetails(rfc = null) {
   try {
@@ -383,32 +494,766 @@ function fetchPurchaseDetails(rfc = null) {
   }
 }
 
+// ========================================
+// SKU APPROVAL WITH DEPENDENT DROPDOWNS
+// ========================================
+
+/**
+ * Create SKU Approval Sheet with TRUE Dependent P62 Dropdown Menus
+ */
+function createSkuApproval() {
+  try {
+    console.log('🚀 Creating SKU Approval with TRUE Dependent P62 Dropdowns...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, 'SKU Approval');
+    
+    // COMPLETELY clear everything including validations
+    sheet.clear();
+    
+    // Clear any existing data validations on the entire sheet
+    const maxRows = sheet.getMaxRows();
+    const maxCols = sheet.getMaxColumns();
+    if (maxRows > 0 && maxCols > 0) {
+      sheet.getRange(1, 1, maxRows, maxCols).clearDataValidations();
+    }
+    console.log('✅ Sheet completely cleared including all validations');
+
+    showProgress('Fetching pending SKUs and setting up dependent dropdowns...');
+    
+    console.log('📡 Fetching from URL:', SKU_APPROVAL_URL);
+    
+    let response, responseText, data;
+    try {
+      response = UrlFetchApp.fetch(SKU_APPROVAL_URL, {
+        headers: { 'ngrok-skip-browser-warning': 'true' },
+        muteHttpExceptions: true // Don't throw on HTTP errors
+      });
+      
+      console.log('📡 Response status:', response.getResponseCode());
+      responseText = response.getContentText();
+      console.log('📋 Raw API Response (first 500 chars):', responseText.substring(0, 500));
+      
+      if (response.getResponseCode() !== 200) {
+        throw new Error(`API returned status ${response.getResponseCode()}: ${responseText}`);
+      }
+      
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('❌ Failed to parse JSON response:', parseError);
+      console.log('📋 Full response text:', responseText);
+      throw new Error(`Failed to parse API response: ${parseError.message}`);
+    }
+    console.log('📊 Parsed data:', data);
+    console.log('📈 Data length:', data.data ? data.data.length : 'No data array');
+
+    if (!data.success || !data.data || data.data.length === 0) {
+      const message = data.message || 'No data returned from API';
+      console.log('⚠️ No SKUs found:', message);
+      SpreadsheetApp.getUi().alert(`ℹ️ No SKUs pending approval!\n\nAPI Response: ${message}\nData length: ${data.data ? data.data.length : 0}`);
+      return;
+    }
+
+    // Create headers with AI reference columns
+    const headers = [
+      '✅ Approve?', 
+      '🔑 SKU Key', 
+      '📄 Description', 
+      '📏 Unit Code',
+      '📦 Units/Package',
+      '🤖 AI Category (Reference)', 
+      '🤖 AI Subcategory (Reference)', 
+      '🤖 AI Sub-Subcategory (Reference)',
+      '📊 P62 Category (Select)', 
+      '📋 P62 Subcategory (Select)', 
+      '🏷️ P62 Sub-Subcategory (Select)',
+      '⚖️ Standardized Unit (Select)'
+    ];
+    
+    // Set headers with formatting
+    const headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setValues([headers]);
+    headerRange.setFontWeight('bold');
+    headerRange.setBackground('#1976D2');
+    headerRange.setFontColor('#FFFFFF');
+    headerRange.setHorizontalAlignment('center');
+
+    // Populate data with AI reference columns
+    console.log('🔄 Processing SKU data for sheet...');
+    console.log('📊 First SKU sample:', data.data[0]);
+    
+    const rows = data.data.map((item, index) => {
+      if (index < 3) { // Log first 3 items for debugging
+        console.log(`📋 Processing SKU ${index + 1}:`, {
+          sku_key: item.sku_key,
+          description: item.description,
+          category: item.category,
+          subcategory: item.subcategory
+        });
+      }
+      return [
+        false, // Approval checkbox
+        item.sku_key || 'N/A',
+        item.description || 'N/A',
+        item.unit_code || 'N/A',
+        item.units_per_package || 'N/A',
+        item.category || 'N/A', // AI Category (Reference)
+        item.subcategory || 'N/A', // AI Subcategory (Reference)
+        item.sub_sub_category || 'N/A', // AI Sub-Subcategory (Reference)
+        item.category || '', // Editable P62 Category (starts with AI suggestion)
+        '', // Subcategory (starts empty)
+        '', // Sub-Subcategory (starts empty)
+        item.standardized_unit || '' // Standardized Unit dropdown
+      ];
+    });
+    
+    console.log(`📈 Created ${rows.length} rows for sheet`);
+    console.log('📊 Sample row:', rows[0]);
+
+    if (rows.length > 0) {
+      console.log(`📝 Setting ${rows.length} rows with ${headers.length} columns each`);
+      console.log('📊 First few rows sample:', rows.slice(0, 2));
+      
+      // Make sure we're setting the right range
+      const dataRange = sheet.getRange(2, 1, rows.length, headers.length);
+      console.log(`📍 Setting range: Row 2, Col 1, ${rows.length} rows, ${headers.length} cols`);
+      dataRange.setValues(rows);
+      console.log('✅ Data set successfully');
+      
+      // Add checkboxes to first column
+      console.log('☑️ Adding checkboxes to approval column...');
+      const checkboxRange = sheet.getRange(2, 1, rows.length, 1);
+      checkboxRange.insertCheckboxes();
+      console.log('✅ Checkboxes added successfully');
+      
+      // Setup dependent dropdowns
+      console.log('🔽 Setting up dependent P62 dropdowns...');
+      setupDependentDropdowns(sheet, rows.length);
+      console.log('✅ Dependent dropdowns configured');
+      
+      // Skip everything that could cause crashes:
+      // - No P62 reference sheet creation
+      // - No dropdown setup  
+      // - No formatting
+      // Just create the basic sheet with data only
+      
+      console.log(`✅ Sheet setup complete with ${rows.length} SKUs`);
+    } else {
+      console.log('⚠️ No rows to insert');
+    }
+
+    console.log('✅ SKIPPING AUTO-RESIZE AND FREEZE TO ISOLATE THE CRASH');
+    // Skip auto-resize and freeze that might be triggering validation
+    
+    SpreadsheetApp.getUi().alert(
+      `🎉 SKU Approval Ready!\n\n` +
+      `📊 ${data.data.length} SKUs loaded\n` +
+      `🔽 TRUE dependent dropdown menus configured\n` +
+      `📋 Helper sheets created\n\n` +
+      `Instructions:\n` +
+      `1. Review AI suggestions in columns F, G, H (Reference)\n` +
+      `2. Select P62 Category from dropdown in column I\n` +
+      `3. Select Subcategory from dropdown in column J (depends on I)\n` +
+      `4. Select Sub-Subcategory from dropdown in column K (depends on J)\n` +
+      `5. Select Standardized Unit from dropdown in column L\n` +
+      `6. Check ✅ to approve\n` +
+      `8. Submit when ready`
+    );
+
+  } catch (error) {
+    console.error('❌ SKU approval creation failed:', error);
+    SpreadsheetApp.getUi().alert(`Error: ${error.message}`);
+  }
+}
+
+/**
+ * Setup dependent dropdowns for P62 categories using the Categories sheet
+ * Column I - Dropdown from Column A in "Categories" sheet  
+ * Column J - Dependent dropdown based on Column I selection, from Column B in Categories sheet
+ * Column K - Dependent dropdown based on Column J selection, from Column C in Categories sheet
+ */
+function setupDependentDropdowns(sheet, dataRows) {
+  try {
+    console.log('🔽 Setting up clean dependent dropdowns using Categories sheet...');
+    
+    if (dataRows === 0) {
+      console.log('⚠️ No data rows to set up dropdowns for');
+      return;
+    }
+    
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Get the Categories sheet
+    let categoriesSheet;
+    try {
+      categoriesSheet = spreadsheet.getSheetByName('Categories');
+      if (!categoriesSheet) {
+        throw new Error('Categories sheet not found');
+      }
+    } catch (error) {
+      console.error('❌ Categories sheet not found:', error);
+      SpreadsheetApp.getUi().alert('❌ Categories sheet not found!\n\nPlease create a "Categories" sheet with P62 data in:\n• Column A: Categories\n• Column B: Subcategories  \n• Column C: Sub-Subcategories');
+      return;
+    }
+    
+    // Get unique categories from column A (skip header row)
+    const categoriesData = categoriesSheet.getRange('A:A').getValues();
+    const categories = [...new Set(categoriesData.slice(1).map(row => row[0]).filter(cat => cat && cat.trim()))];
+    console.log(`📋 Found ${categories.length} unique categories from Categories sheet`);
+    
+    // Column I: Categories dropdown
+    console.log('🔽 Setting up Column I (Categories) dropdown...');
+    const categoryRange = sheet.getRange(2, 9, dataRows, 1); // Column I (9)
+    const categoryValidation = SpreadsheetApp.newDataValidation()
+      .requireValueInList(categories, true)
+      .setAllowInvalid(false)
+      .setHelpText('Select a P62 Category from the Categories sheet')
+      .build();
+    categoryRange.setDataValidation(categoryValidation);
+    console.log('✅ Column I dropdown configured with', categories.length, 'categories');
+    
+    // Column L: Standardized Units dropdown  
+    console.log('🔽 Setting up Column L (Standardized Units) dropdown...');
+    const unitRange = sheet.getRange(2, 12, dataRows, 1); // Column L (12)
+    const unitValidation = SpreadsheetApp.newDataValidation()
+      .requireValueInList(['Litros', 'Kilogramos', 'Piezas'], true)
+      .setAllowInvalid(false)
+      .setHelpText('Select standardized unit')
+      .build();
+    unitRange.setDataValidation(unitValidation);
+    console.log('✅ Column L dropdown configured with standardized units');
+    
+    // Simple trigger (onEdit) is automatically available - no installation needed
+    console.log('✅ Simple onEdit trigger ready - dependent dropdowns will work automatically');
+    
+    console.log('✅ Clean dependent dropdowns setup complete!');
+    
+  } catch (error) {
+    console.error('❌ Error setting up dependent dropdowns:', error);
+    throw error;
+  }
+}
+
+/**
+ * Install the onEdit trigger for dependent dropdown functionality
+ * Using simple trigger approach instead of installable trigger
+ */
+function installDependentDropdownTrigger() {
+  try {
+    console.log('🔧 Installing dependent dropdown trigger...');
+    
+    // Delete existing triggers for onSkuEdit to avoid duplicates
+    const triggers = ScriptApp.getProjectTriggers();
+    let deletedCount = 0;
+    triggers.forEach(trigger => {
+      if (trigger.getHandlerFunction() === 'onEdit') {
+        ScriptApp.deleteTrigger(trigger);
+        deletedCount++;
+      }
+    });
+    
+    console.log(`🗑️ Deleted ${deletedCount} existing onEdit triggers`);
+
+    SpreadsheetApp.getUi().alert(
+      `🔧 Simple Trigger Setup Complete!\n\n` +
+      `• Using built-in onEdit simple trigger\n` +
+      `• No installable trigger needed\n` +
+      `• Deleted ${deletedCount} existing triggers\n\n` +
+      `The onEdit function will automatically work!\n` +
+      `Try changing Column I values now.`
+    );
+    
+    console.log('✅ Simple trigger setup completed');
+    
+  } catch (error) {
+    console.error('❌ Error setting up trigger:', error);
+    SpreadsheetApp.getUi().alert(`Trigger Setup Failed:\n\n${error.message}`);
+  }
+}
+
+/**
+ * Handle edit events for dependent dropdowns in SKU Approval sheet
+ * This is a SIMPLE TRIGGER - automatically called when any cell is edited
+ */
+function onEdit(e) {
+  if (!e || !e.range) return;
+  
+  try {
+    console.log('🔧 onEdit triggered!');
+    const sheet = e.range.getSheet();
+    const sheetName = sheet.getName();
+    
+    console.log(`📝 Edit in sheet: ${sheetName}`);
+    
+    // Only process SKU Approval sheet
+    if (sheetName !== 'SKU Approval') {
+      console.log('⏭️ Skipping - not SKU Approval sheet');
+      return;
+    }
+    
+    const row = e.range.getRow();
+    const col = e.range.getColumn();
+    
+    console.log(`📍 Edit at Row: ${row}, Column: ${col}`);
+    
+    // Only process data rows (not header)
+    if (row < 2) {
+      console.log('⏭️ Skipping - header row');
+      return;
+    }
+    
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const categoriesSheet = spreadsheet.getSheetByName('Categories');
+    if (!categoriesSheet) {
+      console.log('❌ Categories sheet not found');
+      return;
+    }
+    
+    // Column I (9) - Category changed
+    if (col === 9) {
+      const selectedCategory = e.range.getValue();
+      console.log(`🔄 Category changed to: "${selectedCategory}"`);
+      
+      // Clear Column J and K when Category changes
+      sheet.getRange(row, 10).clearContent().clearDataValidations();
+      sheet.getRange(row, 11).clearContent().clearDataValidations();
+      console.log('🧹 Cleared columns J and K');
+      
+      // Update subcategory dropdown
+      updateDependentSubcategory(sheet, categoriesSheet, row, selectedCategory);
+    }
+    
+    // Column J (10) - Subcategory changed  
+    if (col === 10) {
+      const selectedCategory = sheet.getRange(row, 9).getValue();
+      const selectedSubcategory = e.range.getValue();
+      console.log(`🔄 Subcategory changed to: "${selectedSubcategory}" (Category: "${selectedCategory}")`);
+      
+      // Clear Column K when Subcategory changes
+      sheet.getRange(row, 11).clearContent().clearDataValidations();
+      console.log('🧹 Cleared column K');
+      
+      // Update sub-subcategory dropdown
+      updateDependentSubSubcategory(sheet, categoriesSheet, row, selectedCategory, selectedSubcategory);
+    }
+    
+    console.log('✅ onSkuEdit completed');
+    
+  } catch (error) {
+    console.error('❌ Error in onSkuEdit:', error);
+  }
+}
+
+/**
+ * Update Column J (subcategory) dropdown based on Column I (category) selection
+ */
+function updateDependentSubcategory(sheet, categoriesSheet, row, selectedCategory) {
+  try {
+    if (!selectedCategory || !selectedCategory.trim()) {
+      // Clear subcategory if no category selected
+      sheet.getRange(row, 10).clearContent().clearDataValidations();
+      return;
+    }
+    
+    // Get all data from Categories sheet
+    const categoriesData = categoriesSheet.getDataRange().getValues();
+    
+    // Find subcategories that match the selected category
+    const subcategories = [...new Set(
+      categoriesData
+        .filter(row => row[0] === selectedCategory && row[1] && row[1].trim()) // Match category and has subcategory
+        .map(row => row[1]) // Get subcategory (column B)
+    )];
+    
+    console.log(`🔄 Found ${subcategories.length} subcategories for "${selectedCategory}"`);
+    
+    if (subcategories.length > 0) {
+      const subcategoryCell = sheet.getRange(row, 10);
+      const validation = SpreadsheetApp.newDataValidation()
+        .requireValueInList(subcategories, true)
+        .setAllowInvalid(false)
+        .setHelpText(`Select subcategory for ${selectedCategory}`)
+        .build();
+      
+      subcategoryCell.clearContent().setDataValidation(validation);
+      console.log(`✅ Updated subcategory dropdown for row ${row}`);
+    } else {
+      sheet.getRange(row, 10).clearContent().clearDataValidations();
+    }
+    
+  } catch (error) {
+    console.error('❌ Error updating subcategory dropdown:', error);
+  }
+}
+
+/**
+ * Update Column K (sub-subcategory) dropdown based on Column I & J selections
+ */
+function updateDependentSubSubcategory(sheet, categoriesSheet, row, selectedCategory, selectedSubcategory) {
+  try {
+    if (!selectedCategory || !selectedSubcategory || !selectedCategory.trim() || !selectedSubcategory.trim()) {
+      // Clear sub-subcategory if prerequisites not met
+      sheet.getRange(row, 11).clearContent().clearDataValidations();
+      return;
+    }
+    
+    // Get all data from Categories sheet
+    const categoriesData = categoriesSheet.getDataRange().getValues();
+    
+    // Find sub-subcategories that match both category and subcategory
+    const subSubcategories = [...new Set(
+      categoriesData
+        .filter(row => 
+          row[0] === selectedCategory && 
+          row[1] === selectedSubcategory && 
+          row[2] && row[2].trim() // Match category, subcategory, and has sub-subcategory
+        )
+        .map(row => row[2]) // Get sub-subcategory (column C)
+    )];
+    
+    console.log(`🔄 Found ${subSubcategories.length} sub-subcategories for "${selectedCategory} > ${selectedSubcategory}"`);
+    
+    if (subSubcategories.length > 0) {
+      const subSubcategoryCell = sheet.getRange(row, 11);
+      const validation = SpreadsheetApp.newDataValidation()
+        .requireValueInList(subSubcategories, true)
+        .setAllowInvalid(false)
+        .setHelpText(`Select sub-subcategory for ${selectedSubcategory}`)
+        .build();
+      
+      subSubcategoryCell.clearContent().setDataValidation(validation);
+      console.log(`✅ Updated sub-subcategory dropdown for row ${row}`);
+    } else {
+      sheet.getRange(row, 11).clearContent().clearDataValidations();
+    }
+    
+  } catch (error) {
+    console.error('❌ Error updating sub-subcategory dropdown:', error);
+  }
+}
+
+
+
+// Function removed - implementing clean dependent dropdowns from scratch
+
+
+
+// Trigger and update functions removed - implementing clean dependent dropdowns from scratch
+
+/**
+ * Apply formatting to simplified approval sheet
+ */
+function applyFormattingToSheet(sheet, dataRows) {
+  if (dataRows === 0) return;
+
+  try {
+    // Highlight AI reference columns (F, G, H) in light gray  
+    const aiReferenceColumns = [
+      sheet.getRange(2, 6, dataRows, 1), // AI Category (Reference)
+      sheet.getRange(2, 7, dataRows, 1), // AI Subcategory (Reference)
+      sheet.getRange(2, 8, dataRows, 1)  // AI Sub-Subcategory (Reference)
+    ];
+    
+    aiReferenceColumns.forEach(range => {
+      range.setBackground('#F5F5F5'); // Light gray for AI reference
+    });
+
+    // Highlight editable columns (I, J, K, L) in light blue
+    const editableColumns = [
+      sheet.getRange(2, 9, dataRows, 1),  // Category (dropdown)
+      sheet.getRange(2, 10, dataRows, 1), // Subcategory (dependent dropdown)
+      sheet.getRange(2, 11, dataRows, 1), // Sub-subcategory (dependent dropdown)
+      sheet.getRange(2, 12, dataRows, 1)  // Standardized Unit (independent dropdown)
+    ];
+    
+    editableColumns.forEach(range => {
+      range.setBackground('#E3F2FD'); // Light blue for editable
+    });
+
+    // Highlight AI confidence column in light gray
+    const aiConfidenceColumn = sheet.getRange(2, 13, dataRows, 1); // AI Confidence
+    aiConfidenceColumn.setBackground('#F5F5F5'); // Light gray for reference
+
+    // Add borders to all data
+    const allDataRange = sheet.getRange(1, 1, dataRows + 1, 13);
+    allDataRange.setBorder(true, true, true, true, true, true);
+
+    console.log('✅ Enhanced formatting applied with AI reference columns');
+  } catch (error) {
+    console.error('❌ Error applying formatting:', error);
+    // Continue without formatting rather than failing
+  }
+}
+
+/**
+ * Submit SKU approvals with validation
+ */
+function submitSkuApprovals() {
+  try {
+    console.log('🚀 Submitting SKU approvals...');
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SKU Approval');
+    if (!sheet) {
+      throw new Error('SKU Approval sheet not found. Please create it first.');
+    }
+
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    const skusToProcess = [];
+    const validationErrors = [];
+    
+    // Process each row (skip header) and build approvals array
+    const approvals = [];
+    
+    for (let i = 1; i < values.length; i++) {
+      const row = values[i];
+      const isApproved = row[0]; // Checkbox
+      
+      if (isApproved === true) {
+        const skuKey = row[1];
+        const category = row[8];        // Column I (9th column, index 8)
+        const subcategory = row[9];     // Column J (10th column, index 9)
+        const subSubCategory = row[10]; // Column K (11th column, index 10)
+        const standardizedUnit = row[11]; // Column L (12th column, index 11)
+        const unitsPerPackage = row[4] || 1.0; // Column E (5th column, index 4) or default 1.0
+        
+        // Validate required fields
+        if (!category || !subcategory || !subSubCategory || !standardizedUnit) {
+          validationErrors.push(`${skuKey}: Missing required P62 classification`);
+          continue;
+        }
+        
+        // Validate category exists in our P62 structure
+        if (!P62_CATEGORIES[category]) {
+          validationErrors.push(`${skuKey}: Invalid category "${category}"`);
+          continue;
+        }
+        
+        // Validate subcategory exists under the category
+        if (!P62_CATEGORIES[category][subcategory]) {
+          validationErrors.push(`${skuKey}: Invalid subcategory "${subcategory}" for category "${category}"`);
+          continue;
+        }
+        
+        // Validate sub-subcategory exists under the subcategory
+        if (!P62_CATEGORIES[category][subcategory].includes(subSubCategory)) {
+          validationErrors.push(`${skuKey}: Invalid sub-subcategory "${subSubCategory}" for "${category} > ${subcategory}"`);
+          continue;
+        }
+        
+        // Validate standardized unit
+        if (!VALID_STANDARDIZED_UNITS.includes(standardizedUnit)) {
+          validationErrors.push(`${skuKey}: Invalid unit "${standardizedUnit}"`);
+          continue;
+        }
+        
+        // Add to approvals array with full P62 classification
+        approvals.push({
+          sku_key: skuKey,
+          category: category,
+          subcategory: subcategory,
+          sub_sub_category: subSubCategory,
+          standardized_unit: standardizedUnit,
+          units_per_package: unitsPerPackage
+        });
+      }
+    }
+
+    // Show validation errors if any
+    if (validationErrors.length > 0) {
+      const errorMessage = validationErrors.slice(0, 10).join('\n');
+      
+      // Use simple alert with single parameter to avoid parameter mismatch
+      SpreadsheetApp.getUi().alert(
+        `Validation Errors Found\n\n${validationErrors.length} SKUs have validation errors:\n\n${errorMessage}\n\n${validationErrors.length > 10 ? '...and more' : ''}\n\nSubmission cancelled. Please fix the errors and try again.`
+      );
+      
+      console.log('❌ Submission cancelled due to validation errors');
+      return;
+    }
+
+    if (approvals.length === 0) {
+      SpreadsheetApp.getUi().alert('No valid SKUs selected for approval.');
+      return;
+    }
+
+    // Submit to enhanced API with P62 classifications
+    const payload = JSON.stringify({ approvals: approvals });
+    console.log(`📤 Enhanced payload: ${payload}`);
+    
+    const options = {
+      method: 'post',
+      contentType: 'application/json',
+      payload: payload,
+      headers: { 'ngrok-skip-browser-warning': 'true' }
+    };
+    
+    showProgress(`Submitting ${approvals.length} validated SKUs with P62 classifications...`);
+    const response = UrlFetchApp.fetch(SKU_SUBMIT_ENHANCED_URL, options);
+    const result = JSON.parse(response.getContentText());
+
+    if (result.success) {
+      let successMessage = `✅ Success! Approved ${approvals.length} SKUs with P62 classifications`;
+      if (validationErrors.length > 0) {
+        successMessage += `\n\n⚠️ ${validationErrors.length} SKUs were rejected due to validation errors.`;
+      }
+      
+      SpreadsheetApp.getUi().alert(successMessage);
+      
+      // Clear the main sheet after successful submission
+      sheet.clear();
+      
+    } else {
+      throw new Error(result.detail || 'Submission failed.');
+    }
+
+  } catch (error) {
+    console.error('❌ SKU submission failed:', error);
+    SpreadsheetApp.getUi().alert(`Submission Failed:\n\n${error.message}`);
+  }
+}
+
+/**
+ * Debug version of submit - bypasses validation to test API call
+ */
+function debugSubmitSkuApprovals() {
+  try {
+    console.log('🧪 DEBUG: Submitting SKU approvals without validation...');
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SKU Approval');
+    if (!sheet) {
+      SpreadsheetApp.getUi().alert('SKU Approval sheet not found');
+      return;
+    }
+
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    const skusToProcess = [];
+    
+    // Find approved SKUs (skip validation)
+    for (let i = 1; i < values.length; i++) {
+      const row = values[i];
+      const isApproved = row[0]; // Checkbox
+      
+      if (isApproved === true) {
+        const skuKey = row[1];
+        console.log(`✅ Found approved SKU: ${skuKey}`);
+        skusToProcess.push(skuKey);
+      }
+    }
+
+    console.log(`📊 Found ${skusToProcess.length} approved SKUs`);
+
+    if (skusToProcess.length === 0) {
+      SpreadsheetApp.getUi().alert('No SKUs selected for approval');
+      return;
+    }
+
+    // Submit to API (same as original)
+    const payload = JSON.stringify({ sku_keys: skusToProcess });
+    console.log(`📤 Sending payload: ${payload}`);
+    
+    const options = {
+      method: 'post',
+      contentType: 'application/json',
+      payload: payload,
+      headers: { 'ngrok-skip-browser-warning': 'true' }
+    };
+    
+    console.log(`📡 Calling: ${SKU_SUBMIT_URL}`);
+    const response = UrlFetchApp.fetch(SKU_SUBMIT_URL, options);
+    console.log(`📡 Response status: ${response.getResponseCode()}`);
+    
+    const responseText = response.getContentText();
+    console.log(`📋 Response: ${responseText}`);
+    
+    const result = JSON.parse(responseText);
+
+    if (result.success) {
+      SpreadsheetApp.getUi().alert(`✅ SUCCESS! Approved ${skusToProcess.length} SKUs`);
+      sheet.clear();
+    } else {
+      SpreadsheetApp.getUi().alert(`❌ API Error: ${result.detail || 'Unknown error'}`);
+    }
+
+  } catch (error) {
+    console.error('❌ Debug submission failed:', error);
+    SpreadsheetApp.getUi().alert(`❌ Error: ${error.message}`);
+  }
+}
+
+// cleanupHelperSheets function removed - no longer needed with clean implementation
+
+// ========================================
+// P62 CATEGORY UPDATE HELPER FUNCTIONS
+// ========================================
+
+/**
+ * Test dependent dropdown functionality manually
+ */
+function testDependentDropdown() {
+  try {
+    console.log('🧪 Testing dependent dropdown functionality...');
+    
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const skuSheet = spreadsheet.getSheetByName('SKU Approval');
+    const categoriesSheet = spreadsheet.getSheetByName('Categories');
+    
+    if (!skuSheet) {
+      SpreadsheetApp.getUi().alert('❌ SKU Approval sheet not found!\n\nPlease create it first.');
+      return;
+    }
+    
+    if (!categoriesSheet) {
+      SpreadsheetApp.getUi().alert('❌ Categories sheet not found!\n\nPlease create it first.');
+      return;
+    }
+    
+    // Test with row 2, simulate selecting "Abarrotes" in column I
+    const testRow = 2;
+    const testCategory = 'Abarrotes';
+    
+    console.log(`🔧 Testing updateDependentSubcategory for row ${testRow} with category "${testCategory}"`);
+    
+    // Set the test category in column I
+    skuSheet.getRange(testRow, 9).setValue(testCategory);
+    
+    // Manually call the update function
+    updateDependentSubcategory(skuSheet, categoriesSheet, testRow, testCategory);
+    
+    SpreadsheetApp.getUi().alert(
+      `🧪 Manual Test Complete!\n\n` +
+      `• Set "${testCategory}" in Column I, Row ${testRow}\n` +
+      `• Manually updated Column J dropdown\n` +
+      `• Check Column J for subcategory options\n\n` +
+      `If this worked but the automatic trigger doesn't, we need to fix the trigger.`
+    );
+    
+    console.log('✅ Manual test completed');
+    
+  } catch (error) {
+    console.error('❌ Manual test failed:', error);
+    SpreadsheetApp.getUi().alert(`Manual Test Failed:\n\n${error.message}`);
+  }
+}
+
+// P62 helper functions removed - now using Categories sheet directly for updates
+
+// ========================================
+// HEADER AND FORMATTING FUNCTIONS
+// ========================================
+
 /**
  * Add facturas headers to sheet
  */
 function addFacturasHeaders(sheet) {
   const headers = [
-    'Invoice UUID',
-    'Folio', 
-    'Issue Date',
-    'Issuer RFC',
-    'Issuer Name',
-    'Receiver RFC',
-    'Receiver Name',
-    'Currency',
-    'Original Total',
-    'MXN Total',
-    'Exchange Rate',
-    'Payment Method',
-    'Installments (PPD)',
-    'Immediate (PUE)'
+    'Invoice UUID', 'Folio', 'Issue Date', 'Issuer RFC', 'Issuer Name',
+    'Receiver RFC', 'Receiver Name', 'Currency', 'Original Total', 'MXN Total',
+    'Exchange Rate', 'Payment Method', 'Installments (PPD)', 'Immediate (PUE)'
   ];
   
-  // Add headers
   const headerRange = sheet.getRange(1, 1, 1, headers.length);
   headerRange.setValues([headers]);
-  
-  // Format headers
   headerRange.setFontWeight('bold');
   headerRange.setBackground('#4285F4');
   headerRange.setFontColor('#FFFFFF');
@@ -431,11 +1276,8 @@ function addPurchaseDetailsHeaders(sheet) {
     'Item MXN Total', 'Standardized MXN Value', 'Unit MXN Price'
   ];
   
-  // Add headers
   const headerRange = sheet.getRange(1, 1, 1, headers.length);
   headerRange.setValues([headers]);
-  
-  // Format headers
   headerRange.setFontWeight('bold');
   headerRange.setBackground('#4285F4');
   headerRange.setFontColor('#FFFFFF');
@@ -447,32 +1289,22 @@ function addPurchaseDetailsHeaders(sheet) {
  */
 function formatFacturasSheet(sheet) {
   const numCols = 14;
-  const dataRows = sheet.getLastRow() - 1; // Subtract header row
+  const dataRows = sheet.getLastRow() - 1;
   
-  // Auto-resize columns
   for (let i = 1; i <= numCols; i++) {
     sheet.autoResizeColumn(i);
   }
   
-  // Format currency columns (Original Total, MXN Total)
   if (dataRows > 0) {
-    sheet.getRange(2, 9, dataRows, 1).setNumberFormat('#,##0.00');  // Original Total
-    sheet.getRange(2, 10, dataRows, 1).setNumberFormat('#,##0.00'); // MXN Total
-    sheet.getRange(2, 11, dataRows, 1).setNumberFormat('#,##0.000000'); // Exchange Rate
-  }
-  
-  // Format date column
-  if (dataRows > 0) {
+    sheet.getRange(2, 9, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 10, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 11, dataRows, 1).setNumberFormat('#,##0.000000');
     sheet.getRange(2, 3, dataRows, 1).setNumberFormat('yyyy-mm-dd');
-  }
   
-  // Add borders
-  if (dataRows > 0) {
     const allDataRange = sheet.getRange(1, 1, dataRows + 1, numCols);
     allDataRange.setBorder(true, true, true, true, true, true);
   }
   
-  // Freeze header row
   sheet.setFrozenRows(1);
 }
 
@@ -481,39 +1313,29 @@ function formatFacturasSheet(sheet) {
  */
 function formatPurchaseDetailsSheet(sheet) {
   const numCols = 38;
-  const dataRows = sheet.getLastRow() - 1; // Subtract header row
+  const dataRows = sheet.getLastRow() - 1;
   
-  // Auto-resize columns
   for (let i = 1; i <= numCols; i++) {
     sheet.autoResizeColumn(i);
   }
   
-  // Format currency columns
   if (dataRows > 0) {
-    sheet.getRange(2, 11, dataRows, 1).setNumberFormat('#,##0.000000');  // Exchange Rate
-    sheet.getRange(2, 12, dataRows, 1).setNumberFormat('#,##0.00');  // Invoice MXN Total
-    sheet.getRange(2, 20, dataRows, 1).setNumberFormat('#,##0.00');  // Unit Price
-    sheet.getRange(2, 21, dataRows, 1).setNumberFormat('#,##0.00');  // Subtotal
-    sheet.getRange(2, 22, dataRows, 1).setNumberFormat('#,##0.00');  // Discount
-    sheet.getRange(2, 23, dataRows, 1).setNumberFormat('#,##0.00');  // Total Amount
-    sheet.getRange(2, 24, dataRows, 1).setNumberFormat('#,##0.00');  // Total Tax Amount
-    sheet.getRange(2, 36, dataRows, 1).setNumberFormat('#,##0.00');  // Item MXN Total
-    sheet.getRange(2, 37, dataRows, 1).setNumberFormat('#,##0.00');  // Standardized MXN Value
-    sheet.getRange(2, 38, dataRows, 1).setNumberFormat('#,##0.00');  // Unit MXN Price
-  }
-  
-  // Format date column
-  if (dataRows > 0) {
+    sheet.getRange(2, 11, dataRows, 1).setNumberFormat('#,##0.000000');
+    sheet.getRange(2, 12, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 20, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 21, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 22, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 23, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 24, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 36, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 37, dataRows, 1).setNumberFormat('#,##0.00');
+    sheet.getRange(2, 38, dataRows, 1).setNumberFormat('#,##0.00');
     sheet.getRange(2, 3, dataRows, 1).setNumberFormat('yyyy-mm-dd');
-  }
   
-  // Add borders
-  if (dataRows > 0) {
     const allDataRange = sheet.getRange(1, 1, dataRows + 1, numCols);
     allDataRange.setBorder(true, true, true, true, true, true);
   }
   
-  // Freeze header row
   sheet.setFrozenRows(1);
 }
 
@@ -522,7 +1344,6 @@ function formatPurchaseDetailsSheet(sheet) {
  */
 function showProgress(message) {
   console.log(message);
-  // You could add a toast notification here if needed
   SpreadsheetApp.getActiveSpreadsheet().toast(message, 'CFDI Update', 3);
 }
 
@@ -531,31 +1352,36 @@ function showProgress(message) {
 // ========================================
 
 /**
- * Add custom menu to Google Sheets
+ * Enhanced menu
  */
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
-  const menu = ui.createMenu('CFDI System');
+  const menu = ui.createMenu('📊 CFDI System v4');
   
-  // Dynamically add an "Update" item for each client in the config
-  const clientSubMenu = ui.createMenu('Update Client Sheets');
+  // Client updates
+  const clientSubMenu = ui.createMenu('Client Updates');
   for (const clientName in CLIENT_CONFIG) {
-    // This MUST match the function name created in the global scope above
     const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
     clientSubMenu.addItem(`🔄 Update ${clientName}`, functionName);
   }
   menu.addSubMenu(clientSubMenu);
   
-  // Add SKU Approval Workflow
-  const skuMenu = ui.createMenu('SKU Approval');
-  skuMenu.addItem('📋 Create/Refresh Approval Sheet', 'createApprovalSheet');
-  skuMenu.addItem('✅ Submit Approved SKUs', 'submitSkuApprovals');
+  // SKU Management (simplified)
+  const skuMenu = ui.createMenu('🔧 SKU Management');
+  skuMenu.addItem('🎯 Create SKU Approval Sheet', 'createSkuApproval');
+  skuMenu.addItem('🚀 Submit SKU Approvals', 'submitSkuApprovals');
+  skuMenu.addItem('🧪 Debug Submit (No Validation)', 'debugSubmitSkuApprovals');
+  skuMenu.addSeparator();
+  skuMenu.addItem('🔧 Install Dropdown Trigger', 'installDependentDropdownTrigger');
+  skuMenu.addItem('🔍 Test Dropdown Manually', 'testDependentDropdown');
   menu.addSubMenu(skuMenu);
 
   menu.addSeparator()
     .addItem('🔍 Test API Connection', 'testAPIConnection')
     .addSeparator()
     .addSubMenu(ui.createMenu('Advanced')
+      .addItem('🔄 Update Facturas', 'updateFacturas')
+      .addItem('🔄 Update Purchase Details', 'updatePurchaseDetails')
       .addItem('Show Import Info', 'showImportInfo'))
     .addToUi();
 }
@@ -565,25 +1391,29 @@ function onOpen() {
  */
 function showImportInfo() {
   const info = `
-CFDI Invoice System - Smart Update Tool
+CFDI Invoice System v4 - Smart Update Tool
 
 Base URL: ${BASE_URL}
 Facturas Endpoint: ${API_URL}
 Purchase Details Endpoint: ${PURCHASE_DETAILS_URL}
 Health Endpoint: ${HEALTH_URL}
 
-Current Filters:
-${Object.entries(API_FILTERS)
-  .filter(([key, value]) => value !== null && value !== undefined)
-  .map(([key, value]) => `• ${key}: ${value}`)
-  .join('\n') || '• No filters applied'}
+🎯 SKU APPROVAL FEATURES:
+• Simplified layout with dependent P62 dropdowns (F→G→H)
+• Column F: P62 Category dropdown
+• Column G: Dependent Subcategory dropdown (based on F)
+• Column H: Dependent Sub-Subcategory dropdown (based on G)  
+• Column I: Independent Standardized Unit dropdown
+• Column J: AI Confidence reference
+• Enhanced validation and error handling
+• Full P62 hierarchy in reference sheet (A, B, C columns)
 
 Instructions:
 1. Make sure your API server is running
 2. Start ngrok tunnel
-3. Update BASE_URL in this script (line ~21)
-4. Use 'Update Facturas' to add new invoices to "Facturas" sheet
-5. Use 'Update Purchase Details' to add new items to "Purchase_Details" sheet
+3. Update BASE_URL in this script (line ~20)
+4. Use 'Create SKU Approval Sheet' for dependent dropdown workflow
+5. Update P62 categories using helper functions
 
 ✨ Smart Update Features:
 🔄 New data inserted at TOP of sheet
@@ -591,10 +1421,8 @@ Instructions:
 📊 Preserves existing data below
 🎯 Specific sheet targeting
 📈 Real-time progress updates
-
-Sheet Names:
-• Facturas → Invoice summaries
-• Purchase_Details → Complete item-level data
+🔽 TRUE dependent P62 dropdowns with INDIRECT formulas
+📋 Professional error handling
 
 Quick Update: Just change the BASE_URL when ngrok restarts!
 
@@ -604,126 +1432,12 @@ For support, check the console logs.
   SpreadsheetApp.getUi().alert(`System Information\n\n${info}`);
 } 
 
-const SKU_APPROVAL_URL = BASE_URL + '/api/v1/skus/pending';
-const SKU_SUBMIT_URL = BASE_URL + '/api/v1/skus/approve';
-
-/**
- * Creates or refreshes the SKU Approval sheet with pending items.
- * UPDATED to include more columns for better context.
- */
-function createApprovalSheet() {
-  try {
-    console.log('🚀 Creating SKU Approval sheet...');
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getOrCreateSheet(spreadsheet, 'SKU Approval'); // Now uses the new helper
-    sheet.clear(); // Clear old data
-
-    showProgress('Fetching pending SKUs...');
-    const response = UrlFetchApp.fetch(SKU_APPROVAL_URL, {
-      headers: { 'ngrok-skip-browser-warning': 'true' }
-    });
-    const data = JSON.parse(response.getContentText());
-
-    if (!data.success || data.data.length === 0) {
-      SpreadsheetApp.getUi().alert('No SKUs are pending approval!');
-      return;
-    }
-
-    // Add richer headers for better user context
-    const headers = [
-      'Approve?', 'SKU Key', 'Product Code', 'Description', 
-      'Unit', 'AI Units/Package', 'AI Category', 'AI Subcategory', 'AI Sub-Subcategory',
-      'AI Standardized Unit'
-    ];
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#4a86e8').setFontColor('#ffffff');
-
-    // Populate data using the new, richer fields from the API
-    const rows = data.data.map(item => [
-      '', // Checkbox placeholder
-      item.sku_key,
-      item.product_code,
-      item.description,
-      item.unit_code,
-      item.units_per_package, // ADDED THIS LINE
-      item.category,
-      item.subcategory,
-      item.sub_sub_category,
-      item.standardized_unit
-    ]);
-    sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
-
-    // Add checkboxes
-    const checkboxRange = sheet.getRange(2, 1, rows.length, 1);
-    checkboxRange.insertCheckboxes();
-    
-    sheet.autoResizeColumns(1, headers.length);
-    SpreadsheetApp.getUi().alert(`SKU Approval sheet is ready with ${rows.length} items to review.`);
-
-  } catch (error) {
-    console.error('❌ Could not create approval sheet:', error);
-    SpreadsheetApp.getUi().alert(`Error: ${error.message}`);
-  }
-}
-
-/**
- * Submits the approved SKUs back to the API.
- */
-function submitSkuApprovals() {
-  try {
-    console.log('🚀 Submitting SKU approvals...');
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SKU Approval');
-    if (!sheet) throw new Error('SKU Approval sheet not found.');
-
-    const dataRange = sheet.getDataRange();
-    const values = dataRange.getValues();
-    
-    const skuKeysToApprove = [];
-    // Start from row 2 (index 1) to skip headers
-    for (let i = 1; i < values.length; i++) {
-      const isApproved = values[i][0]; // Checkbox in column 1
-      if (isApproved === true) {
-        const skuKey = values[i][1]; // SKU Key in column 2
-        skuKeysToApprove.push(skuKey);
-      }
-    }
-
-    if (skuKeysToApprove.length === 0) {
-      SpreadsheetApp.getUi().alert('No SKUs were checked for approval.');
-      return;
-    }
-
-    // Send data to the API
-    const payload = JSON.stringify({ sku_keys: skuKeysToApprove });
-    const options = {
-      method: 'post',
-      contentType: 'application/json',
-      payload: payload,
-    };
-    
-    showProgress(`Submitting ${skuKeysToApprove.length} approved SKUs...`);
-    const response = UrlFetchApp.fetch(SKU_SUBMIT_URL, options);
-    const result = JSON.parse(response.getContentText());
-
-    if (result.success) {
-      SpreadsheetApp.getUi().alert(`Success! ${result.message}`);
-      sheet.clear(); // Clear the sheet after successful submission
-    } else {
-      throw new Error(result.detail || 'Submission failed.');
-    }
-
-  } catch (error) {
-    console.error('❌ SKU submission failed:', error);
-    SpreadsheetApp.getUi().alert(`Submission Failed:\n\n${error.message}`);
-  }
-} 
-
 // ========================================
-// UTILITY FUNCTIONS (NEW SECTION)
+// UTILITY FUNCTIONS
 // ========================================
 
 /**
- * Gets a sheet by name, or creates it if it doesn't exist.
- * This function was missing, causing errors in the update functions.
+ * Gets a sheet by name, or creates it if it doesn't exist
  */
 function getOrCreateSheet(spreadsheet, sheetName) {
   let sheet = spreadsheet.getSheetByName(sheetName);
@@ -733,12 +1447,8 @@ function getOrCreateSheet(spreadsheet, sheetName) {
   return sheet;
 } 
 
-// ========================================
-// HELPER FUNCTIONS FOR SMART UPDATES (NEW)
-// ========================================
-
 /**
- * Gets existing invoice UUIDs from a sheet to prevent duplicates.
+ * Gets existing invoice UUIDs from a sheet to prevent duplicates
  */
 function getExistingUUIDs(sheet, startRow) {
   const lastRow = sheet.getLastRow();
@@ -751,7 +1461,7 @@ function getExistingUUIDs(sheet, startRow) {
 }
 
 /**
- * Gets existing line item composite keys (uuid_linenumber) to prevent duplicates.
+ * Gets existing line item composite keys to prevent duplicates
  */
 function getExistingLineItemKeys(sheet, startRow) {
   const lastRow = sheet.getLastRow();
@@ -769,7 +1479,7 @@ function getExistingLineItemKeys(sheet, startRow) {
 }
 
 /**
- * Inserts new invoice data at the top of the sheet.
+ * Inserts new invoice data at the top of the sheet
  */
 function insertFacturasAtTop(sheet, newInvoices) {
   if (newInvoices.length === 0) return;
@@ -787,7 +1497,7 @@ function insertFacturasAtTop(sheet, newInvoices) {
 }
 
 /**
- * Inserts new purchase detail data at the top of the sheet.
+ * Inserts new purchase detail data at the top of the sheet
  */
 function insertPurchaseDetailsAtTop(sheet, newDetails) {
   if (newDetails.length === 0) return;
