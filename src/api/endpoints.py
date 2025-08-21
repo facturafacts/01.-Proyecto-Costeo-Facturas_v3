@@ -15,7 +15,7 @@ from sqlalchemy import func, update # Added for new endpoints
 from sqlalchemy.orm import Session # Added for new endpoints
 
 from src.data.database import DatabaseManager
-from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel
+from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel, InvoiceItem
 from .models import (
     InvoiceMetadataResponse, 
     InvoiceMetadataListResponse, 
@@ -615,6 +615,12 @@ async def approve_skus(
             ).values(approval_status='approved')
             session.execute(stmt_details)
 
+            # Update invoice_items table
+            stmt_items = update(InvoiceItem).where(
+                InvoiceItem.sku_key.in_(sku_keys_to_approve)
+            ).values(approval_status='approved')
+            session.execute(stmt_items)
+
             # Update approved_skus table (fix: use review_status, not approval_status)
             stmt_skus = update(ApprovedSKUModel).where(
                 ApprovedSKUModel.sku_key.in_(sku_keys_to_approve)
@@ -699,6 +705,18 @@ async def approve_skus_with_classification(
                         'standardized_unit': approval.standardized_unit,
                         'units_per_package': approval.units_per_package,
                         'updated_at': datetime.utcnow()
+                    }, synchronize_session=False)
+
+                    # Update invoice_items table with full classification
+                    session.query(InvoiceItem).filter(
+                        InvoiceItem.sku_key == approval.sku_key
+                    ).update({
+                        'approval_status': 'approved',
+                        'category': approval.category,
+                        'subcategory': approval.subcategory,
+                        'sub_sub_category': approval.sub_sub_category,
+                        'standardized_unit': approval.standardized_unit,
+                        'units_per_package': approval.units_per_package
                     }, synchronize_session=False)
 
                     stats['successful'] += 1
