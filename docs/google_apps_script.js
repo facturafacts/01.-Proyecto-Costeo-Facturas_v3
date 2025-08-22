@@ -254,6 +254,13 @@ function updateFacturas() {
     
     showProgress('Formatting sheet...');
     formatFacturasSheet(sheet);
+
+    // Permanent gap-fix: fill any missing invoices using Purchase Details as fallback
+    try {
+      fillMissingFacturasFromDetails(sheet);
+    } catch (e) {
+      console.error('❌ Gap-fix from Purchase Details failed:', e);
+    }
     
     SpreadsheetApp.getUi().alert(
       `Facturas Update Complete!\n\nInserted ${newInvoices.length} new invoices at the top.\nTotal invoices: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
@@ -266,6 +273,187 @@ function updateFacturas() {
     SpreadsheetApp.getUi().alert(
       `Update Failed\n\nError: ${error.message}\n\nPlease check the console for details.`
     );
+  }
+}
+
+/**
+ * Fill any missing Facturas rows by deriving header data from Purchase Details API
+ * This ensures days/UUIDs not yet present in invoice_metadata still appear in the sheet.
+ */
+function fillMissingFacturasFromDetails(sheet, rfc = null) {
+  const details = fetchPurchaseDetails(rfc);
+  if (!details || !details.success || !details.data) return;
+
+  // Current UUIDs in the sheet
+  const existingUUIDs = getExistingUUIDs(sheet, sheet.getLastRow() > 0 ? 2 : 1);
+
+  const rowsByUuid = new Map();
+  for (const item of details.data) {
+    const uuid = item.invoice_uuid;
+    if (!uuid) continue;
+    if (existingUUIDs.has(uuid)) continue; // already present
+    if (rowsByUuid.has(uuid)) continue;    // already collected
+
+    const exchange = Number(item.exchange_rate || 1);
+    const mxnTotal = Number(item.invoice_mxn_total || 0);
+    const originalTotal = exchange > 0 ? mxnTotal / exchange : mxnTotal;
+
+    const row = [
+      item.invoice_uuid,
+      item.folio,
+      item.issue_date,
+      item.issuer_rfc,
+      item.issuer_name,
+      item.receiver_rfc,
+      item.receiver_name,
+      item.currency,
+      originalTotal,
+      mxnTotal,
+      exchange,
+      item.payment_method,
+      item.is_installments,
+      item.is_immediate
+    ];
+    rowsByUuid.set(uuid, row);
+  }
+
+  if (rowsByUuid.size > 0) {
+    const rows = Array.from(rowsByUuid.values());
+    sheet.insertRowsAfter(1, rows.length);
+    sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
+    formatFacturasSheet(sheet);
+    console.log(`✅ Filled ${rows.length} missing Facturas from Purchase Details`);
+  }
+}
+
+/**
+ * Diagnose and repair missing Facturas rows by comparing API vs sheet
+ */
+function diagnoseRepairFacturas() {
+  try {
+    console.log('🧪 Diagnosing missing Facturas rows...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, 'Facturas');
+
+    const data = fetchInvoiceData();
+    if (!data || !data.success) {
+      throw new Error('Failed to fetch invoice metadata from API');
+    }
+
+    const hasHeaders = sheet.getLastRow() > 0;
+    if (!hasHeaders) { addFacturasHeaders(sheet); }
+    const existingUUIDs = getExistingUUIDs(sheet, hasHeaders ? 2 : 1);
+
+    const missing = data.data.filter(inv => !existingUUIDs.has(inv.uuid));
+    if (missing.length === 0) {
+      SpreadsheetApp.getUi().alert('No missing Facturas rows detected.');
+      return;
+    }
+
+    insertFacturasAtTop(sheet, missing);
+    formatFacturasSheet(sheet);
+    SpreadsheetApp.getUi().alert(`Inserted ${missing.length} missing Facturas rows.`);
+  } catch (error) {
+    console.error('❌ Facturas diagnostics failed:', error);
+    SpreadsheetApp.getUi().alert(`Facturas diagnostics failed:\n\n${error.message}`);
+  }
+}
+
+/**
+ * Fully rebuild Facturas sheet from API
+ */
+function rebuildFacturas() {
+  try {
+    console.log('🧹 Rebuilding Facturas from API...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, 'Facturas');
+
+    sheet.clear();
+    addFacturasHeaders(sheet);
+
+    const data = fetchInvoiceData();
+    if (!data || !data.success) {
+      throw new Error('Failed to fetch invoice metadata from API');
+    }
+    insertFacturasAtTop(sheet, data.data);
+    formatFacturasSheet(sheet);
+    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.`);
+  } catch (error) {
+    console.error('❌ Rebuild Facturas failed:', error);
+    SpreadsheetApp.getUi().alert(`Rebuild Facturas failed:\n\n${error.message}`);
+  }
+}
+
+/**
+ * Diagnose and repair missing Facturas/Purchase_Details rows by comparing API vs sheet
+ */
+function diagnoseRepairPurchaseDetails() {
+  try {
+    console.log('🧪 Diagnosing missing Purchase Details rows...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, 'Purchase_Details');
+
+    const data = fetchPurchaseDetails();
+    if (!data || !data.success) {
+      throw new Error('Failed to fetch purchase details from API');
+    }
+
+    // Build set of existing composite keys in sheet: invoice_uuid + line_number
+    const hasHeaders = sheet.getLastRow() > 0;
+    if (!hasHeaders) {
+      addPurchaseDetailsHeaders(sheet);
+    }
+    const existingLineItemKeys = getExistingLineItemKeys(sheet, hasHeaders ? 2 : 1);
+
+    // Find API rows missing from sheet
+    const missing = data.data.filter(item => {
+      const key = `${item.invoice_uuid}_${item.line_number}`;
+      return !existingLineItemKeys.has(key);
+    });
+
+    if (missing.length === 0) {
+      SpreadsheetApp.getUi().alert('No missing rows detected. Sheet is in sync.');
+      return;
+    }
+
+    // Insert missing rows at top (preserve behavior)
+    insertPurchaseDetailsAtTop(sheet, missing);
+    formatPurchaseDetailsSheet(sheet);
+    try { refreshPurchaseApprovalStatuses(); } catch (e) { console.error('Status refresh failed:', e); }
+
+    SpreadsheetApp.getUi().alert(`Inserted ${missing.length} missing rows from API.`);
+  } catch (error) {
+    console.error('❌ Diagnostics failed:', error);
+    SpreadsheetApp.getUi().alert(`Diagnostics failed:\n\n${error.message}`);
+  }
+}
+
+/**
+ * Fully rebuild Purchase_Details sheet from API
+ */
+function rebuildPurchaseDetails() {
+  try {
+    console.log('🧹 Rebuilding Purchase_Details from API...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getOrCreateSheet(spreadsheet, 'Purchase_Details');
+
+    // Clear everything
+    sheet.clear();
+    addPurchaseDetailsHeaders(sheet);
+
+    // Fetch all and insert
+    const data = fetchPurchaseDetails();
+    if (!data || !data.success) {
+      throw new Error('Failed to fetch purchase details from API');
+    }
+    insertPurchaseDetailsAtTop(sheet, data.data);
+    formatPurchaseDetailsSheet(sheet);
+    try { refreshPurchaseApprovalStatuses(); } catch (e) { console.error('Status refresh failed:', e); }
+
+    SpreadsheetApp.getUi().alert(`Rebuilt Purchase_Details with ${data.count} rows.`);
+  } catch (error) {
+    console.error('❌ Rebuild failed:', error);
+    SpreadsheetApp.getUi().alert(`Rebuild failed:\n\n${error.message}`);
   }
 }
 
@@ -304,7 +492,14 @@ function updatePurchaseDetails() {
     });
     
     if (newPurchaseDetails.length === 0) {
-      SpreadsheetApp.getUi().alert('No new purchase details found!');
+      console.log('ℹ️ No new purchase details found. Refreshing approval statuses...');
+      try {
+        refreshPurchaseApprovalStatuses();
+        SpreadsheetApp.getUi().alert('No new purchase details found. Approval statuses refreshed.');
+      } catch (e) {
+        console.error('❌ Failed to refresh approval statuses when no new rows:', e);
+        SpreadsheetApp.getUi().alert('No new purchase details found. Failed to refresh statuses.');
+      }
       return;
     }
     
@@ -313,6 +508,13 @@ function updatePurchaseDetails() {
     
     showProgress('Formatting sheet...');
     formatPurchaseDetailsSheet(sheet);
+    
+    // Refresh approval statuses after inserting new rows
+    try {
+      refreshPurchaseApprovalStatuses();
+    } catch (e) {
+      console.error('❌ Failed to refresh approval statuses after update:', e);
+    }
     
     SpreadsheetApp.getUi().alert(
       `Purchase Details Update Complete!\n\nInserted ${newPurchaseDetails.length} new purchase details at the top.\nTotal records: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
@@ -434,6 +636,10 @@ function fetchInvoiceData(rfc = null) {
       if (value !== null && value !== undefined) {
         params.push(`${key}=${encodeURIComponent(value)}`);
       }
+    }
+    // Honor RFC filter when provided (maps to receiver_rfc on API)
+    if (rfc) {
+      params.push(`receiver_rfc=${encodeURIComponent(rfc)}`);
     }
     
     if (params.length > 0) {
@@ -1340,6 +1546,67 @@ function formatPurchaseDetailsSheet(sheet) {
 }
 
 /**
+ * Refresh only the Approval Status column (col 34) for existing rows
+ */
+function refreshPurchaseApprovalStatuses() {
+  try {
+    console.log('🔄 Refreshing approval statuses...');
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheetByName('Purchase_Details');
+    if (!sheet) {
+      SpreadsheetApp.getUi().alert('Purchase_Details sheet not found.');
+      return;
+    }
+
+    const lastRow = sheet.getLastRow();
+    if (lastRow < 2) {
+      SpreadsheetApp.getUi().alert('No rows to refresh.');
+      return;
+    }
+
+    const numRows = lastRow - 1;
+
+    // Read current SKU keys (col 35) and current statuses (col 34)
+    const skuKeys = sheet.getRange(2, 35, numRows, 1).getValues().flat();
+    const currentStatuses = sheet.getRange(2, 34, numRows, 1).getValues().flat();
+
+    // Fetch latest data
+    const data = fetchPurchaseDetails();
+    if (!data || !data.success) {
+      throw new Error('Failed to fetch purchase details from API');
+    }
+
+    // Build map sku_key -> approval_status
+    const statusBySku = {};
+    for (const item of data.data) {
+      if (item.sku_key) {
+        statusBySku[item.sku_key] = (item.approval_status || '').toLowerCase();
+      }
+    }
+
+    // Build updated statuses and count changes
+    const updatedStatuses = [];
+    let changed = 0;
+    for (let i = 0; i < numRows; i++) {
+      const sku = skuKeys[i];
+      const latest = statusBySku[sku] || '';
+      const current = (currentStatuses[i] || '').toString().toLowerCase();
+      updatedStatuses.push([latest]);
+      if (latest && latest !== current) changed++;
+    }
+
+    // Write back in one batch
+    sheet.getRange(2, 34, numRows, 1).setValues(updatedStatuses);
+
+    console.log(`✅ Approval statuses refreshed. Changed: ${changed}/${numRows}`);
+    SpreadsheetApp.getUi().alert(`Approval statuses refreshed.\nChanged: ${changed} of ${numRows}`);
+  } catch (error) {
+    console.error('❌ Failed to refresh approval statuses:', error);
+    SpreadsheetApp.getUi().alert(`Failed to refresh statuses:\n\n${error.message}`);
+  }
+}
+
+/**
  * Show progress message
  */
 function showProgress(message) {
@@ -1381,7 +1648,12 @@ function onOpen() {
     .addSeparator()
     .addSubMenu(ui.createMenu('Advanced')
       .addItem('🔄 Update Facturas', 'updateFacturas')
+      .addItem('🧪 Diagnose Missing Facturas Rows', 'diagnoseRepairFacturas')
+      .addItem('🧹 Rebuild Facturas (Full)', 'rebuildFacturas')
       .addItem('🔄 Update Purchase Details', 'updatePurchaseDetails')
+      .addItem('🧪 Diagnose Missing Purchase Rows', 'diagnoseRepairPurchaseDetails')
+      .addItem('🧹 Rebuild Purchase Details (Full)', 'rebuildPurchaseDetails')
+      .addItem('🔄 Refresh Approval Statuses', 'refreshPurchaseApprovalStatuses')
       .addItem('Show Import Info', 'showImportInfo'))
     .addToUi();
 }

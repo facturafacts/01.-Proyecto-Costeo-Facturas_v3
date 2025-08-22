@@ -15,7 +15,7 @@ from sqlalchemy import func, update # Added for new endpoints
 from sqlalchemy.orm import Session # Added for new endpoints
 
 from src.data.database import DatabaseManager
-from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel, InvoiceItem
+from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel, InvoiceItem, Invoice
 from .models import (
     InvoiceMetadataResponse, 
     InvoiceMetadataListResponse, 
@@ -106,36 +106,100 @@ async def get_invoice_metadata(
             if limit:
                 query = query.limit(limit)
             
-            # Execute query
+            # Execute primary metadata query
             metadata_records = query.all()
-            
-            # Convert to response format
-            invoice_data = []
+
+            # Convert metadata to response objects
+            invoice_data: List[InvoiceMetadataResponse] = []
             for record in metadata_records:
-                invoice_item = InvoiceMetadataResponse(
-                    uuid=record.uuid,
-                    folio=record.folio,
-                    issue_date=record.issue_date,
-                    issuer_rfc=record.issuer_rfc,
-                    issuer_name=record.issuer_name,
-                    receiver_rfc=record.receiver_rfc,
-                    receiver_name=record.receiver_name,
-                    original_currency=record.original_currency,
-                    original_total=float(record.original_total),
-                    mxn_total=float(record.mxn_total),
-                    exchange_rate=float(record.exchange_rate),
-                    payment_method=record.payment_method,
-                    is_installments=record.is_installments,
-                    is_immediate=record.is_immediate
+                invoice_data.append(
+                    InvoiceMetadataResponse(
+                        uuid=record.uuid,
+                        folio=record.folio,
+                        issue_date=record.issue_date,
+                        issuer_rfc=record.issuer_rfc,
+                        issuer_name=record.issuer_name,
+                        receiver_rfc=record.receiver_rfc,
+                        receiver_name=record.receiver_name,
+                        original_currency=record.original_currency,
+                        original_total=float(record.original_total),
+                        mxn_total=float(record.mxn_total),
+                        exchange_rate=float(record.exchange_rate),
+                        payment_method=record.payment_method,
+                        is_installments=record.is_installments,
+                        is_immediate=record.is_immediate
+                    )
                 )
-                invoice_data.append(invoice_item)
-            
-            logger.info(f"Returning {len(invoice_data)} invoice metadata records")
-            
+
+            # PERMANENT RELIABILITY FALLBACK:
+            # Include invoices that exist in `invoices` but are missing from `invoice_metadata`.
+            # This ensures Google Sheets never misses days due to a metadata backfill lag.
+            missing_invoices_q = session.query(Invoice).outerjoin(
+                InvoiceMetadata, InvoiceMetadata.invoice_id == Invoice.id
+            ).filter(InvoiceMetadata.id.is_(None))
+
+            # Apply same filters to fallback query where possible
+            if issuer_rfc:
+                missing_invoices_q = missing_invoices_q.filter(Invoice.issuer_rfc == issuer_rfc)
+            if receiver_rfc:
+                missing_invoices_q = missing_invoices_q.filter(Invoice.receiver_rfc == receiver_rfc)
+            if currency:
+                missing_invoices_q = missing_invoices_q.filter(Invoice.currency == currency)
+            if date_from:
+                missing_invoices_q = missing_invoices_q.filter(Invoice.issue_date >= datetime.combine(date_from, datetime.min.time()))
+            if date_to:
+                missing_invoices_q = missing_invoices_q.filter(Invoice.issue_date <= datetime.combine(date_to, datetime.max.time()))
+
+            # Order newest first similar to metadata
+            missing_invoices_q = missing_invoices_q.order_by(Invoice.issue_date.desc())
+
+            missing_invoices = missing_invoices_q.all()
+
+            for inv in missing_invoices:
+                try:
+                    exch = float(inv.exchange_rate) if inv.exchange_rate is not None else 1.0
+                    orig_total = float(inv.total_amount) if inv.total_amount is not None else 0.0
+                    mxn_total = orig_total if (inv.currency or 'MXN') == 'MXN' else orig_total * exch if exch else orig_total
+                    payment_terms_val = getattr(inv, 'payment_terms', None)
+                    is_ppd = True if payment_terms_val == 'PPD' else False
+                    is_pue = True if payment_terms_val == 'PUE' else False
+
+                    invoice_data.append(
+                        InvoiceMetadataResponse(
+                            uuid=inv.uuid,
+                            folio=inv.folio,
+                            issue_date=inv.issue_date.date() if hasattr(inv.issue_date, 'date') else inv.issue_date,
+                            issuer_rfc=inv.issuer_rfc,
+                            issuer_name=inv.issuer_name,
+                            receiver_rfc=inv.receiver_rfc,
+                            receiver_name=inv.receiver_name,
+                            original_currency=inv.currency,
+                            original_total=orig_total,
+                            mxn_total=mxn_total,
+                            exchange_rate=exch,
+                            payment_method=inv.payment_method,
+                            is_installments=is_ppd,
+                            is_immediate=is_pue
+                        )
+                    )
+                except Exception as conv_err:
+                    logger.warning(f"Skipping fallback invoice {inv.uuid} due to conversion error: {conv_err}")
+
+            # Sort combined results by date desc and apply offset/limit in-memory for reliability
+            invoice_data.sort(key=lambda x: x.issue_date, reverse=True)
+            full_count = len(invoice_data)
+
+            if offset:
+                invoice_data = invoice_data[offset:]
+            if limit:
+                invoice_data = invoice_data[:limit]
+
+            logger.info(f"Returning {len(invoice_data)} invoice records (combined with fallback), total={full_count}")
+
             return InvoiceMetadataListResponse(
                 success=True,
                 data=invoice_data,
-                count=len(invoice_data)
+                count=full_count
             )
             
     except SQLAlchemyError as e:
