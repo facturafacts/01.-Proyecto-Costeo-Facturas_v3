@@ -1766,7 +1766,7 @@ function getExistingLineItemKeys(sheet, startRow) {
  * Inserts new invoice data at the top of the sheet
  */
 function insertFacturasAtTop(sheet, newInvoices) {
-  if (newInvoices.length === 0) return;
+  if (newInvoices.length === 0) return 0;
 
   const dataToInsert = newInvoices.map(invoice => [
     invoice.uuid, invoice.folio, invoice.issue_date,
@@ -1776,8 +1776,40 @@ function insertFacturasAtTop(sheet, newInvoices) {
     invoice.is_installments, invoice.is_immediate
   ]);
 
-  sheet.insertRowsAfter(1, newInvoices.length);
-  sheet.getRange(2, 1, dataToInsert.length, dataToInsert[0].length).setValues(dataToInsert);
+  const expectedRows = dataToInsert.length;
+  const numCols = dataToInsert[0].length;
+
+  sheet.insertRowsAfter(1, expectedRows);
+  const targetRange = sheet.getRange(2, 1, expectedRows, numCols);
+  targetRange.setValues(dataToInsert);
+
+  // Verify write by reading back UUIDs
+  try {
+    const writtenUUIDs = sheet.getRange(2, 1, expectedRows, 1).getValues().flat().filter(v => v && v.toString().trim());
+    if (writtenUUIDs.length !== expectedRows) {
+      console.log(`⚠️ Verification mismatch: expected ${expectedRows}, got ${writtenUUIDs.length}. Attempting to reinsert missing.`);
+      const requestedUUIDs = new Set(newInvoices.map(inv => inv.uuid));
+      for (const v of writtenUUIDs) requestedUUIDs.delete(v);
+      const missing = newInvoices.filter(inv => requestedUUIDs.has(inv.uuid));
+      if (missing.length > 0) {
+        const retryRows = missing.map(invoice => [
+          invoice.uuid, invoice.folio, invoice.issue_date,
+          invoice.issuer_rfc, invoice.issuer_name, invoice.receiver_rfc,
+          invoice.receiver_name, invoice.original_currency, invoice.original_total,
+          invoice.mxn_total, invoice.exchange_rate, invoice.payment_method,
+          invoice.is_installments, invoice.is_immediate
+        ]);
+        sheet.insertRowsAfter(1, retryRows.length);
+        sheet.getRange(2, 1, retryRows.length, numCols).setValues(retryRows);
+        console.log(`🔁 Reinsertion attempted for ${retryRows.length} missing rows.`);
+        return writtenUUIDs.length + retryRows.length;
+      }
+    }
+  } catch (e) {
+    console.log('⚠️ Verification step failed (non-fatal):', e);
+  }
+
+  return expectedRows;
 }
 
 /**
