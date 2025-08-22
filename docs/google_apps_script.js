@@ -263,6 +263,16 @@ function updateFacturas() {
       console.error('❌ Gap-fix from Purchase Details failed:', e);
     }
     
+    // Ensure sheet contains all API metadata rows (belt-and-suspenders)
+    try {
+      const enforced = ensureFacturasContainsAPIData(sheet, data.data);
+      if (enforced > 0) {
+        console.log(`🛠️ Enforced insertion of ${enforced} missing metadata invoices after fallback`);
+      }
+    } catch (e) {
+      console.error('❌ Enforcement step failed (non-fatal):', e);
+    }
+    
     SpreadsheetApp.getUi().alert(
       `Facturas Update Complete!\n\nInserted from metadata: ${insertedMeta}\nInserted from fallback: ${insertedFallback}\nTotal invoices (metadata): ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
     );
@@ -389,7 +399,15 @@ function rebuildFacturas() {
       console.error('❌ Rebuild fallback failed:', e);
     }
 
-    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.\nFallback added: ${insertedFallback}`);
+    // Ensure sheet contains all API metadata rows after rebuild
+    let enforced = 0;
+    try {
+      enforced = ensureFacturasContainsAPIData(sheet, data.data);
+    } catch (e) {
+      console.error('❌ Enforcement after rebuild failed (non-fatal):', e);
+    }
+
+    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.\nFallback added: ${insertedFallback}\nEnforced inserts: ${enforced}`);
   } catch (error) {
     console.error('❌ Rebuild Facturas failed:', error);
     SpreadsheetApp.getUi().alert(`Rebuild Facturas failed:\n\n${error.message}`);
@@ -1810,6 +1828,19 @@ function insertFacturasAtTop(sheet, newInvoices) {
   }
 
   return expectedRows;
+}
+
+/**
+ * Ensure all invoices from API metadata exist in the sheet.
+ * If a UUID from API is missing after normal insert/fallback, insert it now.
+ */
+function ensureFacturasContainsAPIData(sheet, apiInvoices) {
+  if (!apiInvoices || apiInvoices.length === 0) return 0;
+  const startRow = sheet.getLastRow() > 0 ? 2 : 1;
+  const existing = getExistingUUIDs(sheet, startRow);
+  const missing = apiInvoices.filter(inv => inv && inv.uuid && !existing.has(inv.uuid));
+  if (missing.length === 0) return 0;
+  return insertFacturasAtTop(sheet, missing) || 0;
 }
 
 /**
