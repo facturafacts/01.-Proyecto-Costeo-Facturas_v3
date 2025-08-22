@@ -243,27 +243,28 @@ function updateFacturas() {
     const existingUUIDs = getExistingUUIDs(sheet, hasHeaders ? 2 : 1);
     
     const newInvoices = data.data.filter(invoice => !existingUUIDs.has(invoice.uuid));
-    
-    if (newInvoices.length === 0) {
-      SpreadsheetApp.getUi().alert('No new invoices found!');
-      return;
+
+    // Insert only if there are truly new metadata rows
+    let insertedMeta = 0;
+    if (newInvoices.length > 0) {
+      showProgress(`Inserting ${newInvoices.length} new invoices...`);
+      insertFacturasAtTop(sheet, newInvoices);
+      insertedMeta = newInvoices.length;
     }
-    
-    showProgress(`Inserting ${newInvoices.length} new invoices...`);
-    insertFacturasAtTop(sheet, newInvoices);
-    
+
     showProgress('Formatting sheet...');
     formatFacturasSheet(sheet);
 
-    // Permanent gap-fix: fill any missing invoices using Purchase Details as fallback
+    // Always attempt gap-fix from Purchase Details to ensure no missing days/UUIDs
+    let insertedFallback = 0;
     try {
-      fillMissingFacturasFromDetails(sheet);
+      insertedFallback = fillMissingFacturasFromDetails(sheet) || 0;
     } catch (e) {
       console.error('❌ Gap-fix from Purchase Details failed:', e);
     }
     
     SpreadsheetApp.getUi().alert(
-      `Facturas Update Complete!\n\nInserted ${newInvoices.length} new invoices at the top.\nTotal invoices: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
+      `Facturas Update Complete!\n\nInserted from metadata: ${insertedMeta}\nInserted from fallback: ${insertedFallback}\nTotal invoices (metadata): ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
     );
     
     console.log('✅ Facturas update completed successfully!');
@@ -282,7 +283,7 @@ function updateFacturas() {
  */
 function fillMissingFacturasFromDetails(sheet, rfc = null) {
   const details = fetchPurchaseDetails(rfc);
-  if (!details || !details.success || !details.data) return;
+  if (!details || !details.success || !details.data) return 0;
 
   // Current UUIDs in the sheet
   const existingUUIDs = getExistingUUIDs(sheet, sheet.getLastRow() > 0 ? 2 : 1);
@@ -323,7 +324,9 @@ function fillMissingFacturasFromDetails(sheet, rfc = null) {
     sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
     formatFacturasSheet(sheet);
     console.log(`✅ Filled ${rows.length} missing Facturas from Purchase Details`);
+    return rows.length;
   }
+  return 0;
 }
 
 /**
@@ -377,7 +380,16 @@ function rebuildFacturas() {
     }
     insertFacturasAtTop(sheet, data.data);
     formatFacturasSheet(sheet);
-    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.`);
+
+    // After rebuild, ensure any invoices present in details but not in metadata are added
+    let insertedFallback = 0;
+    try {
+      insertedFallback = fillMissingFacturasFromDetails(sheet) || 0;
+    } catch (e) {
+      console.error('❌ Rebuild fallback failed:', e);
+    }
+
+    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.\nFallback added: ${insertedFallback}`);
   } catch (error) {
     console.error('❌ Rebuild Facturas failed:', error);
     SpreadsheetApp.getUi().alert(`Rebuild Facturas failed:\n\n${error.message}`);
