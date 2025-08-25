@@ -291,6 +291,7 @@ class SKUApprovalRequest(BaseModel):
 class SKUClassification(BaseModel):
     """Individual SKU classification data."""
     sku_key: str = Field(..., description="Unique SKU identifier")
+    client_rfc: Optional[str] = Field(None, description="Receiver RFC to scope the approval")
     category: str = Field(..., description="P62 main category")
     subcategory: str = Field(..., description="P62 subcategory")
     sub_sub_category: str = Field(..., description="P62 sub-subcategory")

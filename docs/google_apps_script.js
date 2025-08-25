@@ -177,15 +177,10 @@ const VALIDATION_RULES = {
 };
 
 // ========================================
-// DYNAMIC MENU FUNCTION CREATION
+// DYNAMIC MENU FUNCTION CREATION (DISABLED FOR SINGLE-SHEET MODE)
 // ========================================
-(function() {
-  for (const clientName in CLIENT_CONFIG) {
-    const rfc = CLIENT_CONFIG[clientName];
-    const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
-    globalThis[functionName] = () => updateClientSheet(clientName, rfc);
-  }
-})();
+// Per-user client update functions are disabled to enforce a single global
+// sheet model using only 'Facturas' and 'Purchase_Details'.
 
 // API endpoints
 const ENDPOINTS = {
@@ -223,15 +218,32 @@ function updateFacturas() {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = getOrCreateSheet(spreadsheet, 'Facturas');
     
-    showProgress('Fetching invoice data from API...');
+    // Prompt for Receiver RFC to isolate this update
+    const rfcPrompt = SpreadsheetApp.getUi().prompt(
+      'Enter Receiver RFC',
+      'Type the client RFC to load invoices for:',
+      SpreadsheetApp.getUi().ButtonSet.OK_CANCEL
+    );
+    if (rfcPrompt.getSelectedButton() !== SpreadsheetApp.getUi().Button.OK) {
+      SpreadsheetApp.getUi().alert('Operation cancelled.');
+      return;
+    }
+    const selectedRFC = (rfcPrompt.getResponseText() || '').trim();
+    if (!selectedRFC) {
+      SpreadsheetApp.getUi().alert('Receiver RFC is required.');
+      return;
+    }
+
+    showProgress(`Fetching invoice data from API for RFC ${selectedRFC}...`);
     
-    const data = fetchInvoiceData();
+    const data = fetchInvoiceData(selectedRFC);
     
     if (!data || !data.success) {
       throw new Error('Failed to fetch invoice data from API');
     }
     
-    console.log(`📊 Received ${data.count} invoice records`);
+    console.log(`📊 API returned ${data.count} invoice records`);
+    console.log(`📋 First 3 API UUIDs:`, data.data.slice(0, 3).map(inv => inv.uuid));
     
     const hasHeaders = sheet.getLastRow() > 0;
     
@@ -241,40 +253,50 @@ function updateFacturas() {
     }
     
     const existingUUIDs = getExistingUUIDs(sheet, hasHeaders ? 2 : 1);
+    console.log(`📊 Sheet has ${existingUUIDs.size} existing UUIDs`);
+    
+    // Manual test - insert one specific invoice if it's missing
+    let testInserted = false;
+    if (data.data.length > 0) {
+      const testInvoice = data.data[0]; // Take first API invoice
+      if (!existingUUIDs.has(testInvoice.uuid)) {
+        console.log(`🧪 TEST: Inserting single invoice ${testInvoice.uuid}`);
+        
+        // Insert manually
+        sheet.insertRowsAfter(1, 1);
+        sheet.getRange(2, 1, 1, 14).setValues([[
+          testInvoice.uuid, testInvoice.folio, testInvoice.issue_date,
+          testInvoice.issuer_rfc, testInvoice.issuer_name, testInvoice.receiver_rfc,
+          testInvoice.receiver_name, testInvoice.original_currency, testInvoice.original_total,
+          testInvoice.mxn_total, testInvoice.exchange_rate, testInvoice.payment_method,
+          testInvoice.is_installments, testInvoice.is_immediate
+        ]]);
+        
+        // Check if it's actually there
+        const checkUUID = sheet.getRange(2, 1).getValue();
+        console.log(`🔍 After insert, cell A2 contains: "${checkUUID}"`);
+        console.log(`🔍 Expected: "${testInvoice.uuid}"`);
+        console.log(`🔍 Match: ${checkUUID === testInvoice.uuid}`);
+        
+        testInserted = true;
+      }
+    }
     
     const newInvoices = data.data.filter(invoice => !existingUUIDs.has(invoice.uuid));
+    console.log(`📊 Found ${newInvoices.length} new invoices to insert`);
 
-    // Insert only if there are truly new metadata rows
-    let insertedMeta = 0;
-    if (newInvoices.length > 0) {
-      showProgress(`Inserting ${newInvoices.length} new invoices...`);
-      insertFacturasAtTop(sheet, newInvoices);
-      insertedMeta = newInvoices.length;
+    if (newInvoices.length > 0 && !testInserted) {
+    showProgress(`Inserting ${newInvoices.length} new invoices...`);
+    insertFacturasAtTop(sheet, newInvoices);
     }
-
+    
     showProgress('Formatting sheet...');
     formatFacturasSheet(sheet);
-
-    // Always attempt gap-fix from Purchase Details to ensure no missing days/UUIDs
-    let insertedFallback = 0;
-    try {
-      insertedFallback = fillMissingFacturasFromDetails(sheet) || 0;
-    } catch (e) {
-      console.error('❌ Gap-fix from Purchase Details failed:', e);
-    }
     
-    // Ensure sheet contains all API metadata rows (belt-and-suspenders)
-    try {
-      const enforced = ensureFacturasContainsAPIData(sheet, data.data);
-      if (enforced > 0) {
-        console.log(`🛠️ Enforced insertion of ${enforced} missing metadata invoices after fallback`);
-      }
-    } catch (e) {
-      console.error('❌ Enforcement step failed (non-fatal):', e);
-    }
+    const finalRowCount = sheet.getLastRow() - 1; // Subtract header
     
     SpreadsheetApp.getUi().alert(
-      `Facturas Update Complete!\n\nInserted from metadata: ${insertedMeta}\nInserted from fallback: ${insertedFallback}\nTotal invoices (metadata): ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
+      `Facturas Update Complete!\n\nRFC: ${selectedRFC}\nAPI: ${data.count} invoices\nSheet before: ${existingUUIDs.size} rows\nSheet after: ${finalRowCount} rows\nInserted: ${testInserted ? '1 (test)' : newInvoices.length}\n\nCheck console for detailed logs.`
     );
     
     console.log('✅ Facturas update completed successfully!');
@@ -287,90 +309,9 @@ function updateFacturas() {
   }
 }
 
-/**
- * Fill any missing Facturas rows by deriving header data from Purchase Details API
- * This ensures days/UUIDs not yet present in invoice_metadata still appear in the sheet.
- */
-function fillMissingFacturasFromDetails(sheet, rfc = null) {
-  const details = fetchPurchaseDetails(rfc);
-  if (!details || !details.success || !details.data) return 0;
 
-  // Current UUIDs in the sheet
-  const existingUUIDs = getExistingUUIDs(sheet, sheet.getLastRow() > 0 ? 2 : 1);
 
-  const rowsByUuid = new Map();
-  for (const item of details.data) {
-    const uuid = item.invoice_uuid;
-    if (!uuid) continue;
-    if (existingUUIDs.has(uuid)) continue; // already present
-    if (rowsByUuid.has(uuid)) continue;    // already collected
 
-    const exchange = Number(item.exchange_rate || 1);
-    const mxnTotal = Number(item.invoice_mxn_total || 0);
-    const originalTotal = exchange > 0 ? mxnTotal / exchange : mxnTotal;
-
-    const row = [
-      item.invoice_uuid,
-      item.folio,
-      item.issue_date,
-      item.issuer_rfc,
-      item.issuer_name,
-      item.receiver_rfc,
-      item.receiver_name,
-      item.currency,
-      originalTotal,
-      mxnTotal,
-      exchange,
-      item.payment_method,
-      item.is_installments,
-      item.is_immediate
-    ];
-    rowsByUuid.set(uuid, row);
-  }
-
-  if (rowsByUuid.size > 0) {
-    const rows = Array.from(rowsByUuid.values());
-    sheet.insertRowsAfter(1, rows.length);
-    sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
-    formatFacturasSheet(sheet);
-    console.log(`✅ Filled ${rows.length} missing Facturas from Purchase Details`);
-    return rows.length;
-  }
-  return 0;
-}
-
-/**
- * Diagnose and repair missing Facturas rows by comparing API vs sheet
- */
-function diagnoseRepairFacturas() {
-  try {
-    console.log('🧪 Diagnosing missing Facturas rows...');
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getOrCreateSheet(spreadsheet, 'Facturas');
-
-    const data = fetchInvoiceData();
-    if (!data || !data.success) {
-      throw new Error('Failed to fetch invoice metadata from API');
-    }
-
-    const hasHeaders = sheet.getLastRow() > 0;
-    if (!hasHeaders) { addFacturasHeaders(sheet); }
-    const existingUUIDs = getExistingUUIDs(sheet, hasHeaders ? 2 : 1);
-
-    const missing = data.data.filter(inv => !existingUUIDs.has(inv.uuid));
-    if (missing.length === 0) {
-      SpreadsheetApp.getUi().alert('No missing Facturas rows detected.');
-      return;
-    }
-
-    insertFacturasAtTop(sheet, missing);
-    formatFacturasSheet(sheet);
-    SpreadsheetApp.getUi().alert(`Inserted ${missing.length} missing Facturas rows.`);
-  } catch (error) {
-    console.error('❌ Facturas diagnostics failed:', error);
-    SpreadsheetApp.getUi().alert(`Facturas diagnostics failed:\n\n${error.message}`);
-  }
-}
 
 /**
  * Fully rebuild Facturas sheet from API
@@ -391,72 +332,14 @@ function rebuildFacturas() {
     insertFacturasAtTop(sheet, data.data);
     formatFacturasSheet(sheet);
 
-    // After rebuild, ensure any invoices present in details but not in metadata are added
-    let insertedFallback = 0;
-    try {
-      insertedFallback = fillMissingFacturasFromDetails(sheet) || 0;
-    } catch (e) {
-      console.error('❌ Rebuild fallback failed:', e);
-    }
-
-    // Ensure sheet contains all API metadata rows after rebuild
-    let enforced = 0;
-    try {
-      enforced = ensureFacturasContainsAPIData(sheet, data.data);
-    } catch (e) {
-      console.error('❌ Enforcement after rebuild failed (non-fatal):', e);
-    }
-
-    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.\nFallback added: ${insertedFallback}\nEnforced inserts: ${enforced}`);
+    SpreadsheetApp.getUi().alert(`Rebuilt Facturas with ${data.count} rows.`);
   } catch (error) {
     console.error('❌ Rebuild Facturas failed:', error);
     SpreadsheetApp.getUi().alert(`Rebuild Facturas failed:\n\n${error.message}`);
   }
 }
 
-/**
- * Diagnose and repair missing Facturas/Purchase_Details rows by comparing API vs sheet
- */
-function diagnoseRepairPurchaseDetails() {
-  try {
-    console.log('🧪 Diagnosing missing Purchase Details rows...');
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getOrCreateSheet(spreadsheet, 'Purchase_Details');
 
-    const data = fetchPurchaseDetails();
-    if (!data || !data.success) {
-      throw new Error('Failed to fetch purchase details from API');
-    }
-
-    // Build set of existing composite keys in sheet: invoice_uuid + line_number
-    const hasHeaders = sheet.getLastRow() > 0;
-    if (!hasHeaders) {
-      addPurchaseDetailsHeaders(sheet);
-    }
-    const existingLineItemKeys = getExistingLineItemKeys(sheet, hasHeaders ? 2 : 1);
-
-    // Find API rows missing from sheet
-    const missing = data.data.filter(item => {
-      const key = `${item.invoice_uuid}_${item.line_number}`;
-      return !existingLineItemKeys.has(key);
-    });
-
-    if (missing.length === 0) {
-      SpreadsheetApp.getUi().alert('No missing rows detected. Sheet is in sync.');
-      return;
-    }
-
-    // Insert missing rows at top (preserve behavior)
-    insertPurchaseDetailsAtTop(sheet, missing);
-    formatPurchaseDetailsSheet(sheet);
-    try { refreshPurchaseApprovalStatuses(); } catch (e) { console.error('Status refresh failed:', e); }
-
-    SpreadsheetApp.getUi().alert(`Inserted ${missing.length} missing rows from API.`);
-  } catch (error) {
-    console.error('❌ Diagnostics failed:', error);
-    SpreadsheetApp.getUi().alert(`Diagnostics failed:\n\n${error.message}`);
-  }
-}
 
 /**
  * Fully rebuild Purchase_Details sheet from API
@@ -478,7 +361,6 @@ function rebuildPurchaseDetails() {
     }
     insertPurchaseDetailsAtTop(sheet, data.data);
     formatPurchaseDetailsSheet(sheet);
-    try { refreshPurchaseApprovalStatuses(); } catch (e) { console.error('Status refresh failed:', e); }
 
     SpreadsheetApp.getUi().alert(`Rebuilt Purchase_Details with ${data.count} rows.`);
   } catch (error) {
@@ -497,9 +379,25 @@ function updatePurchaseDetails() {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = getOrCreateSheet(spreadsheet, 'Purchase_Details');
     
-    showProgress('Fetching purchase details from API...');
+    // Prompt for Receiver RFC to isolate this update
+    const rfcPrompt = SpreadsheetApp.getUi().prompt(
+      'Enter Receiver RFC',
+      'Type the client RFC to load purchase details for:',
+      SpreadsheetApp.getUi().ButtonSet.OK_CANCEL
+    );
+    if (rfcPrompt.getSelectedButton() !== SpreadsheetApp.getUi().Button.OK) {
+      SpreadsheetApp.getUi().alert('Operation cancelled.');
+      return;
+    }
+    const selectedRFC = (rfcPrompt.getResponseText() || '').trim();
+    if (!selectedRFC) {
+      SpreadsheetApp.getUi().alert('Receiver RFC is required.');
+      return;
+    }
+
+    showProgress(`Fetching purchase details from API for RFC ${selectedRFC}...`);
     
-    const data = fetchPurchaseDetails();
+    const data = fetchPurchaseDetails(selectedRFC);
     
     if (!data || !data.success) {
       throw new Error('Failed to fetch purchase details from API');
@@ -547,7 +445,7 @@ function updatePurchaseDetails() {
     }
     
     SpreadsheetApp.getUi().alert(
-      `Purchase Details Update Complete!\n\nInserted ${newPurchaseDetails.length} new purchase details at the top.\nTotal records: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
+      `Purchase Details Update Complete!\n\nRFC: ${selectedRFC}\nInserted ${newPurchaseDetails.length} new purchase details at the top.\nTotal records: ${data.count}\n\nLast updated: ${new Date().toLocaleString()}`
     );
     
     console.log('✅ Purchase Details update completed successfully!');
@@ -600,12 +498,12 @@ function testAPIConnection() {
  */
 function updateClientSheet(clientName, rfc) {
   try {
-    console.log(`🚀 Starting smart update for ${clientName} (RFC: ${rfc})...`);
+    console.log(`🚀 Starting smart update (single-sheet mode) for RFC: ${rfc}...`);
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
-    const facturasSheetName = `Facturas - ${clientName}`;
-    const facturasSheet = getOrCreateSheet(spreadsheet, facturasSheetName);
-    showProgress(`Fetching invoices for ${clientName}...`);
+    // Always update global 'Facturas'
+    const facturasSheet = getOrCreateSheet(spreadsheet, 'Facturas');
+    showProgress(`Fetching invoices for RFC ${rfc}...`);
 
     const invoiceData = fetchInvoiceData(rfc);
     if (invoiceData && invoiceData.success && invoiceData.count > 0) {
@@ -618,15 +516,15 @@ function updateClientSheet(clientName, rfc) {
       if (newInvoices.length > 0) {
         insertFacturasAtTop(facturasSheet, newInvoices);
         formatFacturasSheet(facturasSheet);
-        console.log(`✅ Invoices updated for ${clientName}: ${newInvoices.length} new records.`);
+        console.log(`✅ Invoices updated: ${newInvoices.length} new records.`);
       } else {
-        console.log(`ℹ️ No new invoices found for ${clientName}.`);
+        console.log(`ℹ️ No new invoices found for RFC ${rfc}.`);
       }
     }
 
-    const detailsSheetName = `Purchase Details - ${clientName}`;
-    const detailsSheet = getOrCreateSheet(spreadsheet, detailsSheetName);
-    showProgress(`Fetching purchase details for ${clientName}...`);
+    // Always update global 'Purchase_Details'
+    const detailsSheet = getOrCreateSheet(spreadsheet, 'Purchase_Details');
+    showProgress(`Fetching purchase details for RFC ${rfc}...`);
 
     const purchaseData = fetchPurchaseDetails(rfc);
     if (purchaseData && purchaseData.success && purchaseData.count > 0) {
@@ -642,15 +540,15 @@ function updateClientSheet(clientName, rfc) {
       if (newPurchaseDetails.length > 0) {
         insertPurchaseDetailsAtTop(detailsSheet, newPurchaseDetails);
         formatPurchaseDetailsSheet(detailsSheet);
-        console.log(`✅ Purchase details updated for ${clientName}: ${newPurchaseDetails.length} new records.`);
+        console.log(`✅ Purchase details updated: ${newPurchaseDetails.length} new records.`);
       }
     }
 
-    SpreadsheetApp.getUi().alert(`Update for ${clientName} complete!`);
+    SpreadsheetApp.getUi().alert(`Update complete for RFC ${rfc}! Global sheets updated.`);
 
   } catch (error) {
-    console.error(`❌ Update for ${clientName} failed:`, error);
-    SpreadsheetApp.getUi().alert(`Update Failed for ${clientName}\n\nError: ${error.message}`);
+    console.error(`❌ Update failed:`, error);
+    SpreadsheetApp.getUi().alert(`Update Failed\n\nError: ${error.message}`);
   }
 }
 
@@ -756,11 +654,28 @@ function createSkuApproval() {
 
     showProgress('Fetching pending SKUs and setting up dependent dropdowns...');
     
-    console.log('📡 Fetching from URL:', SKU_APPROVAL_URL);
+    // Prompt for Receiver RFC to isolate SKUs per client
+    const rfcPrompt = SpreadsheetApp.getUi().prompt(
+      'Enter Receiver RFC',
+      'Type the client RFC to load pending SKUs for:',
+      SpreadsheetApp.getUi().ButtonSet.OK_CANCEL
+    );
+    if (rfcPrompt.getSelectedButton() !== SpreadsheetApp.getUi().Button.OK) {
+      SpreadsheetApp.getUi().alert('Operation cancelled.');
+      return;
+    }
+    const selectedRFC = (rfcPrompt.getResponseText() || '').trim();
+    if (!selectedRFC) {
+      SpreadsheetApp.getUi().alert('Receiver RFC is required.');
+      return;
+    }
+
+    const approvalUrl = SKU_APPROVAL_URL + `?receiver_rfc=${encodeURIComponent(selectedRFC)}`;
+    console.log('📡 Fetching from URL:', approvalUrl);
     
     let response, responseText, data;
     try {
-      response = UrlFetchApp.fetch(SKU_APPROVAL_URL, {
+      response = UrlFetchApp.fetch(approvalUrl, {
         headers: { 'ngrok-skip-browser-warning': 'true' },
         muteHttpExceptions: true // Don't throw on HTTP errors
       });
@@ -873,6 +788,8 @@ function createSkuApproval() {
       // Just create the basic sheet with data only
       
       console.log(`✅ Sheet setup complete with ${rows.length} SKUs`);
+      // Store selected RFC in sheet note for later submit use
+      sheet.getRange(1, 1).setNote(`client_rfc=${selectedRFC}`);
     } else {
       console.log('⚠️ No rows to insert');
     }
@@ -1312,8 +1229,30 @@ function submitSkuApprovals() {
       return;
     }
 
+    // Determine client_rfc: prefer stored note, else prompt
+    let clientRfc = '';
+    const note = sheet.getRange(1, 1).getNote();
+    if (note && note.startsWith('client_rfc=')) {
+      clientRfc = note.split('=')[1].trim();
+    }
+    if (!clientRfc) {
+      const rfcPrompt = SpreadsheetApp.getUi().prompt('Enter Receiver RFC', 'Type the client RFC to submit approvals for:', SpreadsheetApp.getUi().ButtonSet.OK_CANCEL);
+      if (rfcPrompt.getSelectedButton() !== SpreadsheetApp.getUi().Button.OK) {
+        SpreadsheetApp.getUi().alert('Submission cancelled.');
+        return;
+      }
+      clientRfc = (rfcPrompt.getResponseText() || '').trim();
+      if (!clientRfc) {
+        SpreadsheetApp.getUi().alert('Receiver RFC is required.');
+        return;
+      }
+    }
+
+    // Attach client_rfc to each approval
+    const approvalsWithRfc = approvals.map(a => ({ ...a, client_rfc: clientRfc }));
+
     // Submit to enhanced API with P62 classifications
-    const payload = JSON.stringify({ approvals: approvals });
+    const payload = JSON.stringify({ approvals: approvalsWithRfc });
     console.log(`📤 Enhanced payload: ${payload}`);
     
     const options = {
@@ -1644,6 +1583,8 @@ function showProgress(message) {
   SpreadsheetApp.getActiveSpreadsheet().toast(message, 'CFDI Update', 3);
 }
 
+
+
 // ========================================
 // MENU FUNCTIONS
 // ========================================
@@ -1654,14 +1595,8 @@ function showProgress(message) {
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   const menu = ui.createMenu('📊 CFDI System v4');
-  
-  // Client updates
-  const clientSubMenu = ui.createMenu('Client Updates');
-  for (const clientName in CLIENT_CONFIG) {
-    const functionName = `update_${clientName.replace(/[^a-zA-Z0-9]/g, '')}`;
-    clientSubMenu.addItem(`🔄 Update ${clientName}`, functionName);
-  }
-  menu.addSubMenu(clientSubMenu);
+
+  // Single-sheet mode: no per-client submenu
   
   // SKU Management (simplified)
   const skuMenu = ui.createMenu('🔧 SKU Management');
@@ -1678,10 +1613,10 @@ function onOpen() {
     .addSeparator()
     .addSubMenu(ui.createMenu('Advanced')
       .addItem('🔄 Update Facturas', 'updateFacturas')
-      .addItem('🧪 Diagnose Missing Facturas Rows', 'diagnoseRepairFacturas')
+
       .addItem('🧹 Rebuild Facturas (Full)', 'rebuildFacturas')
       .addItem('🔄 Update Purchase Details', 'updatePurchaseDetails')
-      .addItem('🧪 Diagnose Missing Purchase Rows', 'diagnoseRepairPurchaseDetails')
+
       .addItem('🧹 Rebuild Purchase Details (Full)', 'rebuildPurchaseDetails')
       .addItem('🔄 Refresh Approval Statuses', 'refreshPurchaseApprovalStatuses')
       .addItem('Show Import Info', 'showImportInfo'))
@@ -1784,7 +1719,7 @@ function getExistingLineItemKeys(sheet, startRow) {
  * Inserts new invoice data at the top of the sheet
  */
 function insertFacturasAtTop(sheet, newInvoices) {
-  if (newInvoices.length === 0) return 0;
+  if (newInvoices.length === 0) return;
 
   const dataToInsert = newInvoices.map(invoice => [
     invoice.uuid, invoice.folio, invoice.issue_date,
@@ -1794,54 +1729,11 @@ function insertFacturasAtTop(sheet, newInvoices) {
     invoice.is_installments, invoice.is_immediate
   ]);
 
-  const expectedRows = dataToInsert.length;
-  const numCols = dataToInsert[0].length;
-
-  sheet.insertRowsAfter(1, expectedRows);
-  const targetRange = sheet.getRange(2, 1, expectedRows, numCols);
-  targetRange.setValues(dataToInsert);
-
-  // Verify write by reading back UUIDs
-  try {
-    const writtenUUIDs = sheet.getRange(2, 1, expectedRows, 1).getValues().flat().filter(v => v && v.toString().trim());
-    if (writtenUUIDs.length !== expectedRows) {
-      console.log(`⚠️ Verification mismatch: expected ${expectedRows}, got ${writtenUUIDs.length}. Attempting to reinsert missing.`);
-      const requestedUUIDs = new Set(newInvoices.map(inv => inv.uuid));
-      for (const v of writtenUUIDs) requestedUUIDs.delete(v);
-      const missing = newInvoices.filter(inv => requestedUUIDs.has(inv.uuid));
-      if (missing.length > 0) {
-        const retryRows = missing.map(invoice => [
-          invoice.uuid, invoice.folio, invoice.issue_date,
-          invoice.issuer_rfc, invoice.issuer_name, invoice.receiver_rfc,
-          invoice.receiver_name, invoice.original_currency, invoice.original_total,
-          invoice.mxn_total, invoice.exchange_rate, invoice.payment_method,
-          invoice.is_installments, invoice.is_immediate
-        ]);
-        sheet.insertRowsAfter(1, retryRows.length);
-        sheet.getRange(2, 1, retryRows.length, numCols).setValues(retryRows);
-        console.log(`🔁 Reinsertion attempted for ${retryRows.length} missing rows.`);
-        return writtenUUIDs.length + retryRows.length;
-      }
-    }
-  } catch (e) {
-    console.log('⚠️ Verification step failed (non-fatal):', e);
-  }
-
-  return expectedRows;
+  sheet.insertRowsAfter(1, newInvoices.length);
+  sheet.getRange(2, 1, dataToInsert.length, dataToInsert[0].length).setValues(dataToInsert);
 }
 
-/**
- * Ensure all invoices from API metadata exist in the sheet.
- * If a UUID from API is missing after normal insert/fallback, insert it now.
- */
-function ensureFacturasContainsAPIData(sheet, apiInvoices) {
-  if (!apiInvoices || apiInvoices.length === 0) return 0;
-  const startRow = sheet.getLastRow() > 0 ? 2 : 1;
-  const existing = getExistingUUIDs(sheet, startRow);
-  const missing = apiInvoices.filter(inv => inv && inv.uuid && !existing.has(inv.uuid));
-  if (missing.length === 0) return 0;
-  return insertFacturasAtTop(sheet, missing) || 0;
-}
+
 
 /**
  * Inserts new purchase detail data at the top of the sheet

@@ -568,20 +568,28 @@ async def get_purchase_details(
     "/skus/pending",
     response_model=PurchaseDetailsListResponse,
     summary="Get Pending SKU Approvals",
-    description="Retrieve all unique line items that have an approval_status of 'pending'."
+    description="Retrieve unique pending SKUs for a specific client (receiver RFC)."
 )
-async def get_pending_skus(db_manager: DatabaseManager = Depends(get_db_manager)):
-    """Provides a list of unapproved SKUs for the approval sheet."""
+async def get_pending_skus(
+    receiver_rfc: str = Query(..., description="Receiver RFC to isolate client SKUs"),
+    db_manager: DatabaseManager = Depends(get_db_manager)
+):
+    """Provides a list of unapproved SKUs for the approval sheet for a given client RFC."""
     try:
         with db_manager.get_session() as session:
-            # Find the first instance of each pending SKU key
+            # Find the first instance of each pending SKU key, scoped by receiver_rfc
             subquery = session.query(
                 PurchaseDetails.sku_key,
                 func.min(PurchaseDetails.id).label('min_id')
-            ).filter(PurchaseDetails.approval_status == 'pending').group_by(PurchaseDetails.sku_key).subquery()
+            ).filter(
+                PurchaseDetails.approval_status == 'pending',
+                PurchaseDetails.receiver_rfc == receiver_rfc
+            ).group_by(PurchaseDetails.sku_key).subquery()
 
             pending_items = session.query(PurchaseDetails).join(
                 subquery, PurchaseDetails.id == subquery.c.min_id
+            ).filter(
+                PurchaseDetails.receiver_rfc == receiver_rfc
             ).order_by(PurchaseDetails.issue_date.desc()).all()
 
             return PurchaseDetailsListResponse(
@@ -662,7 +670,8 @@ async def approve_skus_with_classification(
                 try:
                     # Create or update approved_skus record
                     existing_sku = session.query(ApprovedSKUModel).filter_by(
-                        sku_key=approval.sku_key
+                        sku_key=approval.sku_key,
+                        client_rfc=approval.client_rfc
                     ).first()
                     
                     if not existing_sku:
@@ -674,6 +683,7 @@ async def approve_skus_with_classification(
                         description = purchase_item.description if purchase_item else "Unknown"
                         
                         approved_sku = ApprovedSKUModel(
+                            client_rfc=approval.client_rfc,
                             sku_key=approval.sku_key,
                             normalized_description=description,
                             category=approval.category,
@@ -698,7 +708,8 @@ async def approve_skus_with_classification(
 
                     # Update purchase_details table
                     session.query(PurchaseDetails).filter(
-                        PurchaseDetails.sku_key == approval.sku_key
+                        PurchaseDetails.sku_key == approval.sku_key,
+                        PurchaseDetails.receiver_rfc == approval.client_rfc
                     ).update({
                         'approval_status': 'approved',
                         'category': approval.category,
@@ -711,7 +722,8 @@ async def approve_skus_with_classification(
 
                     # Update invoice_items table with full classification
                     session.query(InvoiceItem).filter(
-                        InvoiceItem.sku_key == approval.sku_key
+                        InvoiceItem.sku_key == approval.sku_key,
+                        InvoiceItem.client_rfc == approval.client_rfc
                     ).update({
                         'approval_status': 'approved',
                         'category': approval.category,

@@ -169,11 +169,13 @@ class InvoiceItem(Base):
     standardized_quantity = Column(Numeric(15, 6), nullable=True)   # NEW
     conversion_factor = Column(Numeric(15, 6), nullable=True)       # NEW
     
-    # Classification Metadata
+    # Tenant & Classification Metadata
+    client_rfc = Column(String(13), nullable=True, index=True)
     category_confidence = Column(Float, nullable=True)
     classification_source = Column(String(20), nullable=False, default='gemini_api')
     approval_status = Column(String(20), nullable=False, default='pending')
     sku_key = Column(String(255), nullable=True, index=True)
+    approved_sku_id = Column(Integer, ForeignKey('approved_skus.id', name='fk_invoice_items_approved_sku_id'), nullable=True)
     classification_timestamp = Column(DateTime, nullable=False, default=datetime.utcnow)
     
     # Additional Data
@@ -193,6 +195,8 @@ class InvoiceItem(Base):
         Index('idx_item_sku_key', 'sku_key'),
         Index('idx_item_approval_status', 'approval_status'),
         Index('idx_item_product_code', 'product_code'),
+        Index('idx_item_client_sku', 'client_rfc', 'sku_key'),
+        Index('idx_item_approved_sku_id', 'approved_sku_id'),
     )
 
 
@@ -206,7 +210,8 @@ class ApprovedSku(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     
     # SKU Identification
-    sku_key = Column(String(255), unique=True, nullable=False, index=True)
+    client_rfc = Column(String(13), nullable=True, index=True)
+    sku_key = Column(String(255), nullable=False, index=True)
     product_code = Column(String(50), nullable=True, index=True)
     internal_code = Column(String(50), nullable=True)
     normalized_description = Column(Text, nullable=False)
@@ -241,8 +246,10 @@ class ApprovedSku(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     
-    # Indexes
+    # Indexes & Constraints (tenant isolation)
     __table_args__ = (
+        UniqueConstraint('client_rfc', 'sku_key', name='uq_client_sku_key'),
+        Index('idx_sku_client_key', 'client_rfc', 'sku_key'),
         Index('idx_sku_product_code', 'product_code'),
         Index('idx_sku_category', 'category'),
         Index('idx_sku_usage', 'usage_count'),
