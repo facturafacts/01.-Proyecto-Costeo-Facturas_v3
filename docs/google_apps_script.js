@@ -27,160 +27,54 @@ const BASE_URL = 'https://octopus-app-vzk4s.ondigitalocean.app';
 // ========================================
 // Map your Google Sheet tab names to the client's RFC.
 const CLIENT_CONFIG = {
-  "Client A": "RFC_CLIENT_A", // Replace with actual RFC
-  "Client B": "RFC_CLIENT_B", // Replace with actual RFC
-  "Yasser Yussif": "YUGY931216FK4" // Example with your RFC
-};
 
-// ========================================
-// P62 CATEGORIES CONFIGURATION (COPY/PASTE TO UPDATE)
-// ========================================
-// 🔧 TO UPDATE P62 CATEGORIES: Simply replace this entire object with new data
-const P62_CATEGORIES = {
-  "Abarrotes": {
-    "Aceite": ["Aceite de oliva", "Aceite vegetal"],
-    "Alga Marina": ["Alga Marina"],
-    "Café": ["Café instantáneo", "Café molido", "Granos de café"],
-    "Cereales": ["Arroz", "Avena", "Quinoa"],
-    "Chiles": ["Chile Chipotle", "Chile Quebrado", "Chile Seco", "Chile con Limon"],
-    "Concentrados": ["Horchata", "Jamaica"],
-    "Condimentos": ["Ajo en polvo", "Axiote", "Catsup", "Cebolla en polvo", "Consome de Pollo", "Consome de Vegetales", "Mayonesa", "Mostaza", "Pepper", "Sal"],
-    "Conservas": ["Alcaparras", "Anchoas", "Frijoles enlatados", "Frutas enlatadas", "Jalapeños enlatados", "Pepinillos encurtidos", "Pure de Tomate", "Tomates enlatados", "Aceitunas"],
-    "Crema": ["Crema de Ajonjoli", "Crema de Avellana", "Crema de Cacahuate"],
-    "Dulces": ["Dulces", "Enjambre de nuez"],
-    "Endulzantes": ["Azúcar blanca granulada", "Azúcar de coco", "Azúcar morena", "Chamoy", "Extracto de Vainilla", "Jarabe", "Jarabe Chocolate", "Mazapan", "Miel", "Miel de Agave", "Piloncillo"],
-    "Especias": ["Ajo en bote", "Cayne", "Cebolla", "Chile/s", "Comino", "Oregano", "Paprika", "Pimienta"],
-    "Harinas": ["Harina de Centeno", "Harina de maíz", "Harina de trigo"],
-    "Hierbas": ["Hierbas secas"],
-    "Huevos": ["Huevos"],
-    "Legumbres": ["Frijol", "Grabanzo", "Lentejas"],
-    "Nueces y Semillas": ["Ajonjoli", "Cacahuate", "Nueces", "Nueces pecanas", "Pepita"],
-    "Otros-a": ["Bicarbonato de sodio", "Carbon", "Coco rallado", "Fruta seca", "Jamaica", "Maiz Pozolero", "Otros", "Pan Molido", "Pasta"],
-    "Pulpa": ["Fresa", "Guayaba", "Mango", "Maracuya", "Pitaya", "Piña", "Tamarindo"],
-    "Salsas - A": ["Marinadas", "Salsas BBQ", "Salsas condimentadas", "Salsas para untar", "Salsas picantes"],
-    "Tortilla": ["Tortilla de Harina", "Tortilla de Mariz", "Totopos"],
-    "Vinagre": ["Vinagre balsamico", "Vinagre blanco", "Vinagre de malta", "Vinagre de manzana", "Vinagre de vino tinto"]
-  },
-  "Bebidas": {
-    "Cerveza": ["Artesanal", "Importada", "Nacional"],
-    "Destilados": ["Apperol", "Controy", "Gin", "Licor 43", "Licores", "Mezcal", "Pox", "Ron", "Tequila", "Vodka", "Whiskey"],
-    "Jugo": ["Jugo de Arándano", "Jugo de Manzana", "Jugo de Naranja", "Jugo de Piña", "Jugo de Tomate", "Jugo de Uva"],
-    "Otros-b": ["Agua de coco", "Clamato", "Coffee Drinks", "Crema de coco", "Kombucha", "Otros", "Tea", "Water"],
-    "Refrescos": ["Agua Mineral", "Agua Tonica", "Cola", "Ginger Ale", "Lima-Limon", "Refresco Sin Gas", "Te", "Toronja"],
-    "Vino": ["Vino Blanco", "Vino Naranja", "Vino Rosado", "Vino Tinto"]
-  },
-  "Gastos Generales": {
-    "Arrendamiento": ["Arrendamiento"],
-    "Asimilados a salarios": ["Asimilados a salarios"],
-    "Atención a clientes": ["Atención a clientes"],
-    "Capacitación": ["Capacitación"],
-    "Combustibles y lubricantes": ["Combustibles y lubricantes"],
-    "Comunicaciones": ["Comunicaciones"],
-    "Consultoria contable-fiscal y de negocios": ["Consultoria contable-fiscal y de negocios"],
-    "Correo y Mensajeria": ["Correo y Mensajeria"],
-    "Cuotas y suscripciones": ["Cuotas y suscripciones"],
-    "Depreciacion contable": ["Depreciacion contable"],
-    "Enseres menores": ["Enseres menores"],
-    "Fletes y acarreos": ["Fletes y acarreos"],
-    "Gastos No deducibles": ["Gastos No deducibles"],
-    "Honorarios PF": ["Honorarios PF"],
-    "Honorarios RESICO": ["Honorarios RESICO"],
-    "Mantenimiento y conservación Oficina": ["Mantenimiento y conservación Oficina"],
-    "Otros Gastos de Venta": ["Otros Gastos de Venta"],
-    "Otros impuestos y derechos": ["Otros impuestos y derechos"],
-    "Papelería y articulos de oficina": ["Papelería y articulos de oficina"],
-    "Pensiones y estacionamientos": ["Pensiones y estacionamientos"],
-    "Prestaciones al Personal": ["Prestaciones al Personal"],
-    "Previsión Social": ["Previsión Social"],
-    "Propaganda y Publicidad": ["Propaganda y Publicidad"],
-    "Seguridad Social": ["Seguridad Social"],
-    "Seguros y fianzas": ["Seguros y fianzas"],
-    "Servicios Administrativos": ["Servicios Administrativos"],
-    "Servicios Aduanales": ["Servicios Aduanales"],
-    "Servicios Legales": ["Servicios Legales"],
-    "Servicios contables": ["Servicios contables"],
-    "Servicios de Facturación": ["Servicios de Facturación"],
-    "Servicios de Marketing": ["Servicios de Marketing"],
-    "Software y licencias": ["Software y licencias"],
-    "Sueldos y salarios": ["Sueldos y salarios"],
-    "Vigilancia y seguridad": ["Vigilancia y seguridad"],
-    "Viáticos y gastos de viaje": ["Viáticos y gastos de viaje"]
-  },
-  "Lacteos": {
-    "Cremas": ["Crema", "Crema agria", "Crema espesa", "Crema para batir", "Jocoque", "Medio y medio"],
-    "Helado": ["Helado de Chocolate", "Helado de Fresa", "Helado de Vainilla"],
-    "Leche": ["Leche Lycott", "Leche de almendras", "Leche de avena", "Leche de soja", "Leche descremada", "Leche en Polvo", "Leche entera"],
-    "Otros-l": ["Mantequilla", "Otros", "Queso crema", "Yogurt"],
-    "Queso": ["Queso Amarillo", "Queso Americano", "Queso Brie", "Queso Burrata", "Queso Cotija", "Queso Cottage", "Queso Crema", "Queso Feta", "Queso Gorgonzola", "Queso Mozarella", "Queso Padano", "Queso Parmesano", "Queso Ricotta", "Queso cheddar", "Queso de Cabra", "Queso seco", "Queso suizo"]
-  },
-  "Panaderia": {
-    "Otros-p": ["Empanizador", "Galletas", "Magdalenas", "Pasteles", "Tartas"],
-    "Pan": ["Baguettes", "Bollos", "Croissants", "Pan blanco", "Pan de masa madre", "Pan integral"]
-  },
-  "Preparados": {
-    "Aceite": ["Aceite vegetal"],
-    "Aderezos": ["Aderezo cesar", "Aderezo italiano", "Aderezo ranch", "Vinagreta"],
-    "Azúcar": ["Miel"],
-    "Encurtidos": ["Aderezo", "Chucrut", "Pepinillos encurtidos"],
-    "Harinas": ["Harina de maíz"],
-    "Masas": ["Masa para galletas", "Masa para pan", "Masa para pizza"],
-    "Otros-pr": ["Bases para sopa", "Comidas congeladas", "Ensaladas preparadas", "Otros"],
-    "Salsas - Pr": ["Salsa BBQ", "Salsa de tomate", "Salsa pesto", "Salsa verde", "Salsas BBQ", "Salsas para untar", "Salsas picantes"]
-  },
-  "Proteinas": {
-    "Carne Otros": ["Carne molida", "Cordero", "Otros"],
-    "Carne de cerdo": ["Chicharron", "Chorizo", "Chuleta", "Codillo", "Costilla", "Espaldilla", "Jamón", "Lomo", "Pierna", "Pork Belly / Panceta / Pecho", "Solomillo", "Tocino"],
-    "Carne de res": ["Bistec", "Brisket", "Chuleta", "Costilla", "Diezmillo", "Falda", "Filete", "Lomo", "Paleta", "Picaña", "Ribeye", "Sirloin"],
-    "Embutidos": ["Pepperoni", "Salami", "Salchichas"],
-    "Mariscos": ["Almejas", "Camarones", "Cangrejo", "Langosta", "Mejillones", "Ostion", "Otros"],
-    "Otros-Pro": ["Tempeh", "Tofu"],
-    "Pavo": ["Alitas", "Contramuslo", "Corazón", "Cuello", "Hígado", "Molleja", "Muslo", "Pata", "Pechuga", "Pierna"],
-    "Pescado": ["Atún", "Bacalao", "Cabrilla", "Camarones", "Halibut", "Jurel", "Pargo", "Pescado", "Salmón"],
-    "Pollo": ["Alitas", "Contramuslo", "Corazón", "Cuello", "Hígado", "Molleja", "Muslo", "Pata", "Pechuga", "Pierna"]
-  },
-  "Servicios": {
-    "Servicios": ["Servicios"]
-  },
-  "Suministros": {
-    "Bolsas": ["Bolsas de almacenamiento de alimentos", "Bolsas de basura", "Bolsas de compras"],
-    "Caja": ["Caja para Pizza"],
-    "Desinfectante": ["Desinfectante de manos", "General", "Toallitas desinfectantes"],
-    "Detergente": ["Detergente para lavar platos", "Limpiador multiuso"],
-    "Equipo": ["Equipo De Cocina", "Equipo de Servicio"],
-    "Jabón": ["Esponjas y Fibras para Lavar", "Jabón de manos", "Jabón en barra", "Jabón para lavar platos"],
-    "Papel Higienico": ["Papel Higienico"],
-    "Servilletas": ["Servilletas de papel", "Servilletas de tela"],
-    "Suministros Cocina": ["Bandejas para hornear", "Boles para mezclar", "Otros", "Papel Encerado", "Papel de aluminio", "Papel film", "Papel pergamino"],
-    "Toalla": ["Toalla de Papel", "Toalla de Tela"],
-    "Utensilios": ["Cucharas", "Cucharas Desechables", "Cuchillos", "Cuchillos Desechables", "Otros", "Palillos", "Paquetes de cubiertos Desechables", "Platos", "Platos compostables", "Platos de papel", "Platos de plástico", "Tenedores", "Tenedores Desechables", "Vasos", "Vasos Plastico", "Vasos de espuma de poliestireno", "Vasos de papel"]
-  },
-  "Uniformes": {
-    "Ropa": ["Mandiles", "Playeras"]
-  },
-  "Vegetales": {
-    "Frutas": ["Aguacate", "Dátil", "Fresa", "Jitomate", "Jiícama", "Kiwi", "Limon", "Limon Amarillo", "Limon Sin Semilla", "Mango", "Manzana", "Melon", "Moras / Berries", "Naranja", "Papaya", "Piña", "Plátano", "Sandia", "Tomate Cherry", "Tomate Saladette", "Tomatillo", "Tomillo", "Toronja"],
-    "Hongo": ["Champiñon", "Seta"],
-    "Verduras": ["Acelga", "Ajo Blanco", "Albahaca", "Apio", "Arugula", "Berenjena", "Betabel", "Calabaza", "Camote", "Cebolla Blanca", "Cebolla Morada", "Cebollin", "Chayote", "Chile Guajillo", "Chile Habanero", "Chile Jalapeño", "Chile Morilla", "Chile Poblano", "Chile Serrano", "Cilantro", "Col", "Ejotes", "Elote Blanco", "Espinaca", "Jengibre", "Lechuga Bola", "Lechuga Icberg", "Lechuga Italiana", "Lechuga Mixta", "Lechuga Romana", "Lechuga Verde", "Menta", "Papa Russet", "Pepino Verde", "Perejil", "Perejil Lacio", "Pimiento", "Repollo", "Romero", "Shallot", "Verdura", "Zanahoria"]
-  }
+  "Yasser Yussif": "YUGY931216FK4" // Example with your RFC
 };
 
 // Standardized units validation
 const VALID_STANDARDIZED_UNITS = ["Litros", "Kilogramos", "Piezas"];
 
-// Business validation rules
-const VALIDATION_RULES = {
-  minDescriptionLength: 10,
-  maxDescriptionLength: 500,
-  minConfidenceScore: 0.7,
-  maxUnitsPerPackage: 10000,
-  requiredFields: ['sku_key', 'product_code', 'description', 'category']
+// ========================================
+// CONFIGURATION - DEPENDENT DROPDOWNS
+// ========================================
+// This object makes the dependent dropdown system reusable.
+// Add new sheet configurations here to enable the functionality on them.
+const DROPDOWN_CONFIG = {
+  // The sheet where the category data is stored
+  CATALOG_SHEET_NAME: 'Categories', 
+  
+  // Define which columns in the catalog hold which level of data
+  CATALOG_COLUMNS: {
+    LEVEL_1: 1, // Column A: Category
+    LEVEL_2: 2, // Column B: Subcategory
+    LEVEL_3: 3  // Column C: Sub-Subcategory
+  },
+  
+  // Configure the target sheets where dropdowns will appear
+  SHEET_CONFIGS: [
+    {
+      TARGET_SHEET_NAME: 'SKU Approval',
+      // Map dropdown levels to column numbers in the target sheet
+      COLUMN_MAPPING: [
+        { level: 1, column: 9 },  // P62 Category -> Column I
+        { level: 2, column: 10 }, // P62 Subcategory -> Column J
+        { level: 3, column: 11 }  // P62 Sub-Subcategory -> Column K
+      ]
+    },
+    // --- EXAMPLE FOR ANOTHER SHEET ---
+    // You can add more configurations here. For example:
+    /*
+    {
+      TARGET_SHEET_NAME: 'Purchase_Details',
+      COLUMN_MAPPING: [
+        { level: 1, column: 30 }, // Corresponds to 'Category' in Column AD
+        { level: 2, column: 31 }, // Corresponds to 'Subcategory' in Column AE
+        { level: 3, column: 32 }  // Corresponds to 'Sub-Subcategory' in Column AF
+      ]
+    }
+    */
+  ]
 };
-
-// ========================================
-// DYNAMIC MENU FUNCTION CREATION (DISABLED FOR SINGLE-SHEET MODE)
-// ========================================
-// Per-user client update functions are disabled to enforce a single global
-// sheet model using only 'Facturas' and 'Purchase_Details'.
 
 // API endpoints
 const ENDPOINTS = {
@@ -778,7 +672,7 @@ function createSkuApproval() {
       
       // Setup dependent dropdowns
       console.log('🔽 Setting up dependent P62 dropdowns...');
-      setupDependentDropdowns(sheet, rows.length);
+      initializeSheetDropdowns(sheet); // Use the new generic initializer for this sheet
       console.log('✅ Dependent dropdowns configured');
       
       // Skip everything that could cause crashes:
@@ -819,11 +713,188 @@ function createSkuApproval() {
 }
 
 /**
- * Setup dependent dropdowns for P62 categories using the Categories sheet
- * Column I - Dropdown from Column A in "Categories" sheet  
- * Column J - Dependent dropdown based on Column I selection, from Column B in Categories sheet
- * Column K - Dependent dropdown based on Column J selection, from Column C in Categories sheet
+ * NEW - Generic onEdit trigger for all configured dependent dropdowns.
+ * This function is the core of the new flexible system.
  */
+function onEdit(e) {
+  if (!e || !e.range) return;
+
+  try {
+    const sheet = e.range.getSheet();
+    const sheetName = sheet.getName();
+    const row = e.range.getRow();
+    const col = e.range.getColumn();
+
+    // Find the configuration for the edited sheet
+    const config = DROPDOWN_CONFIG.SHEET_CONFIGS.find(c => c.TARGET_SHEET_NAME === sheetName);
+
+    // Exit if the sheet is not configured or if it's the header row
+    if (!config || row < 2) {
+      return;
+    }
+
+    // Check if the edited column is one of our configured dropdown columns
+    const editedLevelMapping = config.COLUMN_MAPPING.find(m => m.column === col);
+    if (!editedLevelMapping) {
+      return; // The edited column is not part of a dropdown chain
+    }
+
+    const currentLevel = editedLevelMapping.level;
+    
+    // When a dropdown is changed, clear all subsequent dropdowns in the same row
+    for (let i = currentLevel; i < config.COLUMN_MAPPING.length; i++) {
+      const mappingToClear = config.COLUMN_MAPPING[i];
+      sheet.getRange(row, mappingToClear.column).clearContent().clearDataValidations();
+    }
+
+    // Determine the next dropdown to populate
+    const nextLevel = currentLevel + 1;
+    const nextLevelMapping = config.COLUMN_MAPPING.find(m => m.level === nextLevel);
+    if (!nextLevelMapping) {
+      return; // This was the last dropdown in the chain
+    }
+
+    // Collect the values of all parent dropdowns for the current row
+    const parentValues = [];
+    for (let i = 1; i <= currentLevel; i++) {
+      const parentMapping = config.COLUMN_MAPPING.find(m => m.level === i);
+      const value = sheet.getRange(row, parentMapping.column).getValue();
+      if (!value) {
+        return; // A parent value is missing, so we can't proceed
+      }
+      parentValues.push(value);
+    }
+
+    // Get the list of options for the next dropdown based on parent selections
+    const options = getDropdownOptions(parentValues);
+
+    // Apply the new dropdown to the target cell
+    if (options.length > 0) {
+      const cell = sheet.getRange(row, nextLevelMapping.column);
+      const rule = SpreadsheetApp.newDataValidation().requireValueInList(options).setAllowInvalid(false).build();
+      cell.setDataValidation(rule);
+    }
+
+  } catch (error) {
+    console.error('❌ Error in onEdit trigger:', error);
+    // Optional: Show a toast message to the user for debugging
+    // SpreadsheetApp.getActiveSpreadsheet().toast(`Error: ${error.message}`, 'Dropdown Error', 5);
+  }
+}
+
+
+/**
+ * NEW - Fetches dropdown options from the catalog sheet based on parent selections.
+ */
+function getDropdownOptions(parentValues) {
+  const catalogSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(DROPDOWN_CONFIG.CATALOG_SHEET_NAME);
+  if (!catalogSheet) {
+    console.error(`Catalog sheet "${DROPDOWN_CONFIG.CATALOG_SHEET_NAME}" not found.`);
+    return [];
+  }
+
+  const catalogData = catalogSheet.getDataRange().getValues();
+  const options = new Set();
+  
+  // Determine which column to read from in the catalog (the next level)
+  const targetCatalogColIndex = DROPDOWN_CONFIG.CATALOG_COLUMNS[`LEVEL_${parentValues.length + 1}`] - 1;
+
+  // Loop through the catalog data (skipping header)
+  for (let i = 1; i < catalogData.length; i++) {
+    const row = catalogData[i];
+    let isMatch = true;
+
+    // Check if the catalog row matches all the selected parent values
+    for (let j = 0; j < parentValues.length; j++) {
+      const parentCatalogColIndex = DROPDOWN_CONFIG.CATALOG_COLUMNS[`LEVEL_${j + 1}`] - 1;
+      if (row[parentCatalogColIndex] != parentValues[j]) {
+        isMatch = false;
+        break;
+      }
+    }
+
+    // If it's a match and the target column has a value, add it to our options
+    if (isMatch && row[targetCatalogColIndex]) {
+      options.add(row[targetCatalogColIndex]);
+    }
+  }
+
+  return Array.from(options).sort();
+}
+
+
+/**
+ * NEW - Initializes the first-level dropdowns for ALL sheets defined in DROPDOWN_CONFIG.
+ * Can be run manually from the Admin menu.
+ */
+function initializeAllDropdowns() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const catalogSheet = ss.getSheetByName(DROPDOWN_CONFIG.CATALOG_SHEET_NAME);
+  if (!catalogSheet) {
+    SpreadsheetApp.getUi().alert(`Error: Catalog sheet "${DROPDOWN_CONFIG.CATALOG_SHEET_NAME}" not found.`);
+    return;
+  }
+
+  // Get the options for the very first dropdown (Level 1)
+  const firstLevelOptions = getDropdownOptions([]); // No parents
+  if (firstLevelOptions.length === 0) {
+    SpreadsheetApp.getUi().alert('No Level 1 categories found in the catalog sheet.');
+    return;
+  }
+
+  let configuredSheetsCount = 0;
+  DROPDOWN_CONFIG.SHEET_CONFIGS.forEach(config => {
+    const targetSheet = ss.getSheetByName(config.TARGET_SHEET_NAME);
+    if (targetSheet) {
+      initializeSheetDropdowns(targetSheet);
+      configuredSheetsCount++;
+    } else {
+      console.warn(`Warning: Sheet "${config.TARGET_SHEET_NAME}" not found and was skipped.`);
+    }
+  });
+
+  SpreadsheetApp.getUi().alert(`Setup complete. Dropdowns were initialized on ${configuredSheetsCount} sheet(s).`);
+}
+
+/**
+ * NEW - Helper function to initialize dropdowns on a single sheet.
+ */
+function initializeSheetDropdowns(sheet) {
+  const config = DROPDOWN_CONFIG.SHEET_CONFIGS.find(c => c.TARGET_SHEET_NAME === sheet.getName());
+  if (!config) return;
+
+  const firstLevelOptions = getDropdownOptions([]);
+  if (firstLevelOptions.length === 0) return;
+
+  const firstLevelMapping = config.COLUMN_MAPPING.find(m => m.level === 1);
+  if (!firstLevelMapping) return;
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow > 1) { // Ensure there are data rows
+    const range = sheet.getRange(2, firstLevelMapping.column, lastRow - 1, 1);
+    const rule = SpreadsheetApp.newDataValidation().requireValueInList(firstLevelOptions).setAllowInvalid(false).build();
+    range.setDataValidation(rule);
+
+    // Also apply the standardized unit dropdown if it's the SKU approval sheet
+    if (sheet.getName() === 'SKU Approval') {
+      const unitRange = sheet.getRange(2, 12, lastRow - 1, 1); // Column L
+      const unitValidation = SpreadsheetApp.newDataValidation()
+        .requireValueInList(['Litros', 'Kilogramos', 'Piezas'], true)
+        .setAllowInvalid(false)
+        .setHelpText('Select standardized unit')
+        .build();
+      unitRange.setDataValidation(unitValidation);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------
+// The old, hardcoded dependent dropdown functions below are no longer needed.
+// The new `onEdit` function handles this dynamically for all configured sheets.
+// ---------------------------------------------------------------------------------
+
+/*
+ * DEPRECATED - This logic is now handled by the generic onEdit function.
 function setupDependentDropdowns(sheet, dataRows) {
   try {
     console.log('🔽 Setting up clean dependent dropdowns using Categories sheet...');
@@ -885,11 +956,10 @@ function setupDependentDropdowns(sheet, dataRows) {
     throw error;
   }
 }
+*/
 
-/**
- * Install the onEdit trigger for dependent dropdown functionality
- * Using simple trigger approach instead of installable trigger
- */
+/*
+ * DEPRECATED - No longer needed. The simple onEdit trigger is sufficient.
 function installDependentDropdownTrigger() {
   try {
     console.log('🔧 Installing dependent dropdown trigger...');
@@ -922,11 +992,10 @@ function installDependentDropdownTrigger() {
     SpreadsheetApp.getUi().alert(`Trigger Setup Failed:\n\n${error.message}`);
   }
 }
+*/
 
-/**
- * Handle edit events for dependent dropdowns in SKU Approval sheet
- * This is a SIMPLE TRIGGER - automatically called when any cell is edited
- */
+/*
+ * DEPRECATED - This logic is now handled by the generic onEdit function.
 function onEdit(e) {
   if (!e || !e.range) return;
   
@@ -995,10 +1064,10 @@ function onEdit(e) {
     console.error('❌ Error in onSkuEdit:', error);
   }
 }
+*/
 
-/**
- * Update Column J (subcategory) dropdown based on Column I (category) selection
- */
+/*
+ * DEPRECATED - This logic is now handled by the generic getDropdownOptions function.
 function updateDependentSubcategory(sheet, categoriesSheet, row, selectedCategory) {
   try {
     if (!selectedCategory || !selectedCategory.trim()) {
@@ -1037,10 +1106,10 @@ function updateDependentSubcategory(sheet, categoriesSheet, row, selectedCategor
     console.error('❌ Error updating subcategory dropdown:', error);
   }
 }
+*/
 
-/**
- * Update Column K (sub-subcategory) dropdown based on Column I & J selections
- */
+/*
+ * DEPRECATED - This logic is now handled by the generic getDropdownOptions function.
 function updateDependentSubSubcategory(sheet, categoriesSheet, row, selectedCategory, selectedSubcategory) {
   try {
     if (!selectedCategory || !selectedSubcategory || !selectedCategory.trim() || !selectedSubcategory.trim()) {
@@ -1083,6 +1152,7 @@ function updateDependentSubSubcategory(sheet, categoriesSheet, row, selectedCate
     console.error('❌ Error updating sub-subcategory dropdown:', error);
   }
 }
+*/
 
 
 
@@ -1174,21 +1244,30 @@ function submitSkuApprovals() {
           validationErrors.push(`${skuKey}: Missing required P62 classification`);
           continue;
         }
-        
+
+        // Get live categories from sheet (always up-to-date)
+        let liveCategories;
+        try {
+          liveCategories = getLiveCategoriesFromSheet();
+        } catch (error) {
+          validationErrors.push(`${skuKey}: Could not read categories from sheet - ${error.message}`);
+          continue;
+        }
+
         // Validate category exists in our P62 structure
-        if (!P62_CATEGORIES[category]) {
+        if (!liveCategories[category]) {
           validationErrors.push(`${skuKey}: Invalid category "${category}"`);
           continue;
         }
-        
+
         // Validate subcategory exists under the category
-        if (!P62_CATEGORIES[category][subcategory]) {
+        if (!liveCategories[category][subcategory]) {
           validationErrors.push(`${skuKey}: Invalid subcategory "${subcategory}" for category "${category}"`);
           continue;
         }
-        
+
         // Validate sub-subcategory exists under the subcategory
-        if (!P62_CATEGORIES[category][subcategory].includes(subSubCategory)) {
+        if (!liveCategories[category][subcategory].includes(subSubCategory)) {
           validationErrors.push(`${skuKey}: Invalid sub-subcategory "${subSubCategory}" for "${category} > ${subcategory}"`);
           continue;
         }
@@ -1367,44 +1446,37 @@ function debugSubmitSkuApprovals() {
  */
 function testDependentDropdown() {
   try {
-    console.log('🧪 Testing dependent dropdown functionality...');
+    console.log('🧪 Testing new dependent dropdown system...');
     
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const skuSheet = spreadsheet.getSheetByName('SKU Approval');
-    const categoriesSheet = spreadsheet.getSheetByName('Categories');
-    
-    if (!skuSheet) {
-      SpreadsheetApp.getUi().alert('❌ SKU Approval sheet not found!\n\nPlease create it first.');
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SKU Approval');
+    if (!sheet) {
+      SpreadsheetApp.getUi().alert('❌ SKU Approval sheet not found!');
       return;
     }
-    
-    if (!categoriesSheet) {
-      SpreadsheetApp.getUi().alert('❌ Categories sheet not found!\n\nPlease create it first.');
-      return;
-    }
-    
-    // Test with row 2, simulate selecting "Abarrotes" in column I
+
     const testRow = 2;
-    const testCategory = 'Abarrotes';
+    const testCategory = 'Abarrotes'; // Example category
+
+    // Simulate an edit event
+    const mockEvent = {
+      range: sheet.getRange(testRow, 9), // Column I
+      source: SpreadsheetApp.getActiveSpreadsheet(),
+      value: testCategory
+    };
     
-    console.log(`🔧 Testing updateDependentSubcategory for row ${testRow} with category "${testCategory}"`);
-    
-    // Set the test category in column I
-    skuSheet.getRange(testRow, 9).setValue(testCategory);
-    
-    // Manually call the update function
-    updateDependentSubcategory(skuSheet, categoriesSheet, testRow, testCategory);
-    
+    // Set the value and manually call onEdit
+    mockEvent.range.setValue(testCategory);
+    onEdit(mockEvent); // Call the main trigger
+
     SpreadsheetApp.getUi().alert(
       `🧪 Manual Test Complete!\n\n` +
-      `• Set "${testCategory}" in Column I, Row ${testRow}\n` +
-      `• Manually updated Column J dropdown\n` +
-      `• Check Column J for subcategory options\n\n` +
-      `If this worked but the automatic trigger doesn't, we need to fix the trigger.`
+      `• Set "${testCategory}" in Column I, Row ${testRow}.\n` +
+      `• Manually triggered the onEdit function.\n` +
+      `• Please check Column J in that row for the updated dropdown.`
     );
-    
+
     console.log('✅ Manual test completed');
-    
+
   } catch (error) {
     console.error('❌ Manual test failed:', error);
     SpreadsheetApp.getUi().alert(`Manual Test Failed:\n\n${error.message}`);
@@ -1608,6 +1680,24 @@ function onOpen() {
   skuMenu.addItem('🔍 Test Dropdown Manually', 'testDependentDropdown');
   menu.addSubMenu(skuMenu);
 
+  // Compras (Purchasing) Sheet Menu
+  const comprasMenu = ui.createMenu('🛒 Compras');
+  comprasMenu.addItem('📝 Crear/Actualizar Hoja de Compras', 'createOrUpdatePurchasingSheet');
+  menu.addSubMenu(comprasMenu);
+
+  // Categories Management
+  const categoriesMenu = ui.createMenu('📂 Categories');
+  categoriesMenu.addItem('📤 Export to JSON Format', 'exportCategoriesToJSON');
+  categoriesMenu.addItem('🔍 Show Categories Structure', 'showCategoriesStructure');
+  menu.addSubMenu(categoriesMenu);
+
+  menu.addSeparator();
+
+  // Admin Menu for setup
+  const adminMenu = ui.createMenu('⚙️ Admin');
+  adminMenu.addItem('🔄 Initialize All Dropdowns', 'initializeAllDropdowns');
+  menu.addSubMenu(adminMenu);
+
   menu.addSeparator()
     .addItem('🔍 Test API Connection', 'testAPIConnection')
     .addSeparator()
@@ -1645,23 +1735,33 @@ Health Endpoint: ${HEALTH_URL}
 • Enhanced validation and error handling
 • Full P62 hierarchy in reference sheet (A, B, C columns)
 
-Instructions:
-1. Make sure your API server is running
-2. Start ngrok tunnel
-3. Update BASE_URL in this script (line ~20)
-4. Use 'Create SKU Approval Sheet' for dependent dropdown workflow
-5. Update P62 categories using helper functions
+📋 WORKFLOW OVERVIEW:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✨ Smart Update Features:
-🔄 New data inserted at TOP of sheet
-🚫 Automatic duplicate detection
-📊 Preserves existing data below
-🎯 Specific sheet targeting
-📈 Real-time progress updates
-🔽 TRUE dependent P62 dropdowns with INDIRECT formulas
-📋 Professional error handling
+🎯 CLIENT WORKFLOW (Immediate):
+1. Edit "Categories" sheet directly (add/remove categories)
+2. ✅ New categories work immediately in dropdowns
+3. Create SKU approval sheet with new categories
+4. Submit SKUs - validation uses live Categories data
+5. When ready: 📂 Categories → 📤 Export to JSON Format
 
-Quick Update: Just change the BASE_URL when ngrok restarts!
+🎯 YOUR WORKFLOW (When Convenient):
+1. Receive JSON from client
+2. Replace local config/p62_categories.json
+3. Commit: git add . && git commit -m "Update P62 categories"
+4. Push: git push
+
+✨ KEY FEATURES:
+🔄 Dynamic validation - reads live Categories sheet
+📝 Direct editing - no complex management sheets
+⚡ Immediate availability - new categories work right away
+📤 Clean export - generates proper JSON structure
+🔒 No hardcoded data - always up-to-date
+
+🚀 SETUP:
+1. Ensure "Categories" sheet exists with columns A, B, C
+2. API server running with /p62-categories endpoints
+3. Update BASE_URL when ngrok restarts
 
 For support, check the console logs.
   `;
@@ -1755,4 +1855,306 @@ function insertPurchaseDetailsAtTop(sheet, newDetails) {
   
   sheet.insertRowsAfter(1, newDetails.length);
   sheet.getRange(2, 1, dataToInsert.length, dataToInsert[0].length).setValues(dataToInsert);
+}
+
+// ========================================
+// P62 CATEGORIES MANAGEMENT
+// ========================================
+
+/**
+ * Read categories from the Categories sheet dynamically
+ */
+function getLiveCategoriesFromSheet() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const categoriesSheet = spreadsheet.getSheetByName('Categories');
+
+  if (!categoriesSheet) {
+    throw new Error('Categories sheet not found! Please create it first.');
+  }
+
+  // Get all data from Categories sheet
+  const data = categoriesSheet.getDataRange().getValues();
+
+  // Convert flat structure to hierarchical object
+  const categories = {};
+
+  // Skip header row (start from index 1)
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (row.length >= 3 && row[0] && row[1] && row[2]) {
+      const category = row[0].toString().trim();
+      const subcategory = row[1].toString().trim();
+      const subSubCategory = row[2].toString().trim();
+
+      if (!categories[category]) {
+        categories[category] = {};
+      }
+
+      if (!categories[category][subcategory]) {
+        categories[category][subcategory] = [];
+      }
+
+      if (!categories[category][subcategory].includes(subSubCategory)) {
+        categories[category][subcategory].push(subSubCategory);
+      }
+    }
+  }
+
+  return categories;
+}
+
+/**
+ * Export Categories sheet data to JSON format
+ */
+function exportCategoriesToJSON() {
+  try {
+    console.log('🔄 Exporting categories to JSON format...');
+
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const categoriesSheet = spreadsheet.getSheetByName('Categories');
+
+    if (!categoriesSheet) {
+      SpreadsheetApp.getUi().alert('❌ Categories sheet not found!');
+      return;
+    }
+
+    // Get all data from Categories sheet
+    const data = categoriesSheet.getDataRange().getValues();
+
+    // Convert to hierarchical JSON structure
+    const categories = {};
+
+    // Skip header row
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      if (row.length >= 3 && row[0] && row[1] && row[2]) {
+        const category = row[0].toString().trim();
+        const subcategory = row[1].toString().trim();
+        const subSubCategory = row[2].toString().trim();
+
+        if (!categories[category]) {
+          categories[category] = {};
+        }
+
+        if (!categories[category][subcategory]) {
+          categories[category][subcategory] = [];
+        }
+
+        if (!categories[category][subcategory].includes(subSubCategory)) {
+          categories[category][subcategory].push(subSubCategory);
+        }
+      }
+    }
+
+    // Create complete JSON structure
+    const jsonData = {
+      categories: categories,
+      standardized_units: ["Litros", "Kilogramos", "Piezas"],
+      unit_mappings: {
+        liquids: ["LTR", "MLT", "LT", "L"],
+        weight: ["KGM", "GRM", "KG", "G", "TNE"],
+        pieces: ["H87", "PZA", "PZ", "UNI", "BOX", "BX", "E48"]
+      },
+      prompts: {
+        classification_template: "You are a Mexican invoice item classifier. Classify this item into the EXACT 3-tier P62 category system.\n\nITEM TO CLASSIFY:\nDescription: \"{description}\"\nProduct Code: \"{product_code}\"\nUnit: \"{unit_code}\"\nQuantity: {quantity}\n\nSelect the EXACT category, subcategory, and sub_sub_category from the P62 system.\nAlso standardize the unit to: Litros (liquids), Kilogramos (weight), or Piezas (countable items).\n\nReturn ONLY this JSON format:\n{{\n  \"category\": \"EXACT_TIER_1_NAME\",\n  \"subcategory\": \"EXACT_TIER_2_NAME\", \n  \"sub_sub_category\": \"EXACT_TIER_3_NAME\",\n  \"standardized_unit\": \"Litros|Kilogramos|Piezas\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"Brief explanation\"\n}}"
+      }
+    };
+
+    // Show JSON in dialog for copying
+    const jsonString = JSON.stringify(jsonData, null, 2);
+
+    const html = HtmlService.createHtmlOutput(
+      `<div style="font-family: monospace; white-space: pre-wrap; max-height: 400px; overflow-y: auto; padding: 10px; border: 1px solid #ccc;">${jsonString.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`
+    ).setWidth(700).setHeight(500);
+
+    SpreadsheetApp.getUi().showModalDialog(html, '📋 Copy this JSON to your p62_categories.json file');
+
+    SpreadsheetApp.getUi().alert(
+      '✅ JSON Generated!\n\n' +
+      '📋 Copy the JSON above\n' +
+      '📝 Replace your local config/p62_categories.json\n' +
+      '🚀 Commit and push to GitHub\n\n' +
+      'New categories will be available immediately in dropdowns!'
+    );
+
+    console.log('✅ Categories exported to JSON format');
+
+  } catch (error) {
+    console.error('❌ Error exporting categories:', error);
+    SpreadsheetApp.getUi().alert(`❌ Error: ${error.message}`);
+  }
+}
+
+/**
+ * Show current categories structure
+ */
+function showCategoriesStructure() {
+  try {
+    const categories = getLiveCategoriesFromSheet();
+
+    let summary = '📊 Current P62 Categories Structure:\n\n';
+
+    for (const [category, subcategories] of Object.entries(categories)) {
+      summary += `📁 ${category}\n`;
+
+      for (const [subcategory, subSubCategories] of Object.entries(subcategories)) {
+        summary += `  ├── ${subcategory} (${subSubCategories.length} items)\n`;
+
+        // Show first few sub-subcategories
+        const firstFew = subSubCategories.slice(0, 3);
+        for (const subSub of firstFew) {
+          summary += `  │   ├── ${subSub}\n`;
+        }
+
+        if (subSubCategories.length > 3) {
+          summary += `  │   └── ... and ${subSubCategories.length - 3} more\n`;
+        }
+      }
+      summary += '\n';
+    }
+
+    summary += `\n📈 Total: ${Object.keys(categories).length} categories`;
+
+    const html = HtmlService.createHtmlOutput(
+      `<div style="font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; padding: 10px;">${summary.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`
+    ).setWidth(600).setHeight(500);
+
+    SpreadsheetApp.getUi().showModalDialog(html, '📊 Categories Structure');
+
+  } catch (error) {
+    console.error('❌ Error showing categories structure:', error);
+    SpreadsheetApp.getUi().alert(`❌ Error: ${error.message}`);
+  }
 } 
+
+/**
+ * NEW - Creates or intelligently updates the purchasing sheet using "In-Place Sync" logic.
+ */
+function createOrUpdatePurchasingSheet() {
+  const sheetName = 'Compras';
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) {
+    SpreadsheetApp.getUi().alert('Sync in progress. Please wait a moment and try again.');
+    return;
+  }
+
+  try {
+    console.log(`🚀 Starting sync for "${sheetName}"...`);
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = spreadsheet.getSheetByName(sheetName);
+
+    // 1. Get or Create Sheet
+    if (!sheet) {
+      sheet = spreadsheet.insertSheet(sheetName);
+      console.log(`Sheet "${sheetName}" created.`);
+      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Quantity to Order", "Last Unit Cost", "Expected Total Cost"];
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#EFEFEF');
+      sheet.setFrozenRows(1);
+    }
+    
+    // 2. Fetch Master List from API
+    console.log("📡 Fetching master SKU list from API...");
+    const masterSkuList = fetchApprovedSkus();
+    if (!masterSkuList || masterSkuList.length === 0) {
+      SpreadsheetApp.getUi().alert('No approved SKUs found in the database.');
+      return;
+    }
+    console.log(`📊 Found ${masterSkuList.length} SKUs in master list.`);
+
+    // 3. Get Current Sheet State
+    const lastRow = sheet.getLastRow();
+    let sheetData = [];
+    if (lastRow > 1) {
+      sheetData = sheet.getRange(2, 1, lastRow - 1, 5).getValues(); // Read Cat, SubCat, SubSubCat, SKU, Description
+    }
+    console.log(`📋 Found ${sheetData.length} rows in the sheet.`);
+
+    // 4. Perform "In-Place Sync"
+    let apiIndex = 0;
+    let sheetIndex = 0;
+    let newRowsAdded = 0;
+
+    while (apiIndex < masterSkuList.length) {
+      const apiSku = masterSkuList[apiIndex];
+      const apiCompositeKey = `${apiSku.category}|${apiSku.subcategory}|${apiSku.sub_sub_category}|${apiSku.sku_key}`;
+
+      if (sheetIndex >= sheetData.length) {
+        // Reached end of sheet, append all remaining SKUs from API
+        const newRowData = [[apiSku.category, apiSku.subcategory, apiSku.sub_sub_category, apiSku.sku_key, apiSku.normalized_description]];
+        sheet.appendRow(newRowData[0]);
+        sheetData.push(newRowData); // Add to our representation of sheet data
+        newRowsAdded++;
+        apiIndex++;
+        sheetIndex++;
+        continue;
+      }
+      
+      const sheetSku = sheetData[sheetIndex];
+      const sheetCompositeKey = `${sheetSku[0]}|${sheetSku[1]}|${sheetSku[2]}|${sheetSku[3]}`;
+
+      if (apiCompositeKey === sheetCompositeKey) {
+        // Match found, advance both pointers
+        apiIndex++;
+        sheetIndex++;
+      } else if (apiCompositeKey < sheetCompositeKey) {
+        // API SKU is new and should be inserted here
+        const currentRowNumber = sheetIndex + 2; // +1 for 0-index, +1 for header
+        console.log(`Inserting new SKU "${apiSku.sku_key}" at row ${currentRowNumber}`);
+        sheet.insertRowBefore(currentRowNumber);
+        const newRowData = [apiSku.category, apiSku.subcategory, apiSku.sub_sub_category, apiSku.sku_key, apiSku.normalized_description];
+        sheet.getRange(currentRowNumber, 1, 1, newRowData.length).setValues([newRowData]);
+        
+        // Update our in-memory representation of the sheet
+        sheetData.splice(sheetIndex, 0, newRowData);
+        
+        newRowsAdded++;
+        apiIndex++;
+        sheetIndex++; // Move past the row we just inserted
+      } else {
+        // Sheet has an SKU that's not in the API list in this position. 
+        // We assume it's old or miscategorized. We'll skip it and check the next row.
+        sheetIndex++;
+      }
+    }
+
+    console.log(`✅ Sync complete. Added ${newRowsAdded} new SKUs.`);
+    SpreadsheetApp.getUi().alert(`Sync Complete!\n\nAdded ${newRowsAdded} new SKUs to the "${sheetName}" sheet.`);
+
+  } catch (e) {
+    console.error(`❌ Sync failed: ${e.toString()}\n${e.stack}`);
+    SpreadsheetApp.getUi().alert(`An error occurred during the sync. Please check the logs for details.\n\nError: ${e.message}`);
+  } finally {
+    lock.release();
+  }
+}
+
+
+/**
+ * NEW - Fetches the complete list of approved SKUs from the API.
+ */
+function fetchApprovedSkus() {
+  const url = BASE_URL + '/api/v1/skus/approved';
+  console.log(`Fetching from: ${url}`);
+  try {
+    const response = UrlFetchApp.fetch(url, {
+      method: 'GET',
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+        'Accept': 'application/json'
+      },
+      muteHttpExceptions: true
+    });
+
+    const responseCode = response.getResponseCode();
+    const responseBody = response.getContentText();
+
+    if (responseCode === 200) {
+      return JSON.parse(responseBody);
+    } else {
+      throw new Error(`API Error: Received status code ${responseCode}. Response: ${responseBody}`);
+    }
+  } catch (e) {
+    console.error(`Failed to fetch approved SKUs: ${e.toString()}`);
+    throw e;
+  }
+}

@@ -16,17 +16,22 @@ from sqlalchemy.orm import Session # Added for new endpoints
 
 from src.data.database import DatabaseManager
 from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel, InvoiceItem
+from src.utils.p62_categories import P62CategoriesManager
 from .models import (
-    InvoiceMetadataResponse, 
-    InvoiceMetadataListResponse, 
+    InvoiceMetadataResponse,
+    InvoiceMetadataListResponse,
     ErrorResponse,
     # Purchase Details models (NEW)
     PurchaseDetailsResponse,
     PurchaseDetailsListResponse,
+    ApprovedSkuDetails,
     SKUApprovalRequest,      # <--- ADD THIS
     SKUClassification,       # <--- NEW
     EnhancedSKUApprovalRequest,  # <--- NEW
-    GenericSuccessResponse   # <--- ADD THIS
+    GenericSuccessResponse,   # <--- ADD THIS
+    # P62 Categories models (NEW)
+    P62CategoryUpdateRequest,
+    P62CategoryUpdateResponse
 )
 
 logger = logging.getLogger(__name__)
@@ -565,6 +570,34 @@ async def get_purchase_details(
 
 
 @router.get(
+    "/skus/approved",
+    response_model=List[ApprovedSkuDetails],
+    summary="Get All Approved SKUs (Sorted)",
+    description="Retrieve a master list of all unique, approved SKUs, sorted by the 3-tier classification and SKU key."
+)
+async def get_approved_skus(
+    db_manager: DatabaseManager = Depends(get_db_manager)
+):
+    """Provides a master list of all approved SKUs for purchasing sheets."""
+    try:
+        with db_manager.get_session() as session:
+            approved_skus = session.query(ApprovedSKUModel).filter(
+                ApprovedSKUModel.review_status == 'approved'
+            ).order_by(
+                ApprovedSKUModel.category,
+                ApprovedSKUModel.subcategory,
+                ApprovedSKUModel.sub_sub_category,
+                ApprovedSKUModel.sku_key
+            ).all()
+
+            return [ApprovedSkuDetails.from_orm(sku) for sku in approved_skus]
+            
+    except Exception as e:
+        logger.error(f"Error in get_approved_skus: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get(
     "/skus/pending",
     response_model=PurchaseDetailsListResponse,
     summary="Get Pending SKU Approvals",
@@ -754,6 +787,99 @@ async def approve_skus_with_classification(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ==============================================================================
+# P62 CATEGORIES ENDPOINTS
+# ==============================================================================
+
+@router.post(
+    "/p62-categories/update",
+    response_model=P62CategoryUpdateResponse,
+    responses={500: {"model": ErrorResponse}},
+    summary="Update P62 Categories",
+    description="Update the P62 categories JSON file with new category structure"
+)
+async def update_p62_categories(request: P62CategoryUpdateRequest):
+    """
+    Update P62 categories JSON file with new hierarchical structure.
+    Creates backup automatically before updating.
+    """
+    try:
+        logger.info(f"Updating P62 categories with {len(request.categories)} categories")
+
+        # Initialize manager
+        manager = P62CategoriesManager()
+
+        # Validate structure
+        errors = manager.validate_category_structure(request.categories)
+        if errors:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid category structure: {errors}"
+            )
+
+        # Save categories
+        success = manager.save_categories_json(request.categories, backup=True)
+        if not success:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to save categories JSON file"
+            )
+
+        # Create response
+        backup_files = list(manager.config_dir.glob("p62_categories.json.backup.*"))
+        latest_backup = max(backup_files, key=lambda f: f.stat().st_mtime) if backup_files else None
+
+        return P62CategoryUpdateResponse(
+            success=True,
+            message=f"Successfully updated {len(request.categories)} categories",
+            categories_count=len(request.categories),
+            backup_file=str(latest_backup) if latest_backup else None
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update P62 categories: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Internal server error: {str(e)}"
+        )
+
+
+@router.get(
+    "/p62-categories/download",
+    summary="Download P62 Categories JSON",
+    description="Download the current p62_categories.json file"
+)
+async def download_p62_categories():
+    """
+    Download the current P62 categories JSON file.
+    """
+    try:
+        manager = P62CategoriesManager()
+        if not manager.categories_file.exists():
+            raise HTTPException(
+                status_code=404,
+                detail="P62 categories file not found"
+            )
+
+        from fastapi.responses import FileResponse
+        return FileResponse(
+            path=str(manager.categories_file),
+            filename="p62_categories.json",
+            media_type="application/json"
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to download P62 categories: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Internal server error: {str(e)}"
+        )
+
+
 @router.get(
     "/health",
     summary="Health Check",
@@ -767,14 +893,14 @@ async def health_check(db_manager: DatabaseManager = Depends(get_db_manager)):
         # Test database connection
         with db_manager.get_session() as session:
             count = session.query(InvoiceMetadata).count()
-        
+
         return {
             "status": "healthy",
             "database": "connected",
             "invoice_count": count,
             "timestamp": date.today().isoformat()
         }
-        
+
     except Exception as e:
         logger.error(f"Health check failed: {e}")
         raise HTTPException(

@@ -20,11 +20,21 @@ class Settings:
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "dev")
     DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
     
-    # API Configuration
+    # AI Provider Selection
+    AI_PROVIDER: str = os.getenv("AI_PROVIDER", "gemini")  # gemini|ollama
+    
+    # Gemini Configuration
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
     GEMINI_TIMEOUT: int = int(os.getenv("GEMINI_TIMEOUT", "30"))
     GEMINI_MAX_RETRIES: int = int(os.getenv("GEMINI_MAX_RETRIES", "3"))
+    
+    # Ollama Configuration
+    OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    # Default to Gemma 3 4B for better JSON adherence locally
+    OLLAMA_MODEL: str = os.getenv("OLLAMA_MODEL", "gemma3:4b")
+    OLLAMA_TIMEOUT: int = int(os.getenv("OLLAMA_TIMEOUT", "30"))
+    OLLAMA_MAX_RETRIES: int = int(os.getenv("OLLAMA_MAX_RETRIES", "3"))
     
     # File Paths
     INBOX_PATH: str = os.getenv("INBOX_PATH", "data/inbox")
@@ -98,9 +108,14 @@ class Settings:
     def validate_required_settings(self) -> list:
         """Validate required settings and return missing ones."""
         missing = []
-        
-        if not self.GEMINI_API_KEY:
-            missing.append("GEMINI_API_KEY")
+        provider = (self.AI_PROVIDER or "").lower()
+
+        if provider == "gemini":
+            if not self.GEMINI_API_KEY:
+                missing.append("GEMINI_API_KEY")
+        elif provider == "ollama":
+            # No secrets required; base URL and model have defaults
+            pass
             
         return missing
 

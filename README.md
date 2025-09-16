@@ -11,7 +11,7 @@ A comprehensive system for processing Mexican CFDI (Comprobante Fiscal Digital p
 cp config/env.example .env
 
 # Edit .env with your actual credentials
-# IMPORTANT: Update GEMINI_API_KEY with your actual API key
+# IMPORTANT: If using Gemini, set GEMINI_API_KEY. For local Ollama, set AI_PROVIDER=ollama
 ```
 
 ### 2. Install Dependencies
@@ -59,8 +59,17 @@ python main.py --file path/to/invoice.xml
 Key environment variables in `.env`:
 
 ```bash
-# Required
-GEMINI_API_KEY=your_gemini_api_key_here
+# AI Provider
+# Use Gemini (default) or local Ollama
+AI_PROVIDER=ollama
+
+# If AI_PROVIDER=gemini
+# GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.0-flash
+
+# If AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=deepseek-r1:1.5b
 
 # Database
 DATABASE_URL=sqlite:///data/database/cfdi_system_v4.db
@@ -82,10 +91,23 @@ The system uses 5 main tables:
 ## 🎯 Features
 
 - **XML Parsing**: Complete CFDI field extraction
-- **AI Classification**: Gemini-powered product categorization
+- **AI Classification**: Gemini or local Ollama-powered product categorization
 - **Business Logic**: Currency conversion, payment terms analysis
 - **Error Handling**: Comprehensive logging and recovery
 - **SKU Management**: Human-approved classification system
+
+- **Ollama**: For local, private classification. The recommended model is `llama3.1:8b-instruct-q4_0` for its balance of speed and accuracy on CPUs.
+
+To switch to Ollama, set the following in your `.env` file:
+```
+AI_PROVIDER=ollama
+OLLAMA_MODEL=llama3.1:8b-instruct-q4_0
+```
+
+Make sure to pull the model before running the application:
+```bash
+ollama pull llama3.1:8b-instruct-q4_0
+```
 
 ## 🚀 Deployment to DigitalOcean
 

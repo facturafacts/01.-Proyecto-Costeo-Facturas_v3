@@ -8,7 +8,7 @@ Pydantic models for API request/response serialization.
 
 from datetime import date, datetime
 from decimal import Decimal
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel, Field
 
 
@@ -308,15 +308,52 @@ class GenericSuccessResponse(BaseModel):
     message: str
 
 
+# ========================================
+# P62 CATEGORIES MODELS
+# ========================================
+
+class P62CategoryUpdateRequest(BaseModel):
+    """Request model for updating P62 categories."""
+    categories: Dict[str, Dict[str, List[str]]] = Field(..., description="Hierarchical categories structure")
+
+class P62CategoryUpdateResponse(BaseModel):
+    """Response model for P62 category updates."""
+    success: bool = Field(..., description="Operation success status")
+    message: str = Field(..., description="Response message")
+    categories_count: int = Field(..., description="Number of categories updated")
+    backup_file: Optional[str] = Field(None, description="Backup file path if created")
+    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Response timestamp")
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() + 'Z'
+        }
+
 class ErrorResponse(BaseModel):
     """Error response model."""
-    
+
     success: bool = Field(False, description="Operation success status")
     error: str = Field(..., description="Error message")
     detail: Optional[str] = Field(None, description="Detailed error information")
     timestamp: datetime = Field(default_factory=datetime.utcnow, description="Error timestamp")
-    
+
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat() + 'Z'
         } 
+
+class ApprovedSkuDetails(BaseModel):
+    """Detailed information for a single approved SKU."""
+    sku_key: str
+    normalized_description: str
+    category: str
+    subcategory: str
+    sub_sub_category: str
+    standardized_unit: str
+    
+    class Config:
+        from_attributes = True
+
+class PaginatedInvoiceMetadataResponse(BaseModel):
+    """Paginated response for invoice metadata."""
+    success: bool = True 

@@ -238,9 +238,6 @@ class DatabaseManager:
         """Save invoice items with enhanced unit and classification data."""
         saved_items = []
         
-        # Fetch invoice to derive client context (receiver RFC)
-        invoice = session.query(Invoice).filter(Invoice.id == invoice_id).first()
-        
         for item_data in items_data:
             # Generate SKU key for classification lookup
             sku_key = self._generate_sku_key(
@@ -248,8 +245,8 @@ class DatabaseManager:
                 item_data.get('product_code', '')
             )
             
-            # Check for approved classification (per-client)
-            approved_classification = self._lookup_approved_sku(session, sku_key, invoice.receiver_rfc if invoice else None)
+            # Check for approved classification
+            approved_classification = self._lookup_approved_sku(session, sku_key)
             
             # Create item record
             item = InvoiceItem(
@@ -294,12 +291,10 @@ class DatabaseManager:
                 conversion_factor=approved_classification.get('conversion_factor') if approved_classification else item_data.get('conversion_factor'),
                 
                 # Classification Metadata
-                client_rfc=invoice.receiver_rfc if invoice else None,
                 category_confidence=approved_classification.get('confidence_score') if approved_classification else item_data.get('confidence'),
                 classification_source='approved_sku' if approved_classification else item_data.get('source', 'gemini_api'),
                 approval_status='approved' if approved_classification else item_data.get('approval_status', 'pending'),
                 sku_key=sku_key,
-                approved_sku_id=approved_classification.get('id') if approved_classification else None,
                 
                 # Additional Data
                 custom_fields=item_data.get('custom_fields')
@@ -310,7 +305,7 @@ class DatabaseManager:
             
             # Update approved SKU usage if found
             if approved_classification:
-                self._update_sku_usage(session, sku_key, invoice.receiver_rfc if invoice else None)
+                self._update_sku_usage(session, sku_key)
         
         return saved_items
     
@@ -386,16 +381,15 @@ class DatabaseManager:
             return f"{product_code.upper()}|{normalized_desc}"
         return normalized_desc
     
-    def _lookup_approved_sku(self, session: Session, sku_key: str, client_rfc: Optional[str]) -> Optional[Dict[str, Any]]:
-        """Look up approved classification for SKU key scoped by client RFC."""
+    def _lookup_approved_sku(self, session: Session, sku_key: str) -> Optional[Dict[str, Any]]:
+        """Look up approved classification for SKU key."""
         try:
-            query = session.query(ApprovedSku).filter(ApprovedSku.sku_key == sku_key)
-            if client_rfc is not None:
-                query = query.filter(ApprovedSku.client_rfc == client_rfc)
-            approved = query.first()
+            approved = session.query(ApprovedSku).filter(
+                ApprovedSku.sku_key == sku_key
+            ).first()
+            
             if approved:
                 return {
-                    'id': approved.id,
                     'category': approved.category,
                     'subcategory': approved.subcategory,
                     'sub_sub_category': approved.sub_sub_category,
@@ -404,8 +398,9 @@ class DatabaseManager:
                     'confidence_score': approved.confidence_score
                 }
             return None
+            
         except Exception as e:
-            logger.warning(f"Error looking up approved SKU {sku_key} (client_rfc={client_rfc}): {e}")
+            logger.warning(f"Error looking up approved SKU {sku_key}: {e}")
             return None
     
     def _calculate_standardized_quantity(self, quantity: Optional[Decimal], 
@@ -430,18 +425,19 @@ class DatabaseManager:
         
         return quantity
     
-    def _update_sku_usage(self, session: Session, sku_key: str, client_rfc: Optional[str]) -> None:
-        """Update usage statistics for approved SKU (scoped by client)."""
+    def _update_sku_usage(self, session: Session, sku_key: str) -> None:
+        """Update usage statistics for approved SKU."""
         try:
-            query = session.query(ApprovedSku).filter(ApprovedSku.sku_key == sku_key)
-            if client_rfc is not None:
-                query = query.filter(ApprovedSku.client_rfc == client_rfc)
-            sku = query.first()
+            sku = session.query(ApprovedSku).filter(
+                ApprovedSku.sku_key == sku_key
+            ).first()
+            
             if sku:
                 sku.usage_count += 1
                 sku.last_used = datetime.utcnow()
+                
         except Exception as e:
-            logger.warning(f"Error updating SKU usage for {sku_key} (client_rfc={client_rfc}): {e}")
+            logger.warning(f"Error updating SKU usage for {sku_key}: {e}")
     
     def _log_processing_event(self, session: Session, invoice_id: Optional[int], 
                             level: str, component: str, operation: str, 
@@ -494,7 +490,7 @@ class DatabaseManager:
                 item.subcategory = classification.get('subcategory')
                 item.sub_sub_category = classification.get('sub_sub_category')
                 item.category_confidence = classification.get('confidence_score')
-                item.classification_source = 'gemini_api'
+                item.classification_source = classification.get('source', 'unknown')
                 item.approval_status = 'classified'
                 item.updated_at = datetime.utcnow()
                 
@@ -505,12 +501,10 @@ class DatabaseManager:
             return False
     
     def save_approved_sku(self, sku_data: Dict[str, Any]) -> bool:
-        """Save human-approved SKU classification with client scoping."""
+        """Save human-approved SKU classification."""
         try:
             with self.get_session() as session:
-                client_rfc: Optional[str] = sku_data.get('client_rfc')
                 sku = ApprovedSku(
-                    client_rfc=client_rfc,
                     sku_key=sku_data['sku_key'],
                     product_code=sku_data.get('product_code'),
                     internal_code=sku_data.get('internal_code'),

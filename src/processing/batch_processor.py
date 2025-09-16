@@ -30,7 +30,6 @@ from decimal import Decimal
 
 from config.settings import get_settings
 from src.processing.cfdi_parser import CFDIParser
-from src.processing.gemini_classifier import GeminiClassifier
 from src.data.database import DatabaseManager
 from src.data.models import Invoice, InvoiceItem, ProcessingLog, InvoiceMetadata
 
@@ -57,7 +56,13 @@ class BatchProcessor:
         
         # Initialize components
         self.parser = CFDIParser()
-        self.classifier = GeminiClassifier()
+        provider = (self.settings.AI_PROVIDER or "gemini").lower()
+        if provider == "ollama":
+            from src.processing.ollama_classifier import OllamaClassifier
+            self.classifier = OllamaClassifier()
+        else:
+            from src.processing.gemini_classifier import GeminiClassifier
+            self.classifier = GeminiClassifier()
         self.db_manager = DatabaseManager()
         
         # Ensure directories exist
