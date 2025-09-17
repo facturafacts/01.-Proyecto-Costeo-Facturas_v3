@@ -12,7 +12,7 @@ from datetime import date, datetime
 from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func, update # Added for new endpoints
-from sqlalchemy.orm import Session # Added for new endpoints
+from sqlalchemy.orm import Session, aliased # Added for new endpoints
 
 from src.data.database import DatabaseManager
 from src.data.models import InvoiceMetadata, PurchaseDetails, ApprovedSku as ApprovedSKUModel, InvoiceItem
@@ -581,16 +581,51 @@ async def get_approved_skus(
     """Provides a master list of all approved SKUs for purchasing sheets."""
     try:
         with db_manager.get_session() as session:
-            approved_skus = session.query(ApprovedSKUModel).filter(
+            # Step 1: Create a subquery to find the latest purchase details for each SKU key.
+            # This uses a window function to rank purchases by date for each SKU.
+            ranked_purchases = session.query(
+                PurchaseDetails.sku_key,
+                PurchaseDetails.issue_date,
+                PurchaseDetails.unit_mxn_price,
+                func.row_number().over(
+                    partition_by=PurchaseDetails.sku_key,
+                    order_by=PurchaseDetails.issue_date.desc()
+                ).label('rn')
+            ).subquery()
+
+            # Alias the subquery to be used in the join
+            latest_purchases = aliased(ranked_purchases)
+
+            # Step 2: Query the approved SKUs and LEFT JOIN with the latest purchase info.
+            # A LEFT JOIN ensures that we still get SKUs that may have never been purchased.
+            query = session.query(
+                ApprovedSKUModel,
+                latest_purchases.c.issue_date.label('last_purchase_date'),
+                latest_purchases.c.unit_mxn_price.label('last_price')
+            ).outerjoin(
+                latest_purchases,
+                (ApprovedSKUModel.sku_key == latest_purchases.c.sku_key) &
+                (latest_purchases.c.rn == 1)
+            ).filter(
                 ApprovedSKUModel.review_status == 'approved'
             ).order_by(
                 ApprovedSKUModel.category,
                 ApprovedSKUModel.subcategory,
                 ApprovedSKUModel.sub_sub_category,
                 ApprovedSKUModel.sku_key
-            ).all()
+            )
+            
+            results = query.all()
 
-            return [ApprovedSkuDetails.from_orm(sku) for sku in approved_skus]
+            # Step 3: Combine the results into our response model.
+            response_data = []
+            for approved_sku, last_date, last_price in results:
+                sku_details = ApprovedSkuDetails.from_orm(approved_sku)
+                sku_details.last_purchase_date = last_date
+                sku_details.last_price = last_price
+                response_data.append(sku_details)
+
+            return response_data
             
     except Exception as e:
         logger.error(f"Error in get_approved_skus: {e}")

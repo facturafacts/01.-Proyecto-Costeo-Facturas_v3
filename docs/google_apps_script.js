@@ -2047,7 +2047,7 @@ function createOrUpdatePurchasingSheet() {
     if (!sheet) {
       sheet = spreadsheet.insertSheet(sheetName);
       console.log(`Sheet "${sheetName}" created.`);
-      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Quantity to Order", "Last Unit Cost", "Expected Total Cost"];
+      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Last Purchase Date", "Last Price", "Quantity to Order", "Expected Total Cost"];
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#EFEFEF');
       sheet.setFrozenRows(1);
     }
@@ -2064,61 +2064,53 @@ function createOrUpdatePurchasingSheet() {
     // 3. Get Current Sheet State
     const lastRow = sheet.getLastRow();
     let sheetData = [];
+    let preservedData = {}; // Use an object for quick SKU-based lookups
     if (lastRow > 1) {
-      sheetData = sheet.getRange(2, 1, lastRow - 1, 5).getValues(); // Read Cat, SubCat, SubSubCat, SKU, Description
+      // Read the entire data range, including user-editable columns
+      const fullSheetData = sheet.getRange(2, 1, lastRow - 1, 8).getValues(); 
+      fullSheetData.forEach(row => {
+        const skuKey = row[3]; // SKU is in the 4th column (index 3)
+        if (skuKey) {
+          sheetData.push(row.slice(0, 5)); // For comparison: Cat, SubCat, SubSubCat, SKU, Description
+          preservedData[skuKey] = {
+            quantity: row[5], // Quantity to Order
+            cost: row[6]      // Last Unit Cost (we'll update this one)
+          };
+        }
+      });
     }
     console.log(`📋 Found ${sheetData.length} rows in the sheet.`);
 
-    // 4. Perform "In-Place Sync"
-    let apiIndex = 0;
-    let sheetIndex = 0;
-    let newRowsAdded = 0;
+    // 4. Perform "In-Place Sync" by building a new sheet structure in memory
+    let newSheetValues = [];
+    masterSkuList.forEach(apiSku => {
+      const preserved = preservedData[apiSku.sku_key] || {};
+      newSheetValues.push([
+        apiSku.category,
+        apiSku.subcategory,
+        apiSku.sub_sub_category,
+        apiSku.sku_key,
+        apiSku.normalized_description,
+        apiSku.last_purchase_date ? new Date(apiSku.last_purchase_date) : null, // Format as Date object for Sheets
+        apiSku.last_price,
+        preserved.quantity || "", // Preserve existing quantity or leave blank
+        "" // Expected Total Cost will be a formula
+      ]);
+    });
 
-    while (apiIndex < masterSkuList.length) {
-      const apiSku = masterSkuList[apiIndex];
-      const apiCompositeKey = `${apiSku.category}|${apiSku.subcategory}|${apiSku.sub_sub_category}|${apiSku.sku_key}`;
-
-      if (sheetIndex >= sheetData.length) {
-        // Reached end of sheet, append all remaining SKUs from API
-        const newRowData = [[apiSku.category, apiSku.subcategory, apiSku.sub_sub_category, apiSku.sku_key, apiSku.normalized_description]];
-        sheet.appendRow(newRowData[0]);
-        sheetData.push(newRowData); // Add to our representation of sheet data
-        newRowsAdded++;
-        apiIndex++;
-        sheetIndex++;
-        continue;
+    // 5. Safely update the sheet
+    if (newSheetValues.length > 0) {
+      // Clear old data (but not headers)
+      if (lastRow > 1) {
+        sheet.getRange(2, 1, lastRow - 1, newSheetValues[0].length).clearContent();
       }
-      
-      const sheetSku = sheetData[sheetIndex];
-      const sheetCompositeKey = `${sheetSku[0]}|${sheetSku[1]}|${sheetSku[2]}|${sheetSku[3]}`;
-
-      if (apiCompositeKey === sheetCompositeKey) {
-        // Match found, advance both pointers
-        apiIndex++;
-        sheetIndex++;
-      } else if (apiCompositeKey < sheetCompositeKey) {
-        // API SKU is new and should be inserted here
-        const currentRowNumber = sheetIndex + 2; // +1 for 0-index, +1 for header
-        console.log(`Inserting new SKU "${apiSku.sku_key}" at row ${currentRowNumber}`);
-        sheet.insertRowBefore(currentRowNumber);
-        const newRowData = [apiSku.category, apiSku.subcategory, apiSku.sub_sub_category, apiSku.sku_key, apiSku.normalized_description];
-        sheet.getRange(currentRowNumber, 1, 1, newRowData.length).setValues([newRowData]);
-        
-        // Update our in-memory representation of the sheet
-        sheetData.splice(sheetIndex, 0, newRowData);
-        
-        newRowsAdded++;
-        apiIndex++;
-        sheetIndex++; // Move past the row we just inserted
-      } else {
-        // Sheet has an SKU that's not in the API list in this position. 
-        // We assume it's old or miscategorized. We'll skip it and check the next row.
-        sheetIndex++;
-      }
+      // Write new, sorted, and merged data
+      sheet.getRange(2, 1, newSheetValues.length, newSheetValues[0].length).setValues(newSheetValues);
+      console.log(`✅ Wrote ${newSheetValues.length} rows to the sheet.`);
     }
 
-    console.log(`✅ Sync complete. Added ${newRowsAdded} new SKUs.`);
-    SpreadsheetApp.getUi().alert(`Sync Complete!\n\nAdded ${newRowsAdded} new SKUs to the "${sheetName}" sheet.`);
+    console.log(`✅ Sync complete.`);
+    SpreadsheetApp.getUi().alert(`Sync Complete!\n\nThe "${sheetName}" sheet is now up-to-date.`);
 
   } catch (e) {
     console.error(`❌ Sync failed: ${e.toString()}\n${e.stack}`);
