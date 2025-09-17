@@ -2047,7 +2047,7 @@ function createOrUpdatePurchasingSheet() {
     if (!sheet) {
       sheet = spreadsheet.insertSheet(sheetName);
       console.log(`Sheet "${sheetName}" created.`);
-      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Last Purchase Date", "Last Price", "Quantity to Order", "Expected Total Cost"];
+      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Supplier", "Last Purchase Date", "Last Price", "Quantity to Order", "Expected Total Cost"];
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#EFEFEF');
       sheet.setFrozenRows(1);
     }
@@ -2067,19 +2067,18 @@ function createOrUpdatePurchasingSheet() {
     let preservedData = {}; // Use an object for quick SKU-based lookups
     if (lastRow > 1) {
       // Read the entire data range, including user-editable columns
-      const fullSheetData = sheet.getRange(2, 1, lastRow - 1, 8).getValues(); 
+      const fullSheetData = sheet.getRange(2, 1, lastRow - 1, 9).getValues(); 
       fullSheetData.forEach(row => {
         const skuKey = row[3]; // SKU is in the 4th column (index 3)
         if (skuKey) {
-          sheetData.push(row.slice(0, 5)); // For comparison: Cat, SubCat, SubSubCat, SKU, Description
+          // Preserve the user-entered quantity. The key is the SKU.
           preservedData[skuKey] = {
-            quantity: row[5], // Quantity to Order
-            cost: row[6]      // Last Unit Cost (we'll update this one)
+            quantity: row[8] // Quantity to Order is in the 9th column
           };
         }
       });
     }
-    console.log(`📋 Found ${sheetData.length} rows in the sheet.`);
+    console.log(`📋 Found and preserved data for ${Object.keys(preservedData).length} rows in the sheet.`);
 
     // 4. Perform "In-Place Sync" by building a new sheet structure in memory
     let newSheetValues = [];
@@ -2091,7 +2090,8 @@ function createOrUpdatePurchasingSheet() {
         apiSku.sub_sub_category,
         apiSku.sku_key,
         apiSku.normalized_description,
-        apiSku.last_purchase_date ? new Date(apiSku.last_purchase_date) : null, // Format as Date object for Sheets
+        apiSku.supplier_name,
+        apiSku.last_purchase_date ? new Date(apiSku.last_purchase_date) : null,
         apiSku.last_price,
         preserved.quantity || "", // Preserve existing quantity or leave blank
         "" // Expected Total Cost will be a formula

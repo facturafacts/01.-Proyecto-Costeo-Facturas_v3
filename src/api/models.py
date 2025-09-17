@@ -350,6 +350,7 @@ class ApprovedSkuDetails(BaseModel):
     subcategory: str
     sub_sub_category: str
     standardized_unit: str
+    supplier_name: Optional[str] = None
     last_purchase_date: Optional[date] = None
     last_price: Optional[Decimal] = None
     

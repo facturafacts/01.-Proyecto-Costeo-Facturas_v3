@@ -587,6 +587,7 @@ async def get_approved_skus(
                 PurchaseDetails.sku_key,
                 PurchaseDetails.issue_date,
                 PurchaseDetails.unit_mxn_price,
+                PurchaseDetails.issuer_name,
                 func.row_number().over(
                     partition_by=PurchaseDetails.sku_key,
                     order_by=PurchaseDetails.issue_date.desc()
@@ -601,7 +602,8 @@ async def get_approved_skus(
             query = session.query(
                 ApprovedSKUModel,
                 latest_purchases.c.issue_date.label('last_purchase_date'),
-                latest_purchases.c.unit_mxn_price.label('last_price')
+                latest_purchases.c.unit_mxn_price.label('last_price'),
+                latest_purchases.c.issuer_name.label('supplier_name')
             ).outerjoin(
                 latest_purchases,
                 (ApprovedSKUModel.sku_key == latest_purchases.c.sku_key) &
@@ -619,10 +621,11 @@ async def get_approved_skus(
 
             # Step 3: Combine the results into our response model.
             response_data = []
-            for approved_sku, last_date, last_price in results:
+            for approved_sku, last_date, last_price, supplier_name in results:
                 sku_details = ApprovedSkuDetails.from_orm(approved_sku)
                 sku_details.last_purchase_date = last_date
                 sku_details.last_price = last_price
+                sku_details.supplier_name = supplier_name
                 response_data.append(sku_details)
 
             return response_data
