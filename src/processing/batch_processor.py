@@ -32,6 +32,7 @@ from config.settings import get_settings
 from src.processing.cfdi_parser import CFDIParser
 from src.data.database import DatabaseManager
 from src.data.models import Invoice, InvoiceItem, ProcessingLog, InvoiceMetadata
+from src.processing.ai_classifier import get_classifier
 
 # Configure logger
 logger = logging.getLogger(__name__)
@@ -56,13 +57,7 @@ class BatchProcessor:
         
         # Initialize components
         self.parser = CFDIParser()
-        provider = (self.settings.AI_PROVIDER or "gemini").lower()
-        if provider == "ollama":
-            from src.processing.ollama_classifier import OllamaClassifier
-            self.classifier = OllamaClassifier()
-        else:
-            from src.processing.gemini_classifier import GeminiClassifier
-            self.classifier = GeminiClassifier()
+        self.classifier = get_classifier()
         self.db_manager = DatabaseManager()
         
         # Ensure directories exist
@@ -164,15 +159,10 @@ class BatchProcessor:
                 logger.warning(f"[SKIPPED] Duplicate invoice {filename} - moved to failed directory")
                 return False
             
-            # 3. Classify all items
-            logger.info(f"[CLASSIFY] Classifying {len(parsed_data.get('items', []))} items")
-            classifications = []
-            
-            for idx, item_data in enumerate(parsed_data.get('items', [])):
-                logger.debug(f"  Classifying item {idx + 1}: {item_data.get('description', '')[:50]}...")
-                
-                classification = self.classifier.classify_item(item_data)
-                classifications.append(classification)
+            # 3. Classify all items using the correct lookup-first logic
+            logger.info(f"[CLASSIFY] Classifying {len(parsed_data.get('items', []))} items with SKU lookup")
+            client_rfc = parsed_data.get('receiver_rfc')
+            classifications = self._classify_items_with_lookup(parsed_data.get('items', []), client_rfc)
             
             # 4. Store in database
             logger.info(f"[STORE] Saving to database")
@@ -211,6 +201,95 @@ class BatchProcessor:
             
             return False
     
+    def _classify_items_with_lookup(self, items: List[Dict[str, Any]], client_rfc: str) -> List[Dict[str, Any]]:
+        """
+        Classifies a list of items, prioritizing lookups to avoid redundant API calls.
+
+        The lookup order is:
+        1. Human-approved SKUs (highest trust).
+        2. Previously classified items (pending or approved).
+        3. External AI API call (last resort).
+
+        Args:
+            items: A list of item data dictionaries from the parser.
+            client_rfc: The RFC of the receiver to scope the lookups.
+
+        Returns:
+            A list of classification result dictionaries.
+        """
+        all_classifications = []
+        for idx, item_data in enumerate(items):
+            description = item_data.get('description', '')
+            product_code = item_data.get('product_code')
+            logger.debug(f"  Processing item {idx + 1}: {description[:70]}...")
+
+            # Generate the deterministic SKU key
+            sku_key = self.classifier.generate_sku_key(description, product_code)
+            item_data['sku_key'] = sku_key # Add to item_data for later use
+
+            classification_result = None
+            source = "unknown"
+
+            # Step 1: Check for a human-approved SKU
+            approved_sku_data = self.db_manager.get_approved_sku(sku_key, client_rfc)
+            if approved_sku_data:
+                logger.info(f"    ✅ Found approved SKU: {sku_key}")
+                classification_result = {
+                    'category': approved_sku_data['category'],
+                    'subcategory': approved_sku_data['subcategory'],
+                    'sub_sub_category': approved_sku_data['sub_sub_category'],
+                    'standardized_unit': approved_sku_data['standardized_unit'],
+                    'units_per_package': float(approved_sku_data.get('units_per_package') or 1.0),
+                    'confidence': approved_sku_data.get('confidence_score') or 1.0,
+                    'approval_status': 'approved',
+                    'sku_key': sku_key
+                }
+                source = "approved_sku"
+
+            # Step 2: If not approved, check for the latest existing item classification
+            if not classification_result:
+                latest_item_data = self.db_manager.get_latest_invoice_item_by_sku(sku_key, client_rfc)
+                if latest_item_data:
+                    logger.info(f"    📑 Found cached classification: {sku_key}")
+                    classification_result = {
+                        'category': latest_item_data['category'],
+                        'subcategory': latest_item_data['subcategory'],
+                        'sub_sub_category': latest_item_data['sub_sub_category'],
+                        'standardized_unit': latest_item_data['standardized_unit'],
+                        'units_per_package': float(latest_item_data.get('units_per_package') or 1.0),
+                        'confidence': latest_item_data.get('category_confidence') or 0.9, # Reuse confidence
+                        'approval_status': latest_item_data['approval_status'],
+                        'sku_key': sku_key
+                    }
+                    source = "cached_item"
+
+            # Step 3: If not found anywhere, call the AI classifier
+            if not classification_result:
+                logger.info(f"    🤖 No existing classification. Calling AI for: {sku_key}")
+                try:
+                    classification_result = self.classifier.classify_item(item_data)
+                    source = self.settings.AI_PROVIDER
+                except Exception as e:
+                    logger.error(f"    ❌ AI classification failed for '{description}': {e}")
+                    # On failure, create a minimal, safe fallback classification
+                    classification_result = {
+                        'category': 'Fallo de Clasificacion',
+                        'subcategory': 'Error',
+                        'sub_sub_category': 'Error de API',
+                        'standardized_unit': 'Piezas',
+                        'units_per_package': 1.0,
+                        'confidence': 0.0,
+                        'approval_status': 'pending',
+                        'sku_key': sku_key,
+                        'error': str(e)
+                    }
+                    source = "classification_failed"
+            
+            classification_result['source'] = source
+            all_classifications.append(classification_result)
+            
+        return all_classifications
+
     def _save_to_database(self, parsed_data: Dict[str, Any], classifications: List[Dict[str, Any]], filename: str) -> Optional[int]:
         """
         Save parsed invoice and classified items to database.
@@ -311,6 +390,7 @@ class BatchProcessor:
                         classification_source=classification.get('source', 'unknown'),
                         approval_status=classification.get('approval_status', 'pending'),
                         sku_key=classification.get('sku_key'),
+                        client_rfc=parsed_data.get('receiver_rfc'), # <-- FIX: Ensure client_rfc is always populated
                         
                         # Custom fields for additional data
                         custom_fields={

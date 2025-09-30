@@ -956,7 +956,7 @@ function setupDependentDropdowns(sheet, dataRows) {
     throw error;
   }
 }
-*/
+ */
 
 /*
  * DEPRECATED - No longer needed. The simple onEdit trigger is sufficient.
@@ -992,7 +992,7 @@ function installDependentDropdownTrigger() {
     SpreadsheetApp.getUi().alert(`Trigger Setup Failed:\n\n${error.message}`);
   }
 }
-*/
+ */
 
 /*
  * DEPRECATED - This logic is now handled by the generic onEdit function.
@@ -1064,7 +1064,7 @@ function onEdit(e) {
     console.error('❌ Error in onSkuEdit:', error);
   }
 }
-*/
+ */
 
 /*
  * DEPRECATED - This logic is now handled by the generic getDropdownOptions function.
@@ -1106,7 +1106,7 @@ function updateDependentSubcategory(sheet, categoriesSheet, row, selectedCategor
     console.error('❌ Error updating subcategory dropdown:', error);
   }
 }
-*/
+ */
 
 /*
  * DEPRECATED - This logic is now handled by the generic getDropdownOptions function.
@@ -1253,19 +1253,19 @@ function submitSkuApprovals() {
           validationErrors.push(`${skuKey}: Could not read categories from sheet - ${error.message}`);
           continue;
         }
-
+        
         // Validate category exists in our P62 structure
         if (!liveCategories[category]) {
           validationErrors.push(`${skuKey}: Invalid category "${category}"`);
           continue;
         }
-
+        
         // Validate subcategory exists under the category
         if (!liveCategories[category][subcategory]) {
           validationErrors.push(`${skuKey}: Invalid subcategory "${subcategory}" for category "${category}"`);
           continue;
         }
-
+        
         // Validate sub-subcategory exists under the subcategory
         if (!liveCategories[category][subcategory].includes(subSubCategory)) {
           validationErrors.push(`${skuKey}: Invalid sub-subcategory "${subSubCategory}" for "${category} > ${subcategory}"`);
@@ -1453,7 +1453,7 @@ function testDependentDropdown() {
       SpreadsheetApp.getUi().alert('❌ SKU Approval sheet not found!');
       return;
     }
-
+    
     const testRow = 2;
     const testCategory = 'Abarrotes'; // Example category
 
@@ -1467,16 +1467,16 @@ function testDependentDropdown() {
     // Set the value and manually call onEdit
     mockEvent.range.setValue(testCategory);
     onEdit(mockEvent); // Call the main trigger
-
+    
     SpreadsheetApp.getUi().alert(
       `🧪 Manual Test Complete!\n\n` +
       `• Set "${testCategory}" in Column I, Row ${testRow}.\n` +
       `• Manually triggered the onEdit function.\n` +
       `• Please check Column J in that row for the updated dropdown.`
     );
-
+    
     console.log('✅ Manual test completed');
-
+    
   } catch (error) {
     console.error('❌ Manual test failed:', error);
     SpreadsheetApp.getUi().alert(`Manual Test Failed:\n\n${error.message}`);
@@ -1683,6 +1683,7 @@ function onOpen() {
   // Compras (Purchasing) Sheet Menu
   const comprasMenu = ui.createMenu('🛒 Compras');
   comprasMenu.addItem('📝 Crear/Actualizar Hoja de Compras', 'createOrUpdatePurchasingSheet');
+  comprasMenu.addItem('🖨️ Generar Hoja de Inventario', 'generateInventorySheet');
   menu.addSubMenu(comprasMenu);
 
   // Categories Management
@@ -1855,7 +1856,7 @@ function insertPurchaseDetailsAtTop(sheet, newDetails) {
   
   sheet.insertRowsAfter(1, newDetails.length);
   sheet.getRange(2, 1, dataToInsert.length, dataToInsert[0].length).setValues(dataToInsert);
-}
+} 
 
 // ========================================
 // P62 CATEGORIES MANAGEMENT
@@ -2047,7 +2048,7 @@ function createOrUpdatePurchasingSheet() {
     if (!sheet) {
       sheet = spreadsheet.insertSheet(sheetName);
       console.log(`Sheet "${sheetName}" created.`);
-      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Supplier", "Last Purchase Date", "Last Price", "Quantity to Order", "Expected Total Cost"];
+      const headers = ["Category", "Subcategory", "Sub-Subcategory", "SKU", "Description", "Supplier", "Last Purchase Date", "Last Price", "Status (Activo/Inactivo)", "Unit of Measure", "Quantity to Order", "Expected Total Cost"];
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#EFEFEF');
       sheet.setFrozenRows(1);
     }
@@ -2067,13 +2068,13 @@ function createOrUpdatePurchasingSheet() {
     let preservedData = {}; // Use an object for quick SKU-based lookups
     if (lastRow > 1) {
       // Read the entire data range, including user-editable columns
-      const fullSheetData = sheet.getRange(2, 1, lastRow - 1, 9).getValues(); 
+      const fullSheetData = sheet.getRange(2, 1, lastRow - 1, 11).getValues(); 
       fullSheetData.forEach(row => {
         const skuKey = row[3]; // SKU is in the 4th column (index 3)
         if (skuKey) {
           // Preserve the user-entered quantity. The key is the SKU.
           preservedData[skuKey] = {
-            quantity: row[8] // Quantity to Order is in the 9th column
+            quantity: row[10] // Quantity to Order is in the 11th column
           };
         }
       });
@@ -2082,8 +2083,18 @@ function createOrUpdatePurchasingSheet() {
 
     // 4. Perform "In-Place Sync" by building a new sheet structure in memory
     let newSheetValues = [];
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+
     masterSkuList.forEach(apiSku => {
       const preserved = preservedData[apiSku.sku_key] || {};
+      const lastPurchaseDate = apiSku.last_purchase_date ? new Date(apiSku.last_purchase_date) : null;
+      
+      let status = "Inactivo";
+      if (lastPurchaseDate && lastPurchaseDate > sixtyDaysAgo) {
+        status = "Activo";
+      }
+
       newSheetValues.push([
         apiSku.category,
         apiSku.subcategory,
@@ -2091,8 +2102,10 @@ function createOrUpdatePurchasingSheet() {
         apiSku.sku_key,
         apiSku.normalized_description,
         apiSku.supplier_name,
-        apiSku.last_purchase_date ? new Date(apiSku.last_purchase_date) : null,
+        lastPurchaseDate,
         apiSku.last_price,
+        status,
+        apiSku.standardized_unit,
         preserved.quantity || "", // Preserve existing quantity or leave blank
         "" // Expected Total Cost will be a formula
       ]);
@@ -2107,6 +2120,9 @@ function createOrUpdatePurchasingSheet() {
       // Write new, sorted, and merged data
       sheet.getRange(2, 1, newSheetValues.length, newSheetValues[0].length).setValues(newSheetValues);
       console.log(`✅ Wrote ${newSheetValues.length} rows to the sheet.`);
+      
+      // 6. Apply Conditional Formatting for the Status column
+      applyConditionalFormattingToComprasSheet(sheet);
     }
 
     console.log(`✅ Sync complete.`);
@@ -2118,6 +2134,39 @@ function createOrUpdatePurchasingSheet() {
   } finally {
     lock.release();
   }
+}
+
+/**
+ * NEW - Applies conditional formatting to the 'Compras' sheet for the status column.
+ */
+function applyConditionalFormattingToComprasSheet(sheet) {
+  const statusColumn = 9; // Column I for "Status"
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  const range = sheet.getRange(2, statusColumn, lastRow - 1, 1);
+
+  // Clear existing rules on this range to prevent duplicates
+  range.clearConditionalFormatRules();
+
+  const rules = [
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("Activo")
+      .setBackground("#D9EAD3") // Light green
+      .setBold(true)
+      .setFontColor("#38761D") // Dark green
+      .setRanges([range])
+      .build(),
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("Inactivo")
+      .setBackground("#F4CCCC") // Light red
+      .setFontColor("#990000") // Dark red
+      .setRanges([range])
+      .build()
+  ];
+
+  sheet.setConditionalFormatRules(sheet.getConditionalFormatRules().concat(rules));
+  console.log('🎨 Applied conditional formatting for Status column.');
 }
 
 
@@ -2148,5 +2197,208 @@ function fetchApprovedSkus() {
   } catch (e) {
     console.error(`Failed to fetch approved SKUs: ${e.toString()}`);
     throw e;
+  }
+}
+
+/**
+ * NEW - Creates a clean, printable sheet of all "Activo" products for taking inventory.
+ */
+function generateInventorySheet() {
+  try {
+    console.log("🚀 Generating Inventory Count Sheet...");
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sourceSheet = spreadsheet.getSheetByName('Compras');
+
+    if (!sourceSheet) {
+      throw new Error('The "Compras" sheet was not found. Please create it first.');
+    }
+
+    const lastRow = sourceSheet.getLastRow();
+    if (lastRow < 2) {
+      SpreadsheetApp.getUi().alert('No data found in the "Compras" sheet to generate a report.');
+      return;
+    }
+
+    // Read all data from the Compras sheet
+    const data = sourceSheet.getRange(2, 1, lastRow - 1, 11).getValues();
+
+    // Filter for items that are "Activo"
+    const activeItems = data.filter(row => {
+      const status = row[8]; // Status is in column I (index 8)
+      return status === 'Activo';
+    });
+
+    if (activeItems.length === 0) {
+      SpreadsheetApp.getUi().alert('No "Activo" items were found. The inventory sheet will not be generated.');
+      return;
+    }
+
+    // Create the report sheet
+    const timestamp = new Date().toLocaleDateString(); // Use date only for a cleaner name
+    const reportSheetName = `Hoja de Inventario - ${timestamp}`;
+    const reportSheet = spreadsheet.insertSheet(reportSheetName);
+    
+    // Define and set headers for the report, including a blank column for manual counts
+    const headers = ["Categoria", "Subcategoria", "Producto", "Unit of Measure", "Conteo Físico"];
+    reportSheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#4a86e8').setFontColor('#ffffff');
+
+    // Map the filtered data to the desired report columns
+    const reportData = activeItems.map(row => {
+      return [
+        row[0], // Categoria
+        row[1], // Subcategoria
+        row[4], // Producto (Description)
+        row[9]  // Unit of Measure
+        // The "Conteo Físico" column is intentionally left blank
+      ];
+    });
+
+    // Write data to the new sheet
+    reportSheet.getRange(2, 1, reportData.length, reportData[0].length).setValues(reportData);
+    
+    // Formatting
+    reportSheet.autoResizeColumns(1, headers.length);
+    reportSheet.getRange(2, 5, reportData.length, 1).setBackground('#f3f3f3'); // Light gray for the count column
+    spreadsheet.setActiveSheet(reportSheet);
+
+    console.log(`✅ Inventory Sheet "${reportSheetName}" created successfully with ${reportData.length} items.`);
+    SpreadsheetApp.getUi().alert(`Inventory Sheet Generated!\n\nA new sheet named "${reportSheetName}" has been created with ${reportData.length} active items, ready for a physical count.`);
+
+  } catch (error) {
+    console.error(`❌ Failed to generate inventory sheet: ${error.message}`);
+    SpreadsheetApp.getUi().alert(`An error occurred: ${error.message}`);
+  }
+}
+
+/**
+ * NEW - Applies conditional formatting to the 'Compras' sheet for the status column.
+ */
+function applyConditionalFormattingToComprasSheet(sheet) {
+  const statusColumn = 9; // Column I for "Status"
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  const range = sheet.getRange(2, statusColumn, lastRow - 1, 1);
+
+  // Clear existing rules on this range to prevent duplicates
+  range.clearConditionalFormatRules();
+
+  const rules = [
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("Activo")
+      .setBackground("#D9EAD3") // Light green
+      .setBold(true)
+      .setFontColor("#38761D") // Dark green
+      .setRanges([range])
+      .build(),
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("Inactivo")
+      .setBackground("#F4CCCC") // Light red
+      .setFontColor("#990000") // Dark red
+      .setRanges([range])
+      .build()
+  ];
+
+  sheet.setConditionalFormatRules(sheet.getConditionalFormatRules().concat(rules));
+  console.log('🎨 Applied conditional formatting for Status column.');
+}
+
+/**
+ * NEW - Fetches the complete list of approved SKUs from the API.
+ */
+function fetchApprovedSkus() {
+  const url = BASE_URL + '/api/v1/skus/approved';
+  console.log(`Fetching from: ${url}`);
+  try {
+    const response = UrlFetchApp.fetch(url, {
+      method: 'GET',
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+        'Accept': 'application/json'
+      },
+      muteHttpExceptions: true
+    });
+
+    const responseCode = response.getResponseCode();
+    const responseBody = response.getContentText();
+
+    if (responseCode === 200) {
+      return JSON.parse(responseBody);
+    } else {
+      throw new Error(`API Error: Received status code ${responseCode}. Response: ${responseBody}`);
+    }
+  } catch (e) {
+    console.error(`Failed to fetch approved SKUs: ${e.toString()}`);
+    throw e;
+  }
+}
+
+/**
+ * NEW - Creates a clean, printable report of items to be purchased.
+ */
+function generatePurchaseReport() {
+  try {
+    console.log("🚀 Generating Purchase Report...");
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sourceSheet = spreadsheet.getSheetByName('Compras');
+
+    if (!sourceSheet) {
+      throw new Error('The "Compras" sheet was not found. Please create it first.');
+    }
+
+    const lastRow = sourceSheet.getLastRow();
+    if (lastRow < 2) {
+      SpreadsheetApp.getUi().alert('No data found in the "Compras" sheet to generate a report.');
+      return;
+    }
+
+    // Read all data from the Compras sheet
+    const data = sourceSheet.getRange(2, 1, lastRow - 1, 11).getValues();
+
+    // Filter for items that are "Activo" and have a quantity to order
+    const itemsToOrder = data.filter(row => {
+      const status = row[8]; // Status is in column I (index 8)
+      const quantity = row[10]; // Quantity to Order is in column K (index 10)
+      return status === 'Activo' && quantity && parseFloat(quantity) > 0;
+    });
+
+    if (itemsToOrder.length === 0) {
+      SpreadsheetApp.getUi().alert('No items marked with a "Quantity to Order" were found. The report will not be generated.');
+      return;
+    }
+
+    // Create the report sheet
+    const timestamp = new Date().toLocaleString();
+    const reportSheetName = `Reporte de Compra - ${timestamp}`;
+    const reportSheet = spreadsheet.insertSheet(reportSheetName);
+    
+    // Define and set headers for the report
+    const headers = ["Categoria", "Subcategoria", "SKU", "Unit of Measure", "Cantidad"];
+    reportSheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#4a86e8').setFontColor('#ffffff');
+
+    // Map the filtered data to the desired report columns
+    const reportData = itemsToOrder.map(row => {
+      return [
+        row[0], // Categoria
+        row[1], // Subcategoria
+        row[3], // SKU
+        row[9], // Unit of Measure
+        row[10] // Cantidad
+      ];
+    });
+
+    // Write data to the new sheet
+    reportSheet.getRange(2, 1, reportData.length, reportData[0].length).setValues(reportData);
+    
+    // Formatting
+    reportSheet.autoResizeColumns(1, headers.length);
+    spreadsheet.setActiveSheet(reportSheet);
+
+    console.log(`✅ Report "${reportSheetName}" created successfully with ${reportData.length} items.`);
+    SpreadsheetApp.getUi().alert(`Report Generated!\n\nA new sheet named "${reportSheetName}" has been created with ${reportData.length} items to order.`);
+
+  } catch (error) {
+    console.error(`❌ Failed to generate purchase report: ${error.message}`);
+    SpreadsheetApp.getUi().alert(`An error occurred: ${error.message}`);
   }
 }

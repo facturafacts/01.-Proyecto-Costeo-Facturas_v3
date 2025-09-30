@@ -87,3 +87,11 @@ mcp-usage.mdc
 # Test files
 test_*.xml
 sample_*.xml 
+
+# Pyright
+.pyright/
+
+# Sentence Transformers model cache
+/root/.cache/torch/
+/root/.cache/huggingface/
+.cache/ 

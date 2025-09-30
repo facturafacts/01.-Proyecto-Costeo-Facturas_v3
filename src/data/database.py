@@ -22,7 +22,8 @@ if TYPE_CHECKING:
 
 from sqlalchemy import create_engine, func
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, joinedload
+from sqlalchemy import create_engine, desc
 
 from .models import Base, Invoice, InvoiceItem, ApprovedSku, ProcessingLog, InvoiceMetadata
 from config.settings import settings
@@ -402,6 +403,136 @@ class DatabaseManager:
         except Exception as e:
             logger.warning(f"Error looking up approved SKU {sku_key}: {e}")
             return None
+
+    def get_approved_sku(self, sku_key: str, client_rfc: str) -> Optional[Dict[str, Any]]:
+        """
+        Retrieves a single human-approved SKU as a dictionary.
+
+        Args:
+            sku_key: The unique key for the SKU.
+            client_rfc: The client's RFC to ensure tenant isolation.
+
+        Returns:
+            A dictionary of the SKU data if found, otherwise None.
+        """
+        if not sku_key or not client_rfc:
+            return None
+        try:
+            with self.get_session() as session:
+                sku = session.query(ApprovedSku).filter_by(
+                    sku_key=sku_key, 
+                    client_rfc=client_rfc
+                ).first()
+                if sku:
+                    # Return a copy as a dictionary to detach it from the session
+                    return {
+                        'category': sku.category,
+                        'subcategory': sku.subcategory,
+                        'sub_sub_category': sku.sub_sub_category,
+                        'standardized_unit': sku.standardized_unit,
+                        'units_per_package': sku.units_per_package,
+                        'confidence_score': sku.confidence_score
+                    }
+                return None
+        except Exception as e:
+            logger.error(f"Error fetching approved SKU {sku_key} for client {client_rfc}: {e}")
+            return None
+
+    def get_latest_invoice_item_by_sku(self, sku_key: str, client_rfc: str) -> Optional[Dict[str, Any]]:
+        """
+        Find the most recent invoice item matching a sku_key and returns it as a dictionary.
+
+        Args:
+            sku_key: The SKU key to search for.
+            client_rfc: The client's RFC to scope the search.
+
+        Returns:
+            A dictionary of the InvoiceItem data if found, otherwise None.
+        """
+        if not sku_key or not client_rfc:
+            return None
+        
+        try:
+            with self.get_session() as session:
+                item = session.query(InvoiceItem).\
+                    filter_by(sku_key=sku_key, client_rfc=client_rfc).\
+                    order_by(desc(InvoiceItem.classification_timestamp)).\
+                    first()
+                if item:
+                    # Return a copy as a dictionary to detach it from the session
+                    return {
+                        'category': item.category,
+                        'subcategory': item.subcategory,
+                        'sub_sub_category': item.sub_sub_category,
+                        'standardized_unit': item.standardized_unit,
+                        'units_per_package': item.units_per_package,
+                        'category_confidence': item.category_confidence,
+                        'approval_status': item.approval_status
+                    }
+                return None
+        except Exception as e:
+            logger.error(f"Error fetching latest invoice item for SKU {sku_key}: {e}")
+            return None
+
+    def get_or_create_approved_sku(self, session: Session, classification: dict, client_rfc: str) -> Tuple[Optional[int], str]:
+        """
+        Get an existing approved SKU or create a new one.
+        This is typically part of the human-in-the-loop approval process.
+        """
+        try:
+            # Attempt to find existing approved SKU
+            existing_sku = session.query(ApprovedSku).filter(
+                ApprovedSku.sku_key == classification['sku_key'],
+                ApprovedSku.client_rfc == client_rfc
+            ).first()
+
+            if existing_sku:
+                # Update existing approved SKU
+                existing_sku.category = classification['category']
+                existing_sku.subcategory = classification['subcategory']
+                existing_sku.sub_sub_category = classification['sub_sub_category']
+                existing_sku.standardized_unit = classification['standardized_unit']
+                existing_sku.units_per_package = classification['units_per_package']
+                existing_sku.confidence_score = classification['confidence_score']
+                existing_sku.updated_at = datetime.utcnow()
+                logger.info(f"Updated existing approved SKU: {classification['sku_key']}")
+                return existing_sku.id, 'updated'
+            else:
+                # Create new approved SKU
+                new_sku = ApprovedSku(
+                    sku_key=classification['sku_key'],
+                    product_code=classification.get('product_code'),
+                    internal_code=classification.get('internal_code'),
+                    normalized_description=classification['normalized_description'],
+                    
+                    # Approved Classification
+                    category=classification['category'],
+                    subcategory=classification['subcategory'],
+                    sub_sub_category=classification['sub_sub_category'],
+                    
+                    # Unit Standardization
+                    standardized_unit=classification['standardized_unit'],
+                    correct_unit_code=classification.get('correct_unit_code'),
+                    units_per_package=classification['units_per_package'],
+                    package_type=classification.get('package_type'),
+                    conversion_notes=classification.get('conversion_notes'),
+                    
+                    # Metadata
+                    typical_quantity_range=classification.get('typical_quantity_range'),
+                    approved_by=classification.get('approved_by', 'system'),
+                    confidence_score=classification['confidence_score'],
+                    review_notes=classification.get('review_notes'),
+                    client_rfc=client_rfc
+                )
+                session.add(new_sku)
+                logger.info(f"Created new approved SKU: {classification['sku_key']}")
+                return new_sku.id, 'created'
+        except IntegrityError as e:
+            logger.warning(f"SKU already exists for client {client_rfc}: {classification['sku_key']}")
+            return None, 'exists'
+        except Exception as e:
+            logger.error(f"Error getting or creating approved SKU {classification['sku_key']} for client {client_rfc}: {e}")
+            return None, 'error'
     
     def _calculate_standardized_quantity(self, quantity: Optional[Decimal], 
                                        units_per_package: Optional[Decimal],

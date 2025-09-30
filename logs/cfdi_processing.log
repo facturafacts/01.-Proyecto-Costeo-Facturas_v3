@@ -28399,3 +28399,994 @@ WHERE invoices.uuid = %(uuid_1)s
 2025-09-04 19:12:21,218 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
 2025-09-04 19:12:21,218 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
 2025-09-04 19:24:39,995 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-18 18:41:43,760 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-18 18:41:43,762 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-18 18:41:43,762 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-18 18:41:43,762 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-18 18:41:43,762 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-18 18:41:43,762 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-18 18:41:43,763 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-18 18:41:43,763 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-18 18:41:43,763 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-18 18:41:43,763 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-18 18:41:43,764 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-18 18:41:44,103 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-18 18:41:44,104 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-18 18:41:44,104 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-18 18:41:44,105 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-18 18:41:44,105 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-18 18:41:44,105 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-18 18:41:44,105 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-18 18:41:44,105 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-18 18:41:44,106 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-18 18:41:44,106 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-18 18:41:44,106 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-18 18:41:44,108 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-18 18:41:44,108 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-18 18:41:47,286 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items
+2025-09-18 18:41:49,260 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-18 18:41:49,779 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC with 2 items (ID: 314)
+2025-09-18 18:41:50,355 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-18 18:41:50,356 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 314
+2025-09-18 18:41:51,014 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-18 18:41:51,015 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 2 purchase_details entries for invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-18 18:41:52,358 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml in 7.59s
+2025-09-18 18:41:52,360 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/processed
+2025-09-18 18:41:52,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-18 18:41:52,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-18 18:41:52,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-18 18:41:52,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-18 18:41:52,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 1
+2025-09-18 18:41:52,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 0
+2025-09-18 18:41:52,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 100.0%
+2025-09-18 18:41:52,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 8.26s
+2025-09-18 18:41:52,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 8.26s
+2025-09-18 18:41:52,363 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-18 18:41:52,363 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-18 18:41:52,363 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-18 18:41:57,316 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-19 14:24:04,633 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-19 14:24:04,635 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-19 14:24:04,635 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-19 14:24:04,635 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-19 14:24:04,635 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-19 14:24:04,635 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-19 14:24:04,635 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-19 14:24:04,636 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-19 14:24:04,636 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-19 14:24:04,636 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-19 14:24:04,637 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-19 14:24:04,939 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-19 14:24:04,939 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-19 14:24:04,940 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-19 14:24:04,940 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-19 14:24:04,941 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-19 14:24:04,941 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-19 14:24:04,941 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 14:24:04,941 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-19 14:24:04,942 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 14:24:04,942 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 14:24:04,942 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 14:24:04,963 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-19 14:24:04,963 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 14:24:10,057 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items
+2025-09-19 14:24:13,257 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-19 14:24:13,899 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC with 2 items (ID: 315)
+2025-09-19 14:24:14,550 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-19 14:24:14,550 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 315
+2025-09-19 14:24:15,709 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-19 14:24:15,709 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 2 purchase_details entries for invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 14:24:17,387 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml in 11.62s
+2025-09-19 14:24:17,389 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/processed
+2025-09-19 14:24:17,389 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 14:24:17,389 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-19 14:24:17,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 14:24:17,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-19 14:24:17,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 1
+2025-09-19 14:24:17,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 0
+2025-09-19 14:24:17,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 100.0%
+2025-09-19 14:24:17,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 12.45s
+2025-09-19 14:24:17,391 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 12.45s
+2025-09-19 14:24:17,391 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-19 14:24:17,391 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-19 14:24:17,391 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-19 14:24:22,524 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-19 14:51:47,225 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-19 14:51:47,226 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-19 14:51:47,227 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-19 14:51:47,227 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-19 14:51:47,227 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-19 14:51:47,227 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-19 14:51:47,227 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-19 14:51:47,228 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-19 14:51:47,228 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-19 14:51:47,228 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-19 14:51:47,229 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-19 14:51:47,262 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-19 14:51:47,262 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-19 14:51:47,263 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-19 14:51:47,263 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-19 14:51:47,264 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-19 14:51:47,264 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-19 14:51:47,264 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 14:51:47,264 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-19 14:51:47,264 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 14:51:47,264 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 14:51:47,265 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 14:51:47,268 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-19 14:51:47,268 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 14:51:51,830 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items
+2025-09-19 14:51:54,469 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-19 14:51:55,430 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC with 2 items (ID: 316)
+2025-09-19 14:51:56,439 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-19 14:51:56,440 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 316
+2025-09-19 14:51:57,567 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-19 14:51:57,568 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 2 purchase_details entries for invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 14:51:59,256 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml in 11.13s
+2025-09-19 14:51:59,258 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/processed
+2025-09-19 14:51:59,258 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 14:51:59,258 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-19 14:51:59,258 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 14:51:59,258 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-19 14:51:59,259 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 1
+2025-09-19 14:51:59,259 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 0
+2025-09-19 14:51:59,259 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 100.0%
+2025-09-19 14:51:59,259 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 11.99s
+2025-09-19 14:51:59,259 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 11.99s
+2025-09-19 14:51:59,260 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-19 14:51:59,260 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-19 14:51:59,260 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-19 15:47:16,774 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-19 15:48:51,460 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-19 15:48:51,461 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-19 15:48:51,461 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-19 15:48:51,462 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-19 15:48:51,462 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-19 15:48:51,462 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-19 15:48:51,462 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-19 15:48:51,462 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-19 15:48:51,462 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-19 15:48:51,462 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-19 15:48:51,463 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-19 15:48:51,501 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-19 15:48:51,502 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-19 15:48:51,502 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-19 15:48:51,503 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-19 15:48:51,503 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-19 15:48:51,503 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-19 15:48:51,503 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 15:48:51,504 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-19 15:48:51,504 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 15:48:51,504 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 15:48:51,504 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 15:48:51,508 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-19 15:48:51,508 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 15:48:55,689 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items with SKU lookup
+2025-09-19 15:48:55,689 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml: 'DatabaseManager' object has no attribute 'get_approved_sku'
+2025-09-19 15:48:56,984 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/failed
+2025-09-19 15:48:56,984 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 15:48:56,984 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-19 15:48:56,985 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 15:48:56,985 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-19 15:48:56,985 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 0
+2025-09-19 15:48:56,985 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 1
+2025-09-19 15:48:56,985 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 0.0%
+2025-09-19 15:48:56,985 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 5.48s
+2025-09-19 15:48:56,986 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 5.48s
+2025-09-19 15:48:56,986 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-19 15:48:56,986 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-19 15:48:56,986 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-19 15:49:34,385 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-19 16:00:24,214 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-19 16:00:24,216 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-19 16:00:24,216 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-19 16:00:24,216 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-19 16:00:24,216 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-19 16:00:24,216 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-19 16:00:24,217 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-19 16:00:24,217 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-19 16:00:24,217 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-19 16:00:24,217 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-19 16:00:24,218 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-19 16:00:24,264 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-19 16:00:24,264 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-19 16:00:24,265 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-19 16:00:24,265 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-19 16:00:24,266 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-19 16:00:24,266 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-19 16:00:24,266 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 16:00:24,266 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-19 16:00:24,267 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 16:00:24,267 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 16:00:24,267 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 16:00:24,271 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-19 16:00:24,271 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 16:00:30,060 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items with SKU lookup
+2025-09-19 16:00:30,978 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-19 16:00:30,979 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml: Instance <ApprovedSku at 0x1d855631fd0> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/20/bhk3)
+2025-09-19 16:00:32,124 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/failed
+2025-09-19 16:00:32,124 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 16:00:32,124 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-19 16:00:32,125 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 16:00:32,125 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-19 16:00:32,125 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 0
+2025-09-19 16:00:32,125 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 1
+2025-09-19 16:00:32,125 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 0.0%
+2025-09-19 16:00:32,125 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 7.86s
+2025-09-19 16:00:32,126 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 7.86s
+2025-09-19 16:00:32,126 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-19 16:00:32,126 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-19 16:00:32,126 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-19 16:00:41,872 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-19 16:05:02,341 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-19 16:05:02,343 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-19 16:05:02,343 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-19 16:05:02,343 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-19 16:05:02,343 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-19 16:05:02,343 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-19 16:05:02,343 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-19 16:05:02,344 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-19 16:05:02,344 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-19 16:05:02,344 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-19 16:05:02,345 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-19 16:05:02,378 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-19 16:05:02,379 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-19 16:05:02,379 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-19 16:05:02,379 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-19 16:05:02,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-19 16:05:02,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-19 16:05:02,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 16:05:02,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-19 16:05:02,381 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 16:05:02,381 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 16:05:02,381 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 16:05:02,383 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-19 16:05:02,384 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 16:05:06,917 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items with SKU lookup
+2025-09-19 16:05:07,734 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-19 16:05:07,735 - src.processing.batch_processor - ERROR - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [ERROR] Failed to process 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml: Instance <ApprovedSku at 0x19931131fd0> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/20/bhk3)
+2025-09-19 16:05:08,605 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/failed
+2025-09-19 16:05:08,605 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 16:05:08,606 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-19 16:05:08,606 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 16:05:08,606 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-19 16:05:08,606 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 0
+2025-09-19 16:05:08,606 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 1
+2025-09-19 16:05:08,607 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 0.0%
+2025-09-19 16:05:08,607 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 6.23s
+2025-09-19 16:05:08,607 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 6.23s
+2025-09-19 16:05:08,607 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-19 16:05:08,607 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-19 16:05:08,607 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-19 16:18:48,974 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-19 16:18:56,945 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-19 16:18:56,946 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-19 16:18:56,947 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-19 16:18:56,947 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-19 16:18:56,947 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-19 16:18:56,947 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-19 16:18:56,947 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-19 16:18:56,947 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-19 16:18:56,948 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-19 16:18:56,948 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-19 16:18:56,948 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-19 16:18:56,980 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-19 16:18:56,981 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-19 16:18:56,982 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-19 16:18:56,982 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-19 16:18:56,982 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-19 16:18:56,982 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-19 16:18:56,983 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 16:18:56,983 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (1/1)
+2025-09-19 16:18:56,983 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 16:18:56,983 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 16:18:56,983 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-19 16:18:56,986 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-19 16:18:56,986 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 16:19:02,519 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items with SKU lookup
+2025-09-19 16:19:03,347 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-19 16:19:04,280 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b402f8e2_50307503_pulpa_de_maracuya_grande
+2025-09-19 16:19:04,280 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-19 16:19:04,893 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC with 2 items (ID: 317)
+2025-09-19 16:19:05,918 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-19 16:19:05,919 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 317
+2025-09-19 16:19:07,065 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-19 16:19:07,066 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 2 purchase_details entries for invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-19 16:19:08,668 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml in 10.89s
+2025-09-19 16:19:08,669 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/processed
+2025-09-19 16:19:08,669 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-19 16:19:08,670 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-19 16:19:08,670 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-19 16:19:08,670 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-19 16:19:08,670 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 1
+2025-09-19 16:19:08,670 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 0
+2025-09-19 16:19:08,670 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 100.0%
+2025-09-19 16:19:08,671 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 11.69s
+2025-09-19 16:19:08,671 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 11.69s
+2025-09-19 16:19:08,671 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-19 16:19:08,671 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-19 16:19:08,671 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-22 09:21:11,003 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-22 09:21:11,004 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-22 09:21:11,004 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-22 09:21:11,004 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-22 09:21:11,005 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-22 09:21:11,005 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-22 09:21:11,005 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-22 09:21:11,005 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-22 09:21:11,005 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-22 09:21:11,005 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-22 09:21:11,006 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-22 09:21:11,324 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-22 09:21:11,324 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-22 09:21:11,325 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-22 09:21:11,325 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-22 09:21:11,326 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 1 XML files in data/inbox
+2025-09-22 09:21:11,326 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 1 XML files
+2025-09-22 09:21:11,326 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:21:11,326 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml (1/1)
+2025-09-22 09:21:11,326 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:21:11,327 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:21:11,327 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:21:11,346 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:21:11,346 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF
+2025-09-22 09:21:15,812 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 12 items with SKU lookup
+2025-09-22 09:21:17,745 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_d3e87da6_50131700_crema_para_batir_lyncont_500gr
+2025-09-22 09:21:20,564 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_11cd495e_50401700_aguacate
+2025-09-22 09:21:21,776 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_70ae329c_50301500_manzana_verde
+2025-09-22 09:21:22,792 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_6e25608f_10191509_raid_casa_y_jardin
+2025-09-22 09:21:23,689 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_75903dde_50404803_champiñon
+2025-09-22 09:21:25,585 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_888b7c5c_50417006_arugula_caja_costco
+2025-09-22 09:21:27,644 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_7a87321c_50402500_zanahoria_leña
+2025-09-22 09:21:28,633 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b78f2323_50402700_apio
+2025-09-22 09:21:29,960 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c0496069_50406500_tomate_salades
+2025-09-22 09:21:30,952 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b92b44bd_47131821_desengrasante_easy_off
+2025-09-22 09:21:31,956 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_5ac938a8_50221300_tortilla_maiz
+2025-09-22 09:21:32,836 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:21:32,837 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:21:33,514 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF with 12 items (ID: 318)
+2025-09-22 09:21:34,932 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:21:34,933 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 318
+2025-09-22 09:21:35,808 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:21:35,809 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 12 purchase_details entries for invoice 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF
+2025-09-22 09:21:37,587 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml in 25.40s
+2025-09-22 09:21:37,588 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml to data/processed
+2025-09-22 09:21:37,588 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:21:37,589 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-22 09:21:37,589 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:21:37,589 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 1
+2025-09-22 09:21:37,589 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 1
+2025-09-22 09:21:37,589 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 0
+2025-09-22 09:21:37,590 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 100.0%
+2025-09-22 09:21:37,590 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 26.26s
+2025-09-22 09:21:37,590 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 26.26s
+2025-09-22 09:21:37,590 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-22 09:21:37,591 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-22 09:21:37,591 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-22 09:31:03,151 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
+2025-09-22 09:31:23,886 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Logging configured for environment: dev
+2025-09-22 09:31:23,888 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log level: INFO
+2025-09-22 09:31:23,888 - src.utils.logging_config - INFO - File: logging_config.py - File: logging_config.py - File: logging_config.py - Log directory: logs
+2025-09-22 09:31:23,888 - __main__ - INFO - File: main.py - File: main.py - File: main.py - CFDI Processing System v4 started
+2025-09-22 09:31:23,888 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Environment: dev
+2025-09-22 09:31:23,889 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Log level: INFO
+2025-09-22 09:31:23,889 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Starting inbox processing...
+2025-09-22 09:31:23,889 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - CFDI Parser initialized
+2025-09-22 09:31:23,889 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Attempting to initialize AI provider: 'gemini'
+2025-09-22 09:31:23,889 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - Gemini API configured with model: gemini-1.5-flash
+2025-09-22 09:31:23,890 - src.processing.ai_classifier - INFO - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - [ai_classifier] File: ai_classifier.py - ✅ GeminiClassifier initialized.
+2025-09-22 09:31:23,923 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database connection established: postgresql://doadmin:AVNS_UcFydurWkrbFFHKvu3q@db-postgresql-ams3-84868-do-user-23729043-0.l.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+2025-09-22 09:31:23,924 - src.data.database - INFO - File: database.py - File: database.py - File: database.py - Database Manager initialized
+2025-09-22 09:31:23,924 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - BatchProcessor initialized successfully
+2025-09-22 09:31:23,925 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Starting inbox processing: data/inbox
+2025-09-22 09:31:23,925 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Found 24 XML files in data/inbox
+2025-09-22 09:31:23,925 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [FILES] Processing 24 XML files
+2025-09-22 09:31:23,925 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:31:23,926 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 0101026D-F52A-4294-8429-B6D80B654D50.xml (1/24)
+2025-09-22 09:31:23,926 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:31:23,926 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 0101026D-F52A-4294-8429-B6D80B654D50.xml
+2025-09-22 09:31:23,926 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 0101026D-F52A-4294-8429-B6D80B654D50.xml
+2025-09-22 09:31:23,942 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:31:23,943 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 0101026D-F52A-4294-8429-B6D80B654D50
+2025-09-22 09:31:28,403 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 7 items with SKU lookup
+2025-09-22 09:31:29,277 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c0496069_50406500_tomate_salades
+2025-09-22 09:31:30,230 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_3823c19d_50405300_cebolla_blanca
+2025-09-22 09:31:32,333 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_7b905d3b_48101919_vaso_plastico_1oz
+2025-09-22 09:31:37,209 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_924e48d0_50191500_sopa_barilla_codo_4
+2025-09-22 09:31:39,263 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_a88cb11c_50402500_zanahoria
+2025-09-22 09:31:40,621 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_bd10aff8_50405600_morron_verde
+2025-09-22 09:31:41,578 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_58a6dd02_50112009_jamon_cerdo_kowi
+2025-09-22 09:31:41,579 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:31:42,574 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 0101026D-F52A-4294-8429-B6D80B654D50 with 7 items (ID: 319)
+2025-09-22 09:31:43,594 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:31:43,594 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 319
+2025-09-22 09:31:44,467 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:31:44,469 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 7 purchase_details entries for invoice 0101026D-F52A-4294-8429-B6D80B654D50
+2025-09-22 09:31:46,360 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 0101026D-F52A-4294-8429-B6D80B654D50.xml in 21.54s
+2025-09-22 09:31:46,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 0101026D-F52A-4294-8429-B6D80B654D50.xml to data/processed
+2025-09-22 09:31:46,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:31:46,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 0487A01E-AC92-47B9-8883-1C376216DEB7.xml (2/24)
+2025-09-22 09:31:46,361 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:31:46,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 0487A01E-AC92-47B9-8883-1C376216DEB7.xml
+2025-09-22 09:31:46,362 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 0487A01E-AC92-47B9-8883-1C376216DEB7.xml
+2025-09-22 09:31:46,378 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:31:46,378 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 0487A01E-AC92-47B9-8883-1C376216DEB7
+2025-09-22 09:31:47,558 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 18 items with SKU lookup
+2025-09-22 09:31:48,458 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_5261c9e9_50403900_calabacita
+2025-09-22 09:31:49,446 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9694c503_50403500_berenjena
+2025-09-22 09:31:50,426 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_65d00f8a_50404101_albahaca
+2025-09-22 09:31:51,517 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9a57e1c2_50304100_limon_sin_semilla
+2025-09-22 09:31:52,521 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_822118da_50101717_nuez
+2025-09-22 09:31:53,882 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_00d189e9_50193105_panco
+2025-09-22 09:31:54,747 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_f6ce5c99_50404600_lechuga_mixta
+2025-09-22 09:31:55,726 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_4d8ff92b_50404600_lechuga_bola
+2025-09-22 09:31:56,960 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_4770c1ef_50402800_acelga
+2025-09-22 09:31:57,865 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_41ff9b27_50404106_cilantro
+2025-09-22 09:31:59,294 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_11cd495e_50401700_aguacate
+2025-09-22 09:32:00,518 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_5ac938a8_50221300_tortilla_maiz
+2025-09-22 09:32:02,366 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_f24f239b_50131800_queso_cabra_lynco
+2025-09-22 09:32:04,399 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c0496069_50406500_tomate_salades
+2025-09-22 09:32:05,758 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_3823c19d_50405300_cebolla_blanca
+2025-09-22 09:32:06,673 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_6ec9c23c_50405625_chile_jalapeño
+2025-09-22 09:32:08,319 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b92b44bd_47131821_desengrasante_easy_off
+2025-09-22 09:32:10,242 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_8cf4959a_47131807_cloro_10_lt
+2025-09-22 09:32:11,382 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:32:12,014 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 0487A01E-AC92-47B9-8883-1C376216DEB7 with 18 items (ID: 320)
+2025-09-22 09:32:12,791 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:32:12,792 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 320
+2025-09-22 09:32:13,646 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:32:13,648 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 18 purchase_details entries for invoice 0487A01E-AC92-47B9-8883-1C376216DEB7
+2025-09-22 09:32:15,509 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 0487A01E-AC92-47B9-8883-1C376216DEB7.xml in 28.29s
+2025-09-22 09:32:15,510 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 0487A01E-AC92-47B9-8883-1C376216DEB7.xml to data/processed
+2025-09-22 09:32:15,511 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:32:15,511 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 2413CC22-151A-4601-9D3E-7F57F9084F92.xml (3/24)
+2025-09-22 09:32:15,511 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:32:15,511 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 2413CC22-151A-4601-9D3E-7F57F9084F92.xml
+2025-09-22 09:32:15,511 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 2413CC22-151A-4601-9D3E-7F57F9084F92.xml
+2025-09-22 09:32:15,524 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:32:15,524 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 2413CC22-151A-4601-9D3E-7F57F9084F92
+2025-09-22 09:32:16,426 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 5 items with SKU lookup
+2025-09-22 09:32:17,325 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_80bf8a82_50401900_betabel
+2025-09-22 09:32:18,382 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_5a200fb8_50131800_queso_cheddar_cheddar_fuerte
+2025-09-22 09:32:19,266 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:32:20,257 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_141a86f5_10161506_naranja
+2025-09-22 09:32:21,162 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_07ae298e_50304100_limon_amarillo
+2025-09-22 09:32:21,162 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:32:21,805 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 2413CC22-151A-4601-9D3E-7F57F9084F92 with 5 items (ID: 321)
+2025-09-22 09:32:22,566 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:32:22,567 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 321
+2025-09-22 09:32:23,444 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:32:23,445 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 5 purchase_details entries for invoice 2413CC22-151A-4601-9D3E-7F57F9084F92
+2025-09-22 09:32:25,169 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 2413CC22-151A-4601-9D3E-7F57F9084F92.xml in 8.81s
+2025-09-22 09:32:25,171 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 2413CC22-151A-4601-9D3E-7F57F9084F92.xml to data/processed
+2025-09-22 09:32:25,171 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:32:25,171 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0.xml (4/24)
+2025-09-22 09:32:25,171 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:32:25,171 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0.xml
+2025-09-22 09:32:25,172 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0.xml
+2025-09-22 09:32:25,185 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:32:25,185 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0
+2025-09-22 09:32:26,062 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 1 items with SKU lookup
+2025-09-22 09:32:28,114 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_8316cfab_84111500_servicios_contables
+2025-09-22 09:32:29,176 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:32:29,845 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0 with 1 items (ID: 322)
+2025-09-22 09:32:30,489 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:32:30,489 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 322
+2025-09-22 09:32:31,661 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:32:31,662 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 1 purchase_details entries for invoice 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0
+2025-09-22 09:32:33,389 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0.xml in 7.34s
+2025-09-22 09:32:33,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 33ECF159-D327-44D2-9EAB-4B97D6DFF8E0.xml to data/processed
+2025-09-22 09:32:33,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:32:33,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 36A70E57-7B5F-4879-A241-F739EA94A106.xml (5/24)
+2025-09-22 09:32:33,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:32:33,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 36A70E57-7B5F-4879-A241-F739EA94A106.xml
+2025-09-22 09:32:33,390 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 36A70E57-7B5F-4879-A241-F739EA94A106.xml
+2025-09-22 09:32:33,405 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:32:33,405 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 36A70E57-7B5F-4879-A241-F739EA94A106
+2025-09-22 09:32:34,610 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 22 items with SKU lookup
+2025-09-22 09:32:36,555 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_d3e87da6_50131700_crema_para_batir_lyncont_500gr
+2025-09-22 09:32:38,629 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_4cf639b6_50131700_crema_para_batir_lyncont_1_lt
+2025-09-22 09:32:40,548 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_a5587ddb_50131700_leche_de_coco_de_1lt
+2025-09-22 09:32:42,921 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_50c5dd48_50131700_clavel_carnetion
+2025-09-22 09:32:44,752 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9f0d26b9_50131700_lechera_original
+2025-09-22 09:32:45,743 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_44f0bbec_50403900_calabaza_negra
+2025-09-22 09:32:46,790 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_75903dde_50404803_champiñon
+2025-09-22 09:32:47,674 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_6a2cfbaf_50131612_huevo_cartera_con_30pz
+2025-09-22 09:32:48,548 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_6ec9c23c_50405625_chile_jalapeño
+2025-09-22 09:32:49,420 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_09573e71_50417006_arugula
+2025-09-22 09:32:50,436 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_07ae298e_50304100_limon_amarillo
+2025-09-22 09:32:51,729 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_93d1e48d_50405600_morron_rojo
+2025-09-22 09:32:52,631 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_15acbdb3_50404125_tomillo
+2025-09-22 09:32:53,657 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_4770c1ef_50402800_acelga
+2025-09-22 09:32:54,544 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_11cd495e_50401700_aguacate
+2025-09-22 09:32:55,636 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9694c503_50403500_berenjena
+2025-09-22 09:32:57,506 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_436d50e4_50112010_pierna_de_pollo_muslo
+2025-09-22 09:32:59,462 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:33:00,488 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9a57e1c2_50304100_limon_sin_semilla
+2025-09-22 09:33:02,574 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_0a5c21a8_10161506_naranja_importada
+2025-09-22 09:33:04,817 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9cbcb068_50405104_tomatillo
+2025-09-22 09:33:07,111 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_58ab7112_50405623_habanero
+2025-09-22 09:33:08,191 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:33:08,862 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 36A70E57-7B5F-4879-A241-F739EA94A106 with 22 items (ID: 323)
+2025-09-22 09:33:09,644 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:33:09,645 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 323
+2025-09-22 09:33:10,523 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:33:10,525 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 22 purchase_details entries for invoice 36A70E57-7B5F-4879-A241-F739EA94A106
+2025-09-22 09:33:12,785 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 36A70E57-7B5F-4879-A241-F739EA94A106.xml in 38.25s
+2025-09-22 09:33:12,787 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 36A70E57-7B5F-4879-A241-F739EA94A106.xml to data/processed
+2025-09-22 09:33:12,787 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:33:12,787 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986.xml (6/24)
+2025-09-22 09:33:12,787 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:33:12,787 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986.xml
+2025-09-22 09:33:12,788 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986.xml
+2025-09-22 09:33:12,802 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:33:12,803 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986
+2025-09-22 09:33:13,714 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items with SKU lookup
+2025-09-22 09:33:14,642 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_eca51e58_50202201_bohemia_obscura_obscura_4x6_bot_355ml
+2025-09-22 09:33:15,535 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_0a478aa5_50202201_carta_blanca_caguamita_4x6bot_300ml
+2025-09-22 09:33:15,535 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:33:16,533 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986 with 2 items (ID: 324)
+2025-09-22 09:33:17,341 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:33:17,342 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 324
+2025-09-22 09:33:18,226 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:33:18,227 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 2 purchase_details entries for invoice 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986
+2025-09-22 09:33:19,953 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986.xml in 6.32s
+2025-09-22 09:33:19,954 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 39DFE07C-F59A-4BDF-A1F1-C1828EFF9986.xml to data/processed
+2025-09-22 09:33:19,954 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:33:19,954 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 42EF80F8-9E30-4913-896F-6F09F2CF6EE3.xml (7/24)
+2025-09-22 09:33:19,955 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:33:19,955 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 42EF80F8-9E30-4913-896F-6F09F2CF6EE3.xml
+2025-09-22 09:33:19,955 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 42EF80F8-9E30-4913-896F-6F09F2CF6EE3.xml
+2025-09-22 09:33:19,969 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:33:19,969 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 42EF80F8-9E30-4913-896F-6F09F2CF6EE3
+2025-09-22 09:33:21,203 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 5 items with SKU lookup
+2025-09-22 09:33:22,096 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:33:23,273 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9a57e1c2_50304100_limon_sin_semilla
+2025-09-22 09:33:25,316 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_0a5c21a8_10161506_naranja_importada
+2025-09-22 09:33:26,196 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_306c40c7_50303300_toronja
+2025-09-22 09:33:27,091 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_f95bb8a3_50307024_pepino
+2025-09-22 09:33:27,092 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:33:27,911 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 42EF80F8-9E30-4913-896F-6F09F2CF6EE3 with 5 items (ID: 325)
+2025-09-22 09:33:28,577 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:33:28,578 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 325
+2025-09-22 09:33:29,448 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:33:29,449 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 5 purchase_details entries for invoice 42EF80F8-9E30-4913-896F-6F09F2CF6EE3
+2025-09-22 09:33:31,202 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 42EF80F8-9E30-4913-896F-6F09F2CF6EE3.xml in 10.38s
+2025-09-22 09:33:31,203 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 42EF80F8-9E30-4913-896F-6F09F2CF6EE3.xml to data/processed
+2025-09-22 09:33:31,203 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:33:31,203 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml (8/24)
+2025-09-22 09:33:31,203 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:33:31,204 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-22 09:33:31,204 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-22 09:33:31,218 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:33:31,218 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-22 09:33:32,113 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ­ƒöä DUPLICATE DETECTED: Invoice UUID 4C15CD21-4A9D-4665-85F0-353773E80EAC already exists (ID: 317)
+2025-09-22 09:33:32,113 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Original file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-22 09:33:32,113 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Current file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-22 09:33:32,114 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Issue date: 2025-09-07 14:03:08
+2025-09-22 09:33:32,114 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Total amount: $670.00
+2025-09-22 09:33:32,321 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ­ƒôè DUPLICATE INVOICE DETAILS:
+2025-09-22 09:33:32,321 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    UUID: 4C15CD21-4A9D-4665-85F0-353773E80EAC
+2025-09-22 09:33:32,321 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Current file: 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml
+2025-09-22 09:33:32,321 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Issue date: 2025-09-07 14:03:08
+2025-09-22 09:33:32,322 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Issuer: VANESSA IVON PIÑUELAS VERDUGO
+2025-09-22 09:33:32,322 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Total: 670.00
+2025-09-22 09:33:32,322 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Action: Skipping duplicate file
+2025-09-22 09:33:33,176 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SKIPPED] Duplicate invoice 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml - moved to failed directory
+2025-09-22 09:33:33,177 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 4C15CD21-4A9D-4665-85F0-353773E80EAC.xml to data/failed
+2025-09-22 09:33:33,178 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:33:33,178 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 50CB1014-1314-449C-84FF-92BD5257830C.xml (9/24)
+2025-09-22 09:33:33,178 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:33:33,178 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 50CB1014-1314-449C-84FF-92BD5257830C.xml
+2025-09-22 09:33:33,178 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 50CB1014-1314-449C-84FF-92BD5257830C.xml
+2025-09-22 09:33:33,192 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:33:33,192 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 50CB1014-1314-449C-84FF-92BD5257830C
+2025-09-22 09:33:34,113 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 2 items with SKU lookup
+2025-09-22 09:33:35,909 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_41343941_93151512_dictaminacion_y_o_autorizacion_de_programa_interno_de_proteccion_civil_artículo_146_fracció
+2025-09-22 09:33:38,671 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_72f47604_14111814_venta_de_formatos_oficiales_artículo_159_lhmlpbcs
+2025-09-22 09:33:39,838 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:33:40,473 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 50CB1014-1314-449C-84FF-92BD5257830C with 2 items (ID: 326)
+2025-09-22 09:33:41,121 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:33:41,121 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 326
+2025-09-22 09:33:41,997 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:33:41,997 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 2 purchase_details entries for invoice 50CB1014-1314-449C-84FF-92BD5257830C
+2025-09-22 09:33:44,185 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 50CB1014-1314-449C-84FF-92BD5257830C.xml in 9.82s
+2025-09-22 09:33:44,186 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 50CB1014-1314-449C-84FF-92BD5257830C.xml to data/processed
+2025-09-22 09:33:44,187 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:33:44,187 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 5549519A-77FD-4319-AC76-20E8B7E28B96.xml (10/24)
+2025-09-22 09:33:44,187 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:33:44,187 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 5549519A-77FD-4319-AC76-20E8B7E28B96.xml
+2025-09-22 09:33:44,187 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 5549519A-77FD-4319-AC76-20E8B7E28B96.xml
+2025-09-22 09:33:44,204 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:33:44,204 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 5549519A-77FD-4319-AC76-20E8B7E28B96
+2025-09-22 09:33:45,096 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 3 items with SKU lookup
+2025-09-22 09:33:47,024 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_947e86f0_93151512_impuesto_adicional_dirección_de_comercio_artículos_25_f_vi_y_70_lhmlpbcs
+2025-09-22 09:33:49,829 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_54cc0aa5_93151512_recepción_análisis_y_revisión_de_permisos_nuevos_y_de_movimientos_diversos_artículo_129_lhm
+2025-09-22 09:33:53,069 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_72f47604_14111814_venta_de_formatos_oficiales_artículo_159_lhmlpbcs
+2025-09-22 09:33:53,069 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:33:53,710 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 5549519A-77FD-4319-AC76-20E8B7E28B96 with 3 items (ID: 327)
+2025-09-22 09:33:54,363 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:33:54,364 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 327
+2025-09-22 09:33:55,255 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:33:55,256 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 3 purchase_details entries for invoice 5549519A-77FD-4319-AC76-20E8B7E28B96
+2025-09-22 09:33:57,109 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 5549519A-77FD-4319-AC76-20E8B7E28B96.xml in 12.00s
+2025-09-22 09:33:57,110 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 5549519A-77FD-4319-AC76-20E8B7E28B96.xml to data/processed
+2025-09-22 09:33:57,110 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:33:57,111 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 712F82C3-7F6F-40A9-B055-4789E3298DAC.xml (11/24)
+2025-09-22 09:33:57,111 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:33:57,111 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 712F82C3-7F6F-40A9-B055-4789E3298DAC.xml
+2025-09-22 09:33:57,111 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 712F82C3-7F6F-40A9-B055-4789E3298DAC.xml
+2025-09-22 09:33:57,128 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:33:57,128 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 712F82C3-7F6F-40A9-B055-4789E3298DAC
+2025-09-22 09:33:58,208 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 3 items with SKU lookup
+2025-09-22 09:33:59,109 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b9b76b52_50202201_bohemia_clasica_4x6_bot_355ml_v0
+2025-09-22 09:33:59,996 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_e5a7d70e_50202201_bohemia_obscura_2x6_bot_355ml
+2025-09-22 09:34:01,243 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_0a478aa5_50202201_carta_blanca_caguamita_4x6bot_300ml
+2025-09-22 09:34:01,243 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:34:02,081 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 712F82C3-7F6F-40A9-B055-4789E3298DAC with 3 items (ID: 328)
+2025-09-22 09:34:02,772 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:34:02,772 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 328
+2025-09-22 09:34:03,675 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:34:03,676 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 3 purchase_details entries for invoice 712F82C3-7F6F-40A9-B055-4789E3298DAC
+2025-09-22 09:34:05,512 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 712F82C3-7F6F-40A9-B055-4789E3298DAC.xml in 7.51s
+2025-09-22 09:34:05,513 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 712F82C3-7F6F-40A9-B055-4789E3298DAC.xml to data/processed
+2025-09-22 09:34:05,514 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:34:05,514 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90.xml (12/24)
+2025-09-22 09:34:05,514 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:34:05,514 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90.xml
+2025-09-22 09:34:05,515 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90.xml
+2025-09-22 09:34:05,530 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:34:05,530 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90
+2025-09-22 09:34:06,614 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 1 items with SKU lookup
+2025-09-22 09:34:07,899 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9ea7b570_84121500_servicios_de_facturación
+2025-09-22 09:34:07,900 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:34:08,746 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90 with 1 items (ID: 329)
+2025-09-22 09:34:09,752 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:34:09,752 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 329
+2025-09-22 09:34:10,962 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:34:10,963 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 1 purchase_details entries for invoice 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90
+2025-09-22 09:34:13,058 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90.xml in 6.33s
+2025-09-22 09:34:13,059 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 9D879DDB-CC4D-4F0A-ADDF-1732826B5E90.xml to data/processed
+2025-09-22 09:34:13,060 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:34:13,060 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml (13/24)
+2025-09-22 09:34:13,060 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:34:13,060 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:34:13,061 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:34:13,075 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:34:13,076 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF
+2025-09-22 09:34:13,971 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ­ƒöä DUPLICATE DETECTED: Invoice UUID 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF already exists (ID: 318)
+2025-09-22 09:34:13,971 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Original file: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:34:13,971 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Current file: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:34:13,972 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Issue date: 2025-09-16 10:50:44
+2025-09-22 09:34:13,972 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Total amount: $782.00
+2025-09-22 09:34:14,185 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ­ƒôè DUPLICATE INVOICE DETAILS:
+2025-09-22 09:34:14,185 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    UUID: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF
+2025-09-22 09:34:14,185 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Current file: 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml
+2025-09-22 09:34:14,186 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Issue date: 2025-09-16 10:50:44
+2025-09-22 09:34:14,186 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Issuer: VANESSA IVON PIÑUELAS VERDUGO
+2025-09-22 09:34:14,186 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Total: 782.00
+2025-09-22 09:34:14,186 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -    Action: Skipping duplicate file
+2025-09-22 09:34:15,378 - src.processing.batch_processor - WARNING - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SKIPPED] Duplicate invoice 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml - moved to failed directory
+2025-09-22 09:34:15,379 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 9DE21F09-86C7-4739-BFF5-A4ED23A5C5AF.xml to data/failed
+2025-09-22 09:34:15,379 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:34:15,379 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing 9EEB13DA-2C10-413C-88A0-A43A9241EAB2.xml (14/24)
+2025-09-22 09:34:15,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:34:15,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: 9EEB13DA-2C10-413C-88A0-A43A9241EAB2.xml
+2025-09-22 09:34:15,380 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: 9EEB13DA-2C10-413C-88A0-A43A9241EAB2.xml
+2025-09-22 09:34:15,395 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:34:15,395 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: 9EEB13DA-2C10-413C-88A0-A43A9241EAB2
+2025-09-22 09:34:16,307 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 17 items with SKU lookup
+2025-09-22 09:34:17,235 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_03063d42_50221300_tortilla_maiz_medio_kilo
+2025-09-22 09:34:18,141 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_f95bb8a3_50307024_pepino
+2025-09-22 09:34:19,946 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_e9bb757b_50131802_jocoque
+2025-09-22 09:34:21,729 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_55886c7b_50417006_arugula_organica
+2025-09-22 09:34:23,673 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_65d00f8a_50404101_albahaca
+2025-09-22 09:34:24,965 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_bd6f7e4b_50112010_pierna_de_pollo
+2025-09-22 09:34:26,320 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_f355fb89_50403800_ajo
+2025-09-22 09:34:27,358 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_75903dde_50404803_champiñon
+2025-09-22 09:34:28,410 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_44f0bbec_50403900_calabaza_negra
+2025-09-22 09:34:29,293 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9694c503_50403500_berenjena
+2025-09-22 09:34:30,337 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c232096b_52121602_servilleta
+2025-09-22 09:34:31,762 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_6b45f921_50404600_lechuga_romana_baby
+2025-09-22 09:34:33,054 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_ffa51a90_50131800_queso_mozzarella
+2025-09-22 09:34:33,932 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9a57e1c2_50304100_limon_sin_semilla
+2025-09-22 09:34:34,961 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:34:37,468 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_b5bc591d_50307503_pulpa_de_maracuya_chico
+2025-09-22 09:34:39,338 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_dd599020_50161509_azucar
+2025-09-22 09:34:39,339 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:34:39,997 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice 9EEB13DA-2C10-413C-88A0-A43A9241EAB2 with 17 items (ID: 330)
+2025-09-22 09:34:40,781 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:34:40,782 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 330
+2025-09-22 09:34:41,651 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:34:41,653 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 17 purchase_details entries for invoice 9EEB13DA-2C10-413C-88A0-A43A9241EAB2
+2025-09-22 09:34:43,738 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed 9EEB13DA-2C10-413C-88A0-A43A9241EAB2.xml in 27.51s
+2025-09-22 09:34:43,739 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved 9EEB13DA-2C10-413C-88A0-A43A9241EAB2.xml to data/processed
+2025-09-22 09:34:43,740 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:34:43,740 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing A94A318E-3177-49D7-B1D4-286A5BAC4877.xml (15/24)
+2025-09-22 09:34:43,740 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:34:43,740 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: A94A318E-3177-49D7-B1D4-286A5BAC4877.xml
+2025-09-22 09:34:43,740 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: A94A318E-3177-49D7-B1D4-286A5BAC4877.xml
+2025-09-22 09:34:43,758 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:34:43,758 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: A94A318E-3177-49D7-B1D4-286A5BAC4877
+2025-09-22 09:34:44,641 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 15 items with SKU lookup
+2025-09-22 09:34:45,530 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_f355fb89_50403800_ajo
+2025-09-22 09:34:47,287 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_e06b08d7_53131608_jabon_roma_en_polvo_de_1kg
+2025-09-22 09:34:49,397 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_75903dde_50404803_champiñon
+2025-09-22 09:34:51,136 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_d05c597b_50171800_queso_crema
+2025-09-22 09:34:54,433 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_436d50e4_50112010_pierna_de_pollo_muslo
+2025-09-22 09:34:55,494 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_44f0bbec_50403900_calabaza_negra
+2025-09-22 09:34:56,392 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9694c503_50403500_berenjena
+2025-09-22 09:34:57,503 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_0ca60974_50307008_coco_rallado
+2025-09-22 09:34:58,400 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_5ac938a8_50221300_tortilla_maiz
+2025-09-22 09:34:59,304 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_7a87321c_50402500_zanahoria_leña
+2025-09-22 09:35:00,349 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_41ff9b27_50404106_cilantro
+2025-09-22 09:35:01,246 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c0496069_50406500_tomate_salades
+2025-09-22 09:35:02,151 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_597626b2_50465907_shallot
+2025-09-22 09:35:03,240 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_306c40c7_50303300_toronja
+2025-09-22 09:35:05,325 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_bed4ba60_10161506_naranja_inportada
+2025-09-22 09:35:06,289 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:35:06,946 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice A94A318E-3177-49D7-B1D4-286A5BAC4877 with 15 items (ID: 331)
+2025-09-22 09:35:07,765 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:35:07,766 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 331
+2025-09-22 09:35:08,650 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:35:08,652 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 15 purchase_details entries for invoice A94A318E-3177-49D7-B1D4-286A5BAC4877
+2025-09-22 09:35:10,529 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed A94A318E-3177-49D7-B1D4-286A5BAC4877.xml in 25.92s
+2025-09-22 09:35:10,530 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved A94A318E-3177-49D7-B1D4-286A5BAC4877.xml to data/processed
+2025-09-22 09:35:10,530 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:35:10,530 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing C05160CA-FB04-40CF-A662-9B9D2C5103D9.xml (16/24)
+2025-09-22 09:35:10,531 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:35:10,531 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: C05160CA-FB04-40CF-A662-9B9D2C5103D9.xml
+2025-09-22 09:35:10,531 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: C05160CA-FB04-40CF-A662-9B9D2C5103D9.xml
+2025-09-22 09:35:10,547 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:35:10,547 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: C05160CA-FB04-40CF-A662-9B9D2C5103D9
+2025-09-22 09:35:11,774 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 1 items with SKU lookup
+2025-09-22 09:35:12,665 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_a0b4b09d_81141601_servicios_integrales_de_logística
+2025-09-22 09:35:12,666 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:35:13,323 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice C05160CA-FB04-40CF-A662-9B9D2C5103D9 with 1 items (ID: 332)
+2025-09-22 09:35:14,021 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:35:14,022 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 332
+2025-09-22 09:35:14,905 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:35:14,905 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 1 purchase_details entries for invoice C05160CA-FB04-40CF-A662-9B9D2C5103D9
+2025-09-22 09:35:16,661 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed C05160CA-FB04-40CF-A662-9B9D2C5103D9.xml in 5.26s
+2025-09-22 09:35:16,662 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved C05160CA-FB04-40CF-A662-9B9D2C5103D9.xml to data/processed
+2025-09-22 09:35:16,662 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:35:16,662 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing C265BCB8-FB8E-4DB2-B385-9A9D25EC8284.xml (17/24)
+2025-09-22 09:35:16,663 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:35:16,663 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: C265BCB8-FB8E-4DB2-B385-9A9D25EC8284.xml
+2025-09-22 09:35:16,663 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: C265BCB8-FB8E-4DB2-B385-9A9D25EC8284.xml
+2025-09-22 09:35:16,677 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:35:16,677 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: C265BCB8-FB8E-4DB2-B385-9A9D25EC8284
+2025-09-22 09:35:17,576 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 1 items with SKU lookup
+2025-09-22 09:35:18,516 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_7ea74cc3_81161700_starlink_sucripcion_mensual
+2025-09-22 09:35:18,516 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:35:19,202 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice C265BCB8-FB8E-4DB2-B385-9A9D25EC8284 with 1 items (ID: 333)
+2025-09-22 09:35:19,881 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:35:19,881 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 333
+2025-09-22 09:35:20,786 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:35:20,786 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 1 purchase_details entries for invoice C265BCB8-FB8E-4DB2-B385-9A9D25EC8284
+2025-09-22 09:35:22,864 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed C265BCB8-FB8E-4DB2-B385-9A9D25EC8284.xml in 5.33s
+2025-09-22 09:35:22,866 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved C265BCB8-FB8E-4DB2-B385-9A9D25EC8284.xml to data/processed
+2025-09-22 09:35:22,866 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:35:22,866 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing DA8C956C-F904-4E33-91FC-3C3442624D2B.xml (18/24)
+2025-09-22 09:35:22,866 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:35:22,867 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: DA8C956C-F904-4E33-91FC-3C3442624D2B.xml
+2025-09-22 09:35:22,867 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: DA8C956C-F904-4E33-91FC-3C3442624D2B.xml
+2025-09-22 09:35:22,882 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:35:22,882 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: DA8C956C-F904-4E33-91FC-3C3442624D2B
+2025-09-22 09:35:23,813 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 11 items with SKU lookup
+2025-09-22 09:35:24,957 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_93d1e48d_50405600_morron_rojo
+2025-09-22 09:35:25,849 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_11cd495e_50401700_aguacate
+2025-09-22 09:35:26,744 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9a57e1c2_50304100_limon_sin_semilla
+2025-09-22 09:35:27,658 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_4770c1ef_50402800_acelga
+2025-09-22 09:35:28,554 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9694c503_50403500_berenjena
+2025-09-22 09:35:29,448 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_4c4ccb55_50405625_jalapeño
+2025-09-22 09:35:30,368 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_80336cf3_52121602_servilleta_kirkland
+2025-09-22 09:35:32,471 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_a7d31a04_50171832_catsup_heinz
+2025-09-22 09:35:34,744 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c1ceb28c_50221002_harina_selecta
+2025-09-22 09:35:35,659 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c0496069_50406500_tomate_salades
+2025-09-22 09:35:36,605 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b3f78bc6_50401806_frijol_pinto
+2025-09-22 09:35:36,605 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:35:37,259 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice DA8C956C-F904-4E33-91FC-3C3442624D2B with 11 items (ID: 334)
+2025-09-22 09:35:37,964 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:35:37,965 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 334
+2025-09-22 09:35:38,822 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:35:38,823 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 11 purchase_details entries for invoice DA8C956C-F904-4E33-91FC-3C3442624D2B
+2025-09-22 09:35:40,726 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed DA8C956C-F904-4E33-91FC-3C3442624D2B.xml in 16.99s
+2025-09-22 09:35:40,727 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved DA8C956C-F904-4E33-91FC-3C3442624D2B.xml to data/processed
+2025-09-22 09:35:40,727 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:35:40,728 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8.xml (19/24)
+2025-09-22 09:35:40,728 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:35:40,728 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8.xml
+2025-09-22 09:35:40,728 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8.xml
+2025-09-22 09:35:40,747 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:35:40,747 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8
+2025-09-22 09:35:41,828 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 11 items with SKU lookup
+2025-09-22 09:35:42,734 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_15acbdb3_50404125_tomillo
+2025-09-22 09:35:43,641 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_80bf8a82_50401900_betabel
+2025-09-22 09:35:44,700 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_75903dde_50404803_champiñon
+2025-09-22 09:35:45,770 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c1ceb28c_50221002_harina_selecta
+2025-09-22 09:35:46,948 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_07ae298e_50304100_limon_amarillo
+2025-09-22 09:35:48,000 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_70ae329c_50301500_manzana_verde
+2025-09-22 09:35:50,767 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_a202037f_24122004_tapas_de_plastico_de_1oz
+2025-09-22 09:35:54,346 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_7b905d3b_48101919_vaso_plastico_1oz
+2025-09-22 09:35:56,081 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_86b39eb7_50112010_pollo_muslo
+2025-09-22 09:35:58,141 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:35:59,043 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9a57e1c2_50304100_limon_sin_semilla
+2025-09-22 09:35:59,044 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:35:59,697 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8 with 11 items (ID: 335)
+2025-09-22 09:36:00,491 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:36:00,492 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 335
+2025-09-22 09:36:01,352 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:36:01,354 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 11 purchase_details entries for invoice E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8
+2025-09-22 09:36:03,692 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8.xml in 21.74s
+2025-09-22 09:36:03,693 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved E0D4C65A-89E7-40C0-893C-CE53AC6E8AD8.xml to data/processed
+2025-09-22 09:36:03,693 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:36:03,693 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing E174134C-FA5B-40C2-9A36-0C7325428D59.xml (20/24)
+2025-09-22 09:36:03,694 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:36:03,694 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: E174134C-FA5B-40C2-9A36-0C7325428D59.xml
+2025-09-22 09:36:03,694 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: E174134C-FA5B-40C2-9A36-0C7325428D59.xml
+2025-09-22 09:36:03,709 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:36:03,709 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: E174134C-FA5B-40C2-9A36-0C7325428D59
+2025-09-22 09:36:04,625 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 16 items with SKU lookup
+2025-09-22 09:36:05,628 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_75903dde_50404803_champiñon
+2025-09-22 09:36:06,724 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_3823c19d_50405300_cebolla_blanca
+2025-09-22 09:36:07,676 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_93d1e48d_50405600_morron_rojo
+2025-09-22 09:36:09,498 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_ec63ffdb_50417006_arugula_de_costco
+2025-09-22 09:36:11,515 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_65d00f8a_50404101_albahaca
+2025-09-22 09:36:12,586 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_8f28f7c7_50402300_repollo_verde
+2025-09-22 09:36:13,536 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_4d8ff92b_50404600_lechuga_bola
+2025-09-22 09:36:14,573 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_430b655a_50131800_queso_cabra_kirkland
+2025-09-22 09:36:15,482 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_64cd09d0_50202302_hielo_bolsa_de_hielo_5kg
+2025-09-22 09:36:16,540 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_141a86f5_10161506_naranja
+2025-09-22 09:36:17,457 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_306c40c7_50303300_toronja
+2025-09-22 09:36:18,505 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_880e50ef_50171548_romero
+2025-09-22 09:36:19,425 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_07ae298e_50304100_limon_amarillo
+2025-09-22 09:36:20,345 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_561f6ebe_50404114_menta
+2025-09-22 09:36:22,592 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_e93f93cd_50304610_sandia
+2025-09-22 09:36:24,773 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_b92b44bd_47131821_desengrasante_easy_off
+2025-09-22 09:36:24,773 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:36:25,592 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice E174134C-FA5B-40C2-9A36-0C7325428D59 with 16 items (ID: 336)
+2025-09-22 09:36:26,561 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:36:26,562 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 336
+2025-09-22 09:36:27,732 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:36:27,734 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 16 purchase_details entries for invoice E174134C-FA5B-40C2-9A36-0C7325428D59
+2025-09-22 09:36:29,776 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed E174134C-FA5B-40C2-9A36-0C7325428D59.xml in 25.25s
+2025-09-22 09:36:29,777 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved E174134C-FA5B-40C2-9A36-0C7325428D59.xml to data/processed
+2025-09-22 09:36:29,777 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:36:29,777 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing FA7B551E-D0AA-474D-8174-45F5530BF3F0.xml (21/24)
+2025-09-22 09:36:29,777 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:36:29,778 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: FA7B551E-D0AA-474D-8174-45F5530BF3F0.xml
+2025-09-22 09:36:29,778 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: FA7B551E-D0AA-474D-8174-45F5530BF3F0.xml
+2025-09-22 09:36:29,792 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:36:29,792 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: FA7B551E-D0AA-474D-8174-45F5530BF3F0
+2025-09-22 09:36:31,028 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 1 items with SKU lookup
+2025-09-22 09:36:31,948 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_3dfa975c_81112221_poliza_de_soporte_remoto_estandar_mensua
+2025-09-22 09:36:31,949 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:36:32,758 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice FA7B551E-D0AA-474D-8174-45F5530BF3F0 with 1 items (ID: 337)
+2025-09-22 09:36:33,405 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:36:33,405 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 337
+2025-09-22 09:36:34,261 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:36:34,262 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 1 purchase_details entries for invoice FA7B551E-D0AA-474D-8174-45F5530BF3F0
+2025-09-22 09:36:35,973 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed FA7B551E-D0AA-474D-8174-45F5530BF3F0.xml in 5.35s
+2025-09-22 09:36:35,974 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved FA7B551E-D0AA-474D-8174-45F5530BF3F0.xml to data/processed
+2025-09-22 09:36:35,974 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:36:35,975 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing FE3F10A5-7E37-45F3-A9B0-9B9D2C513275.xml (22/24)
+2025-09-22 09:36:35,975 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:36:35,975 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: FE3F10A5-7E37-45F3-A9B0-9B9D2C513275.xml
+2025-09-22 09:36:35,975 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: FE3F10A5-7E37-45F3-A9B0-9B9D2C513275.xml
+2025-09-22 09:36:35,987 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:36:35,988 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: FE3F10A5-7E37-45F3-A9B0-9B9D2C513275
+2025-09-22 09:36:37,212 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 1 items with SKU lookup
+2025-09-22 09:36:38,146 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_a0b4b09d_81141601_servicios_integrales_de_logística
+2025-09-22 09:36:38,147 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:36:38,830 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice FE3F10A5-7E37-45F3-A9B0-9B9D2C513275 with 1 items (ID: 338)
+2025-09-22 09:36:39,886 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:36:39,887 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 338
+2025-09-22 09:36:40,857 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:36:40,858 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 1 purchase_details entries for invoice FE3F10A5-7E37-45F3-A9B0-9B9D2C513275
+2025-09-22 09:36:42,575 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed FE3F10A5-7E37-45F3-A9B0-9B9D2C513275.xml in 5.73s
+2025-09-22 09:36:42,576 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved FE3F10A5-7E37-45F3-A9B0-9B9D2C513275.xml to data/processed
+2025-09-22 09:36:42,576 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:36:42,576 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing a63280d3-0954-4d9f-9570-24c21300b1db.xml (23/24)
+2025-09-22 09:36:42,576 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:36:42,576 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: a63280d3-0954-4d9f-9570-24c21300b1db.xml
+2025-09-22 09:36:42,577 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: a63280d3-0954-4d9f-9570-24c21300b1db.xml
+2025-09-22 09:36:42,593 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:36:42,593 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: a63280d3-0954-4d9f-9570-24c21300b1db
+2025-09-22 09:36:43,516 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 5 items with SKU lookup
+2025-09-22 09:36:45,320 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_31f1d2a5_50131800_queso_mozzarella_rdo_grande_2_27kg
+2025-09-22 09:36:48,659 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_6c06ff78_50406500_tomate_san_marzano_di_napoli_2_89_kg
+2025-09-22 09:36:51,955 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_f364788f_50221300_harina_semolina_53162_gral_mill_22_68kg
+2025-09-22 09:36:54,001 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_c77c74c9_50171800_ketchup_bolsa_heinz_3kg
+2025-09-22 09:36:55,954 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_3244d854_24121500_caja_corrugada_p_pizza_18_roma_50pz
+2025-09-22 09:36:57,007 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:36:57,832 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice a63280d3-0954-4d9f-9570-24c21300b1db with 5 items (ID: 339)
+2025-09-22 09:36:58,571 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:36:58,571 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 339
+2025-09-22 09:36:59,768 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:36:59,769 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 5 purchase_details entries for invoice a63280d3-0954-4d9f-9570-24c21300b1db
+2025-09-22 09:37:01,592 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed a63280d3-0954-4d9f-9570-24c21300b1db.xml in 18.17s
+2025-09-22 09:37:01,593 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved a63280d3-0954-4d9f-9570-24c21300b1db.xml to data/processed
+2025-09-22 09:37:01,593 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:37:01,594 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Processing b4bdf338-7f8f-431d-991f-c2baacdfd5e3.xml (24/24)
+2025-09-22 09:37:01,594 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:37:01,594 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [START] Processing file: b4bdf338-7f8f-431d-991f-c2baacdfd5e3.xml
+2025-09-22 09:37:01,594 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PARSE] Parsing XML: b4bdf338-7f8f-431d-991f-c2baacdfd5e3.xml
+2025-09-22 09:37:01,610 - src.processing.cfdi_parser - INFO - File: cfdi_parser.py - File: cfdi_parser.py - File: cfdi_parser.py - Successfully parsed CFDI XML
+2025-09-22 09:37:01,610 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [DUPLICATE CHECK] Checking UUID: b4bdf338-7f8f-431d-991f-c2baacdfd5e3
+2025-09-22 09:37:02,518 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [CLASSIFY] Classifying 13 items with SKU lookup
+2025-09-22 09:37:04,473 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_784ecb06_50131700_mantequilla_s_sal_challenge_454gr
+2025-09-22 09:37:07,873 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_9b6e4c31_50131800_queso_parmesano_en_cuartos_grande_kg
+2025-09-22 09:37:11,363 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_31f1d2a5_50131800_queso_mozzarella_rdo_grande_2_27kg
+2025-09-22 09:37:12,268 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_8330c5d1_50112023_salami_deshidratado_molinari_kg
+2025-09-22 09:37:14,198 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_100c31b7_50112000_pepperoni_rebanado_hormel_5_67kg
+2025-09-22 09:37:17,283 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_bc88a7b8_50131800_queso_ricotta_belgioioso_cube_2_26kg_180
+2025-09-22 09:37:20,812 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_f099186f_50171830_peperoncini_del_destino_3_79lt
+2025-09-22 09:37:22,840 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_39ed0331_50171550_especia_pimienta_negra_molida_454gr_80217
+2025-09-22 09:37:24,687 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_50ed16f7_50151513_aceite_p_freido_profundo_ricafrit_18_4kg
+2025-09-22 09:37:27,676 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     📑 Found cached classification: sku_6c06ff78_50406500_tomate_san_marzano_di_napoli_2_89_kg
+2025-09-22 09:37:32,688 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     ✅ Found approved SKU: sku_0356f92a_50221300_harina_artisan_sir_galahad_ka_3028_50lb
+2025-09-22 09:37:34,505 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_b808480d_50221002_harina_hi_gluten_sir_lancelot_ka_3052_lb
+2025-09-22 09:37:37,533 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py -     🤖 No existing classification. Calling AI for: sku_1783e062_50151513_aceite_oliva_pomace_genco_plast_3_78_lt
+2025-09-22 09:37:38,570 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [STORE] Saving to database
+2025-09-22 09:37:39,403 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Saved invoice b4bdf338-7f8f-431d-991f-c2baacdfd5e3 with 13 items (ID: 340)
+2025-09-22 09:37:40,437 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [METADATA] Creating business metadata
+2025-09-22 09:37:40,438 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created metadata for invoice ID 340
+2025-09-22 09:37:41,316 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [PURCHASE_DETAILS] Creating purchase details
+2025-09-22 09:37:41,318 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Created 13 purchase_details entries for invoice b4bdf338-7f8f-431d-991f-c2baacdfd5e3
+2025-09-22 09:37:43,301 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - [SUCCESS] Processed b4bdf338-7f8f-431d-991f-c2baacdfd5e3.xml in 40.83s
+2025-09-22 09:37:43,302 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Moved b4bdf338-7f8f-431d-991f-c2baacdfd5e3.xml to data/processed
+2025-09-22 09:37:43,302 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - 
+================================================================================
+2025-09-22 09:37:43,302 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - FINAL PROCESSING SUMMARY
+2025-09-22 09:37:43,302 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - ================================================================================
+2025-09-22 09:37:43,303 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total files: 24
+2025-09-22 09:37:43,303 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Successfully processed: 22
+2025-09-22 09:37:43,303 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Failed: 2
+2025-09-22 09:37:43,303 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Success rate: 91.7%
+2025-09-22 09:37:43,303 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Total processing time: 379.38s
+2025-09-22 09:37:43,303 - src.processing.batch_processor - INFO - File: batch_processor.py - File: batch_processor.py - File: batch_processor.py - Average time per file: 15.81s
+2025-09-22 09:37:43,303 - __main__ - INFO - File: main.py - File: main.py - File: main.py - Inbox processing completed
+2025-09-22 09:37:43,304 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system started and ready.
+2025-09-22 09:37:43,304 - root - INFO - File: main.py - File: main.py - File: main.py - Use Ctrl+C to stop the system.
+2025-09-22 09:40:02,733 - root - INFO - File: main.py - File: main.py - File: main.py - CFDI processing system stopped by user.
